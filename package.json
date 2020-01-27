@@ -1,0 +1,30 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "Chat app made with socket.io",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.8.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EricASC6/chat-app.git"
+  },
+  "keywords": [
+    "chat-app",
+    "socket.io"
+  ],
+  "author": "Eric Chen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EricASC6/chat-app/issues"
+  },
+  "homepage": "https://github.com/EricASC6/chat-app#readme"
+}
