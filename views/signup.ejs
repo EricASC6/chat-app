@@ -1,0 +1,43 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="src/clientSignup.js" defer></script>
+    <title>Signup</title>
+  </head>
+  <body>
+    <div class="signup">
+      <form action="/signup" method="POST" id="sigup-form">
+        <div class="entry" id="entry1">
+          <div class="field" id="username-field">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" />
+          </div>
+          <div class="field" id="password-field">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" />
+          </div>
+          <div class="next">
+            <button>Next</button>
+          </div>
+        </div>
+        <div class="entry" id="entry2">
+          <div class="field" id="firstname-field">
+            <label for="firstname">First name</label>
+            <input type="text" name="firstname" id="firstname" />
+          </div>
+          <div class="field" id="lastname-field">
+            <label for="lastname">Last name</label>
+            <input type="text" name="lastname" id="lastname" />
+          </div>
+          <div class="field" id="bio-field">
+            <label for="bio">Short bio</label>
+            <input type="text" name="bio" id="bio" />
+          </div>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>
