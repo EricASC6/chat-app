@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 // Controllers
 const signup = require("./controllers/signup");
+const login = require("./controllers/login");
 
 // Body parser
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -46,9 +47,18 @@ app.get("/signup", (req, res) => {
   res.render("signup");
 });
 
+// Login Page
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
 // User page
 app.get("/user", (req, res) => {
   res.send("New User");
+});
+
+app.get("/home/:userId", (req, res) => {
+  res.send(req.params.userId);
 });
 
 /**
@@ -56,6 +66,11 @@ app.get("/user", (req, res) => {
  */
 app.post("/signup", urlencodedParser, signup.registerNewUser, (req, res) => {
   res.redirect("/user");
+});
+
+app.post("/login", urlencodedParser, login.loginUser, (req, res) => {
+  if (req.loggedin) res.redirect(`/home/user=${req.userId}`);
+  else res.redirect("/login");
 });
 
 // Listening to a port
