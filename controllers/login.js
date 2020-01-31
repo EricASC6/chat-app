@@ -11,12 +11,12 @@ const loginUser = (req, res, next) => {
     (err, user) => {
       if (err) throw err;
 
-      if (!user) {
-        req.loggedin = false;
-        req.userId = null;
-      } else {
+      if (user) {
         req.loggedin = true;
         req.userId = user.userId;
+      } else {
+        req.loggedin = false;
+        req.userId = null;
       }
       next();
     }

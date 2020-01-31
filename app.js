@@ -31,7 +31,7 @@ mongoose.connection
 app.set("view engine", "ejs");
 
 // Serving static files
-app.use("/src", express.static("src"));
+app.use(express.static("./src"));
 
 /**
  * GET Requests
@@ -43,7 +43,9 @@ app.get("/", (req, res) => {
 });
 
 // Signup Page
-app.get("/signup", (req, res) => {
+app.get("/signup/:isInvalid?", (req, res) => {
+  let isInvalid = req.params.isInvalid;
+  if (isInvalid === "invalid") console.log("User already exists");
   res.render("signup");
 });
 
@@ -64,9 +66,15 @@ app.get("/home/:userId", (req, res) => {
 /**
  * POST Requests
  */
-app.post("/signup", urlencodedParser, signup.registerNewUser, (req, res) => {
-  res.redirect("/user");
-});
+app.post(
+  "/signup",
+  urlencodedParser,
+  signup.isUsernameAvail,
+  signup.registerNewUser,
+  (req, res) => {
+    res.redirect("/user");
+  }
+);
 
 app.post("/login", urlencodedParser, login.loginUser, (req, res) => {
   if (req.loggedin) res.redirect(`/home/user=${req.userId}`);
