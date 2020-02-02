@@ -13,7 +13,7 @@ const loginUser = (req, res, next) => {
 
       if (user) {
         req.loggedin = true;
-        req.userId = user.userId;
+        req.userId = user._id;
       } else {
         req.loggedin = false;
         req.userId = null;

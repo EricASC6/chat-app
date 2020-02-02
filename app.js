@@ -34,9 +34,7 @@ app.set("view engine", "ejs");
 app.use(express.static("src"));
 app.use(express.static("public"));
 
-/**
- * GET Requests
- * */
+// GET Requests
 
 // Welcome Page
 app.get("/", (req, res) => {
@@ -51,35 +49,31 @@ app.get("/signup/:isInvalid?", (req, res) => {
 });
 
 // Login Page
-app.get("/login", (req, res) => {
-  res.render("login");
+app.get("/login/:isInvalid?", (req, res) => {
+  let error =
+    req.params.isInvalid === "invalid" ? "Incorrect username or password" : "";
+  res.render("login", { error: error });
 });
 
 // User page
-app.get("/user", (req, res) => {
-  res.send("New User");
+app.get("/home", (req, res) => {
+  res.render("home");
 });
 
-app.get("/home/:userId", (req, res) => {
-  res.send(req.params.userId);
-});
-
-/**
- * POST Requests
- */
+// POST Requests
 app.post(
   "/signup",
   urlencodedParser,
   signup.isUsernameAvail,
   signup.registerNewUser,
   (req, res) => {
-    res.redirect("/user");
+    res.redirect("/home");
   }
 );
 
 app.post("/login", urlencodedParser, login.loginUser, (req, res) => {
-  if (req.loggedin) res.redirect(`/home/user=${req.userId}`);
-  else res.redirect("/login");
+  if (req.loggedin) res.redirect(`/home?user=${req.userId}`);
+  else res.redirect("/login/invalid");
 });
 
 // Listening to a port
