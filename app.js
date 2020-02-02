@@ -31,7 +31,8 @@ mongoose.connection
 app.set("view engine", "ejs");
 
 // Serving static files
-app.use(express.static("./src"));
+app.use(express.static("src"));
+app.use(express.static("public"));
 
 /**
  * GET Requests
