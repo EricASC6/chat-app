@@ -13,7 +13,10 @@ const registerNewUser = (req, res, next) => {
     firstname: firstname,
     lastname: lastname,
     bio: bio,
-    userId: 1,
+    login: {
+      isLogined: true,
+      ipAddresses: [req.ip]
+    },
     contacts: [],
     messages: []
   });
@@ -25,6 +28,20 @@ const registerNewUser = (req, res, next) => {
   next();
 };
 
+const isUsernameAvail = (req, res, next) => {
+  const { username } = req.body;
+  User.findOne({ username: username }, (err, user) => {
+    if (err) throw err;
+    console.log(user);
+
+    if (user) {
+      res.redirect("/signup/invalid");
+      return;
+    } else next();
+  });
+};
+
 module.exports = {
+  isUsernameAvail: isUsernameAvail,
   registerNewUser: registerNewUser
 };

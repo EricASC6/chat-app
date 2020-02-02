@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 // Controllers
 const signup = require("./controllers/signup");
+const login = require("./controllers/login");
 
 // Body parser
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -30,11 +31,10 @@ mongoose.connection
 app.set("view engine", "ejs");
 
 // Serving static files
-app.use("/src", express.static("src"));
+app.use(express.static("src"));
+app.use(express.static("public"));
 
-/**
- * GET Requests
- * */
+// GET Requests
 
 // Welcome Page
 app.get("/", (req, res) => {
@@ -42,20 +42,38 @@ app.get("/", (req, res) => {
 });
 
 // Signup Page
-app.get("/signup", (req, res) => {
-  res.render("signup");
+app.get("/signup/:isInvalid?", (req, res) => {
+  let error = req.params.isInvalid === "invalid" ? "User already exists" : "";
+  res.render("signup", { error: error });
+});
+
+// Login Page
+app.get("/login/:isInvalid?", (req, res) => {
+  let error =
+    req.params.isInvalid === "invalid" ? "Incorrect username or password" : "";
+  res.render("login", { error: error });
 });
 
 // User page
-app.get("/user", (req, res) => {
-  res.send("New User");
+app.get("/home", login.authenicateId, (req, res) => {
+  res.render("home");
 });
 
-/**
- * POST Requests
- */
-app.post("/signup", urlencodedParser, signup.registerNewUser, (req, res) => {
-  res.redirect("/user");
+// POST Requests
+app.post(
+  "/signup",
+  urlencodedParser,
+  signup.isUsernameAvail,
+  signup.registerNewUser,
+  (req, res) => {
+    res.redirect("/home");
+  }
+);
+
+app.post("/login", urlencodedParser, login.loginUser, (req, res) => {
+  if (req.user) {
+    res.redirect(`/home?id=${req.user._id}`);
+  } else res.redirect("/login/invalid");
 });
 
 // Listening to a port

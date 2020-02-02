@@ -8,7 +8,10 @@ const userSchema = new Schema({
   firstname: String,
   lastname: String,
   bio: String,
-  userId: String,
+  login: {
+    isLogined: Boolean,
+    ipAddresses: [String]
+  },
   contacts: Array,
   messages: Array
 });
