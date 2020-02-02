@@ -43,9 +43,8 @@ app.get("/", (req, res) => {
 
 // Signup Page
 app.get("/signup/:isInvalid?", (req, res) => {
-  let isInvalid = req.params.isInvalid;
-  if (isInvalid === "invalid") console.log("User already exists");
-  res.render("signup");
+  let error = req.params.isInvalid === "invalid" ? "User already exists" : "";
+  res.render("signup", { error: error });
 });
 
 // Login Page
@@ -56,7 +55,7 @@ app.get("/login/:isInvalid?", (req, res) => {
 });
 
 // User page
-app.get("/home", (req, res) => {
+app.get("/home", login.authenicateId, (req, res) => {
   res.render("home");
 });
 
@@ -72,8 +71,9 @@ app.post(
 );
 
 app.post("/login", urlencodedParser, login.loginUser, (req, res) => {
-  if (req.loggedin) res.redirect(`/home?user=${req.userId}`);
-  else res.redirect("/login/invalid");
+  if (req.user) {
+    res.redirect(`/home?id=${req.user._id}`);
+  } else res.redirect("/login/invalid");
 });
 
 // Listening to a port

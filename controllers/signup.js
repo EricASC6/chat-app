@@ -13,7 +13,10 @@ const registerNewUser = (req, res, next) => {
     firstname: firstname,
     lastname: lastname,
     bio: bio,
-    userId: 1,
+    login: {
+      isLogined: true,
+      ipAddresses: [req.ip]
+    },
     contacts: [],
     messages: []
   });

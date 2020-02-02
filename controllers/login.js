@@ -12,17 +12,24 @@ const loginUser = (req, res, next) => {
       if (err) throw err;
 
       if (user) {
-        req.loggedin = true;
-        req.userId = user._id;
+        req.user = user;
       } else {
-        req.loggedin = false;
-        req.userId = null;
+        req.user = null;
       }
       next();
     }
   );
 };
 
+const authenicateId = (req, res, next) => {
+  User.findOne({ _id: req.query.id }, (err, user) => {
+    if (err) throw err;
+    if (user.login.ipAddresses.includes(req.ip)) next();
+    else res.redirect("/login");
+  });
+};
+
 module.exports = {
-  loginUser: loginUser
+  loginUser: loginUser,
+  authenicateId: authenicateId
 };
