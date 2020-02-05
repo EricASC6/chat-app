@@ -8,6 +8,12 @@
       src="https://kit.fontawesome.com/bc308bbd0b.js"
       crossorigin="anonymous"
     ></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/home.css" />
     <title>Home</title>
   </head>
   <body>
@@ -24,7 +30,6 @@
           </div>
           <div id="side-nav-bottom">
             <i class="fas fa-user" id="user"></i>
-            <a href="/">Sign Out</a>
           </div>
         </div>
       </div>
@@ -37,10 +42,45 @@
             </div>
           </div>
           <div id="main-body">
-            <div id="main-contact-about"></div>
-            <div id="messages"></div>
+            <div id="main-contact-about">
+              <div id="main-contact-head">
+                <h3 id="user">Eric Chen</h3>
+                <div class="caret">
+                  <i class="fas fa-chevron-up" id="user-bio-caret"></i>
+                </div>
+              </div>
+              <div id="main-contact-description">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+              </div>
+            </div>
+            <div id="messages">
+              <div id="messages-head">
+                <h3>Messages</h3>
+              </div>
+              <div id="messages-body">
+                <div id="message-body-main">
+                  <h3 id="message-user">Eric Chen</h3>
+                  <p id="most-recent-message">I’’ll be there at 11pm</p>
+                </div>
+                <div class="caret">
+                  <i class="fas fa-chevron-up" id="message-caret"></i>
+                </div>
+              </div>
+            </div>
           </div>
-          <div id="main-bottom"></div>
+          <div id="main-bottom">
+            <div id="home-user">
+              <p>Signed in as echen</p>
+            </div>
+            <div id="add-new-contact">
+              <div id="new-user-container">
+                <i class="fas fa-plus" id="plus"></i>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </div>

@@ -41,6 +41,11 @@ app.get("/", (req, res) => {
   res.render("welcome");
 });
 
+// Testing purposes only b/c cannot connect to db
+app.get("/user", (req, res) => {
+  res.render("home");
+});
+
 // Signup Page
 app.get("/signup/:isInvalid?", (req, res) => {
   let error = req.params.isInvalid === "invalid" ? "User already exists" : "";
