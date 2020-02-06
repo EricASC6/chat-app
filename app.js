@@ -19,13 +19,9 @@ mongoose.connect("mongodb+srv://eric:eric@chat-app-srfip.mongodb.net/users", {
   useUnifiedTopology: true
 });
 
-mongoose.connection
-  .once("open", () => {
-    console.log("Connection to mongodb");
-  })
-  .on("error", err => {
-    console.error(err);
-  });
+const db = mongoose.connection;
+db.once("open", () => console.log("Made connection to mongodb"));
+db.on("error", err => console.error(err));
 
 // Using ejs engine
 app.set("view engine", "ejs");
