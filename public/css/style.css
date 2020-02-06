@@ -16,3 +16,11 @@
 body {
   font-family: "Montserrat", sans-serif;
 }
+
+.content {
+  padding: 1.75rem 0.5rem;
+}
+
+.dark-accent {
+  color: var(--darkblue);
+}

@@ -6,7 +6,6 @@
 
 #side-nav {
   background-color: var(--darkblue);
-  padding: 1.75rem 1rem;
 }
 
 #side-nav #side-nav-container {
@@ -24,6 +23,7 @@
   align-items: flex-start;
   height: 25px;
   width: 100%;
+  cursor: pointer;
 }
 
 .side-nav-top #hamburger .line {
@@ -49,8 +49,8 @@
 }
 
 .side-nav-top #contact .contact-body {
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   text-align: center;
   background-color: var(--white);
   border-radius: 50%;
@@ -58,10 +58,88 @@
 
 #contact .contact-body p {
   font-weight: bold;
-  line-height: 50px;
+  line-height: 45px;
 }
 
 #side-nav-container #side-nav-bottom #user-container {
   color: var(--white);
   font-size: 24px;
+  cursor: pointer;
+}
+
+#main #main-container #main-header {
+  display: flex;
+  color: var(--skyblue);
+  justify-content: space-between;
+  align-items: center;
+}
+
+#main-header .search {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#main-container #main-body {
+  margin: 1.75rem 0;
+}
+
+#main-body #main-contact-about #main-contact-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#main-contact-head h3 {
+  font-size: 24px;
+  color: var(--black);
+  font-weight: bold;
+}
+
+#main-contact-head .caret {
+  color: var(--skyblue);
+}
+
+#main-contact-about #main-contact-description {
+  padding: 1rem 0;
+}
+
+#main-contact-description p {
+  color: var(--light-darkblue);
+  font-weight: 500;
+  line-height: 150%;
+}
+
+#main-body #messages #messages-head {
+  text-align: center;
+}
+
+#messages-head h3 {
+  position: relative;
+  color: var(--skyblue);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+#messages-head h3::before {
+  position: absolute;
+  content: "";
+  left: 0;
+  height: 3px;
+  width: calc(100% / 4);
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--skyblue);
+  border-radius: 10px;
+}
+
+#messages-head h3::after {
+  position: absolute;
+  content: "";
+  right: 0;
+  height: 3px;
+  width: calc(100% / 4);
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--skyblue);
+  border-radius: 10px;
 }
