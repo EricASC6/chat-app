@@ -5,7 +5,7 @@ const User = require("../models/User");
 /**
  * POST request middleware to register new user to mongodb
  */
-const registerNewUser = (req, res, next) => {
+const registerNewUser = async (req, res, next) => {
   const { username, password, firstname, lastname, bio } = req.body;
   const user = new User({
     username: username,
@@ -21,10 +21,11 @@ const registerNewUser = (req, res, next) => {
     messages: []
   });
 
-  user.save(err => {
+  await user.save(err => {
     if (err) throw err;
   });
 
+  req.id = user._id;
   next();
 };
 
@@ -32,8 +33,6 @@ const isUsernameAvail = (req, res, next) => {
   const { username } = req.body;
   User.findOne({ username: username }, (err, user) => {
     if (err) throw err;
-    console.log(user);
-
     if (user) {
       res.redirect("/signup/invalid");
       return;

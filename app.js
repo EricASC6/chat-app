@@ -67,7 +67,7 @@ app.post(
   signup.isUsernameAvail,
   signup.registerNewUser,
   (req, res) => {
-    res.redirect("/home");
+    res.redirect(`/home?id=${req.id}`);
   }
 );
 
