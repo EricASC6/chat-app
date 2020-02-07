@@ -1,32 +1,32 @@
 const User = require("../models/User");
 
-const loginUser = (req, res, next) => {
-  const { username, password } = req.body;
-
-  User.findOne(
-    {
+const loginUser = async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({
       username: username,
       password: password
-    },
-    (err, user) => {
-      if (err) throw err;
+    });
 
-      if (user) {
-        req.user = user;
-      } else {
-        req.user = null;
-      }
-      next();
+    if (user) {
+      req.user = user;
+    } else {
+      req.user = null;
     }
-  );
+    next();
+  } catch (err) {
+    console.error(err);
+  }
 };
 
-const authenicateId = (req, res, next) => {
-  User.findOne({ _id: req.query.id }, (err, user) => {
-    if (err) throw err;
+const authenicateId = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ _id: req.query.id });
     if (user.login.ipAddresses.includes(req.ip)) next();
     else res.redirect("/login");
-  });
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 module.exports = {
