@@ -193,7 +193,6 @@
 
 .message .caret {
   transform: rotate(90deg);
-  cursor: pointer;
 }
 
 #main-container #main-bottom {
@@ -210,7 +209,7 @@
   color: var(--gray);
 }
 
-#main-bottom #add-new-contact {
+#main-bottom #add-new-chat {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -276,7 +275,7 @@
 }
 
 /* Add Contact */
-#add-contact {
+#add-chat {
   position: absolute;
   top: 0;
   left: 0;
@@ -288,6 +287,65 @@
   transition: transform 250ms ease-out;
 }
 
-#add-contact.show {
+#add-chat.show {
   transform: translateY(0);
+}
+
+#add-chat #add-chat-container #add-chat-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0.5rem;
+  background-color: var(--skyblue);
+}
+
+#add-chat-head #chat-type {
+  display: flex;
+  justify-items: flex-start;
+  align-items: center;
+}
+
+#chat-type h2#type {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--white);
+}
+
+#chat-type .caret {
+  color: var(--lightblue);
+  transform: rotate(180deg);
+  margin-left: 1rem;
+}
+
+#add-chat-head .cancel {
+  font-size: 22px;
+  color: var(--mediumblue);
+  cursor: pointer;
+}
+
+#chat-body {
+  padding: 1.5rem 0.5rem 0 0.5rem;
+}
+
+#chat-body #input-fields {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+#input-fields label[for="username"] {
+  font-size: 18px;
+  color: var(--mediumgray);
+  transform: translateY(100%);
+}
+
+#input-fields input {
+  display: inline-block;
+  height: 30px;
+  border: none;
+  border-bottom: 3px solid var(--lightgray);
+  font-size: 18px;
+  background-color: transparent;
+  outline: none;
+  z-index: 1;
 }

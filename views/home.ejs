@@ -88,8 +88,8 @@
             <div id="home-user">
               <p>Signed in as echen</p>
             </div>
-            <div id="add-new-contact">
-              <i class="fas fa-plus" id="plus"></i>
+            <div id="add-new-chat">
+              <i class="fas fa-plus"></i>
             </div>
           </div>
         </div>
@@ -109,10 +109,25 @@
       </div>
     </div>
 
-    <div id="add-contact">
-      <div id="add-contact-container">
-        <input type="text" placeholder="User" />
-        <button>Go</button>
+    <div id="add-chat">
+      <div id="add-chat-container">
+        <div id="add-chat-head">
+          <div id="chat-type">
+            <h2 id="type">New Conversation</h2>
+            <div class="caret">
+              <i class="fas fa-chevron-up" id="chat-caret"></i>
+            </div>
+          </div>
+          <div class="cancel" id="cancel-btn">
+            <i class="fas fa-times"></i>
+          </div>
+        </div>
+        <div id="chat-body">
+          <div id="input-fields">
+            <label for="username">Username</label>
+            <input type="text" id="username" />
+          </div>
+        </div>
       </div>
     </div>
   </body>

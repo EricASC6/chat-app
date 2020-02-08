@@ -5,6 +5,9 @@
   --darkblue: #1b262c;
   --light-darkblue: rgba(27, 38, 44, 0.75);
   --lightblue: #bbe1fa;
+  --mediumblue: #a1c5dd;
+  --mediumgray: #7d7b7b;
+  --lightgray: #f1f1f1;
   --gray: #4e4e4e;
 }
 
@@ -22,6 +25,10 @@ body {
 
 .content {
   padding: 1.75rem 0.5rem;
+}
+
+.caret {
+  cursor: pointer;
 }
 
 .dark-accent {

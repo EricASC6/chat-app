@@ -7,9 +7,22 @@ hamburger.addEventListener("click", () => {
 });
 
 // Add Contact Popup Effect
-const addContactBtn = document.getElementById("add-new-contact");
-const addContactTab = document.getElementById("add-contact");
+const addChatBtn = document.getElementById("add-new-chat");
+const addChatTab = document.getElementById("add-chat");
+const cancelChatBtn = document.getElementById("cancel-btn");
 
-addContactBtn.addEventListener("click", () => {
-  addContactTab.classList.toggle("show");
+// Add / Arrows Sign
+const addSign = `<i class="fas fa-plus"></i>`;
+const goArrowSign = `<i class="fas fa-arrow-right"></i>`;
+
+addChatBtn.addEventListener("click", function() {
+  if (!addChatTab.classList.contains("show")) {
+    addChatTab.classList.add("show");
+    this.innerHTML = goArrowSign;
+  }
+});
+
+cancelChatBtn.addEventListener("click", () => {
+  addChatTab.classList.remove("show");
+  addChatBtn.innerHTML = addSign;
 });
