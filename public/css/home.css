@@ -1,4 +1,6 @@
+/* Home */
 .home {
+  position: relative;
   height: 100vh;
   width: 100%;
   display: flex;
@@ -17,6 +19,7 @@
 }
 
 #side-nav-container .side-nav-top #hamburger {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -24,6 +27,7 @@
   height: 25px;
   width: 100%;
   cursor: pointer;
+  z-index: 2;
 }
 
 .side-nav-top #hamburger .line {
@@ -218,4 +222,72 @@
   border-radius: 50%;
   box-shadow: 0 10px 25px 0 rgba(44, 44, 44, 0.35);
   cursor: pointer;
+  z-index: 51;
+}
+
+/* Widgets */
+
+/* Contacts Tab */
+#contacts-tab {
+  position: absolute;
+  top: 0;
+  transform: translateX(-100%);
+  width: 200px;
+  height: 100%;
+  background-color: var(--darkblue);
+  z-index: 1;
+  transition: transform 250ms ease-out;
+}
+
+#contacts-tab.show {
+  transform: translateX(0);
+}
+
+#contacts-tab #contacts-tab-container {
+  width: 100%;
+  height: 100%;
+  padding: 1.75rem 0;
+}
+
+#contacts-tab #contacts-tab-container #contacts-head {
+  padding: 0 0.5rem;
+  color: var(--white);
+  text-align: right;
+}
+
+#contacts-tab #contacts-tab-container #contacts-body {
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem 0;
+}
+
+#contacts-body #contacts-list li {
+  list-style: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--lightblue);
+  padding: 0.75rem 0.5rem;
+  cursor: pointer;
+  transition: background-color 200ms ease-in;
+}
+
+#contacts-body #contacts-list li:hover {
+  background-color: #24333b;
+}
+
+/* Add Contact */
+#add-contact {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--white);
+  z-index: 50;
+  transform: translateY(100%);
+  transition: transform 250ms ease-out;
+}
+
+#add-contact.show {
+  transform: translateY(0);
 }
