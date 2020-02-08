@@ -19,10 +19,15 @@ addChatBtn.addEventListener("click", function() {
   if (!addChatTab.classList.contains("show")) {
     addChatTab.classList.add("show");
     this.innerHTML = goArrowSign;
+
+    addChatTab.addEventListener("transitionend", () =>
+      this.setAttribute("data-type", "go")
+    );
   }
 });
 
 cancelChatBtn.addEventListener("click", () => {
   addChatTab.classList.remove("show");
   addChatBtn.innerHTML = addSign;
+  addChatBtn.setAttribute("data-type", "add");
 });

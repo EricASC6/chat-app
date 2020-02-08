@@ -319,7 +319,7 @@
 
 #add-chat-head .cancel {
   font-size: 22px;
-  color: var(--mediumblue);
+  color: var(--lightblue);
   cursor: pointer;
 }
 
@@ -336,7 +336,7 @@
 #input-fields label[for="username"] {
   font-size: 18px;
   color: var(--mediumgray);
-  transform: translateY(100%);
+  /* transform: translateY(100%); */
 }
 
 #input-fields input {

@@ -3,15 +3,20 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
+// Express app
+const app = express();
+
 // Controllers
 const signup = require("./controllers/signup");
 const login = require("./controllers/login");
 
+// API
+const userAPI = require("./controllers/userAPI");
+app.use("/user", userAPI);
+
 // Body parser
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
-
-// Express app
-const app = express();
+app.use(urlencodedParser);
 
 // Connecting to mongodb
 mongoose.connect("mongodb+srv://eric:eric@chat-app-srfip.mongodb.net/users", {
@@ -37,11 +42,6 @@ app.get("/", (req, res) => {
   res.render("welcome");
 });
 
-// Testing purposes only b/c cannot connect to db
-app.get("/user", (req, res) => {
-  res.render("home");
-});
-
 // Signup Page
 app.get("/signup/:isInvalid?", (req, res) => {
   let error = req.params.isInvalid === "invalid" ? "User already exists" : "";
@@ -63,7 +63,6 @@ app.get("/home", login.authenicateId, (req, res) => {
 // POST Requests
 app.post(
   "/signup",
-  urlencodedParser,
   signup.isUsernameAvail,
   signup.registerNewUser,
   (req, res) => {
@@ -71,13 +70,11 @@ app.post(
   }
 );
 
-app.post("/login", urlencodedParser, login.loginUser, (req, res) => {
+app.post("/login", login.loginUser, (req, res) => {
   if (req.user) {
     res.redirect(`/home?id=${req.user._id}`);
   } else res.redirect("/login/invalid");
 });
 
 // Listening to a port
-app.listen(3000, () => {
-  console.log("Listening to port 3000");
-});
+app.listen(3000, () => console.log("Listening to port 3000"));
