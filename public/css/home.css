@@ -71,6 +71,10 @@
   cursor: pointer;
 }
 
+#main {
+  flex-grow: 1;
+}
+
 #main #main-container {
   position: relative;
   height: 100%;

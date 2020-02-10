@@ -56,8 +56,8 @@ app.get("/login/:isInvalid?", (req, res) => {
 });
 
 // User page
-app.get("/home", login.authenicateId, (req, res) => {
-  res.render("home");
+app.get("/home", login.authenicateId, login.retrieveUserData, (req, res) => {
+  res.render("home", req.userData);
 });
 
 // POST Requests

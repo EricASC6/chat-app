@@ -14,10 +14,7 @@ const registerNewUser = async (req, res, next) => {
       firstname: firstname,
       lastname: lastname,
       bio: bio,
-      login: {
-        isLogined: true,
-        ipAddresses: [req.ip]
-      },
+      isLogined: true,
       contacts: [],
       messages: []
     });

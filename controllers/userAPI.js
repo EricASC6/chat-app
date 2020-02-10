@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
+const Contact = require("../models/Contact").model;
 const bodyParser = require("body-parser");
 
 // Setting up parser
@@ -9,6 +10,11 @@ router.use(bodyParser.json());
 // GET Requests
 router.get("/", async (req, res) => {
   const queries = req.query;
+  if (queries.id && queries.username) {
+    res.redirect(`user/${queries.id}/${queries.username}`);
+    return;
+  }
+
   const username = queries.username;
 
   try {
@@ -23,16 +29,33 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id/:username", async (req, res) => {
+  const { id, username } = req.params;
+  try {
+    const srcUser = await User.findById(id);
+    console.log(srcUser);
+    const contact = await srcUser.contacts.filter(
+      contact => contact.username === username
+    )[0];
+    if (contact) {
+      res.json({ ok: true, contact: contact });
+    } else {
+      res.json({ ok: false, contact: null });
+    }
+  } catch (err) {
+    res.status(500).json({ ok: false, error: "Something went wrong" });
+  }
+});
+
 // POST Request
 router.post("/", async (req, res) => {
-  console.log(req.body);
-
   const { id, newContact } = req.body;
 
   try {
     const srcUser = await User.findById(id);
     if (srcUser) {
-      srcUser.contacts.unshift(newContact);
+      const newContactDoc = new Contact(newContact);
+      srcUser.contacts.unshift(newContactDoc);
       await srcUser.save();
     }
   } catch (err) {
