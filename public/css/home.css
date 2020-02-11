@@ -353,3 +353,56 @@
   outline: none;
   z-index: 1;
 }
+
+/* Chat room */
+#chat-room {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--white);
+  z-index: 100;
+}
+
+#chat-room #chat-room-container #chat-room-head {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1.5rem 0.5rem;
+  background-color: var(--skyblue);
+}
+
+#chat-room-head #back {
+  font-size: 24px;
+  color: var(--lightblue);
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+#chat-room-head #chat-name {
+  display: flex;
+  align-items: center;
+}
+
+#chat-name #chat-contact-icon {
+  background-color: var(--white);
+  color: var(--black);
+  text-align: center;
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+#chat-contact-icon p {
+  line-height: 45px;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+#chat-name #contact-name {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--light-darkblue);
+}
