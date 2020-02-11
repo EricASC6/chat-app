@@ -8,11 +8,20 @@
       src="https://kit.fontawesome.com/bc308bbd0b.js"
       crossorigin="anonymous"
     ></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="/clientHome.js" defer></script>
+    <script src="/api.js" defer></script>
+    <script src="/viewContact.js"></script>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/home.css" />
     <title>Home</title>
   </head>
   <body>
     <div class="home">
-      <div id="side-nav">
+      <div id="side-nav" class="content">
         <div id="side-nav-container" class="container">
           <div class="side-nav-top">
             <div id="hamburger">
@@ -20,29 +29,110 @@
               <div class="line" id="line2"></div>
               <div class="line" id="line2"></div>
             </div>
-            <div id="contact"></div>
+            <div id="contact">
+              <div class="contact-body">
+                <p>EC</p>
+              </div>
+            </div>
           </div>
           <div id="side-nav-bottom">
-            <i class="fas fa-user" id="user"></i>
-            <a href="/">Sign Out</a>
+            <div id="user-container">
+              <i class="fas fa-user" id="user"></i>
+            </div>
           </div>
         </div>
       </div>
-      <main id="main">
+      <main id="main" class="content">
         <div id="main-container" class="container">
           <div id="main-header">
-            <h1>EChat<i class="far fa-comment"></i></h1>
+            <h1>
+              <span class="dark-accent">E</span>Chat<i
+                class="far fa-comment"
+              ></i>
+            </h1>
             <div class="search">
               <i class="fas fa-search"></i>
             </div>
           </div>
           <div id="main-body">
-            <div id="main-contact-about"></div>
-            <div id="messages"></div>
+            <div id="main-contact-about">
+              <div id="main-contact-head">
+                <h3 id="user">Eric Chen</h3>
+                <div class="caret">
+                  <i class="fas fa-chevron-up" id="user-bio-caret"></i>
+                </div>
+              </div>
+              <div id="main-contact-description">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+              </div>
+            </div>
+            <div id="messages">
+              <div id="messages-head">
+                <h3>Messages</h3>
+              </div>
+              <div id="messages-body">
+                <div class="message">
+                  <div class="message-container">
+                    <h3 class="user">Eric Chen</h3>
+                    <p class="most-recent-message">I’’ll be there at 11pm</p>
+                  </div>
+                  <div class="caret">
+                    <i class="fas fa-chevron-up" id="message-caret"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div id="main-bottom"></div>
+          <div id="main-bottom">
+            <div id="home-user">
+              <p>Signed in as echen</p>
+            </div>
+            <div id="add-new-chat" data-type="add">
+              <i class="fas fa-plus"></i>
+            </div>
+          </div>
         </div>
       </main>
+    </div>
+
+    <div id="contacts-tab">
+      <div id="contacts-tab-container">
+        <div id="contacts-head">
+          <h2>Contacts</h2>
+        </div>
+        <div id="contacts-body">
+          <ul id="contacts-list">
+            <% contacts.forEach(contact => { %>
+              <li class="contact" username= <%= contact.username %> ><%= contact.firstname + " " + contact.lastname %></li>
+            <% }) %>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="add-chat">
+      <div id="add-chat-container">
+        <div id="add-chat-head">
+          <div id="chat-type">
+            <h2 id="type">New Conversation</h2>
+            <div class="caret">
+              <i class="fas fa-chevron-up" id="chat-caret"></i>
+            </div>
+          </div>
+          <div class="cancel" id="cancel-btn">
+            <i class="fas fa-times"></i>
+          </div>
+        </div>
+        <div id="chat-body">
+          <div id="input-fields">
+            <label for="username">Username</label>
+            <input type="text" id="username" />
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

@@ -1,0 +1,355 @@
+/* Home */
+.home {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+}
+
+#side-nav {
+  background-color: var(--darkblue);
+}
+
+#side-nav #side-nav-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+#side-nav-container .side-nav-top #hamburger {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 25px;
+  width: 100%;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.side-nav-top #hamburger .line {
+  background-color: var(--skyblue);
+  height: 4px;
+  border-radius: 10px;
+}
+
+.side-nav-top #hamburger .line:nth-child(1) {
+  width: 35px;
+}
+
+.side-nav-top #hamburger .line:nth-child(2) {
+  width: 30px;
+}
+
+.side-nav-top #hamburger .line:nth-child(3) {
+  width: 25px;
+}
+
+#side-nav-container .side-nav-top #contact {
+  margin-top: 25px;
+}
+
+.side-nav-top #contact .contact-body {
+  width: 45px;
+  height: 45px;
+  text-align: center;
+  background-color: var(--white);
+  border-radius: 50%;
+}
+
+#contact .contact-body p {
+  font-weight: bold;
+  line-height: 45px;
+}
+
+#side-nav-container #side-nav-bottom #user-container {
+  color: var(--white);
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#main {
+  flex-grow: 1;
+}
+
+#main #main-container {
+  position: relative;
+  height: 100%;
+}
+
+#main #main-container #main-header {
+  display: flex;
+  color: var(--skyblue);
+  justify-content: space-between;
+  align-items: center;
+}
+
+#main-header .search {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#main-container #main-body {
+  margin: 1.75rem 0;
+}
+
+#main-body #main-contact-about #main-contact-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#main-contact-head h3 {
+  font-size: 24px;
+  color: var(--black);
+  font-weight: bold;
+}
+
+#main-contact-head .caret {
+  color: var(--skyblue);
+}
+
+#main-contact-about #main-contact-description {
+  padding: 1rem 0;
+}
+
+#main-contact-description p {
+  color: var(--light-darkblue);
+  font-weight: 500;
+  line-height: 150%;
+}
+
+#main-body #messages #messages-head {
+  text-align: center;
+}
+
+#messages-head h3 {
+  position: relative;
+  color: var(--skyblue);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+#messages-head h3::before {
+  position: absolute;
+  content: "";
+  left: 0;
+  height: 3px;
+  width: calc(100% / 4);
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--skyblue);
+  border-radius: 10px;
+}
+
+#messages-head h3::after {
+  position: absolute;
+  content: "";
+  right: 0;
+  height: 3px;
+  width: calc(100% / 4);
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--skyblue);
+  border-radius: 10px;
+}
+
+#messages #messages-body {
+  margin-top: 15px;
+}
+
+#messages-body .message {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--lightblue);
+  border-radius: 10px;
+  padding: 1rem 0.75rem;
+  box-shadow: 0 5px 5px 0 #75757549;
+}
+
+.message .message-container .user {
+  font-size: 1rem;
+  font-weight: 550;
+  color: var(--darkblue);
+}
+
+.message-container .most-recent-message {
+  position: relative;
+  font-size: calc(1rem - 2px);
+  color: var(--darkblue);
+  padding: 10px 0 0 15px;
+}
+
+.message-container .most-recent-message::before {
+  position: absolute;
+  content: "";
+  top: 5px;
+  left: 0;
+  width: 8px;
+  height: 100%;
+  background-color: var(--skyblue);
+  border-radius: 5px;
+}
+
+.message .caret {
+  transform: rotate(90deg);
+}
+
+#main-container #main-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
+#main-bottom #home-user {
+  font-size: 16px;
+  color: var(--gray);
+}
+
+#main-bottom #add-new-chat {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--white);
+  font-size: 24px;
+  width: 65px;
+  height: 65px;
+  background-color: var(--skyblue);
+  border-radius: 50%;
+  box-shadow: 0 10px 25px 0 rgba(44, 44, 44, 0.35);
+  cursor: pointer;
+  z-index: 51;
+}
+
+/* Widgets */
+
+/* Contacts Tab */
+#contacts-tab {
+  position: absolute;
+  top: 0;
+  transform: translateX(-100%);
+  width: 200px;
+  height: 100%;
+  background-color: var(--darkblue);
+  z-index: 1;
+  transition: transform 250ms ease-out;
+}
+
+#contacts-tab.show {
+  transform: translateX(0);
+}
+
+#contacts-tab #contacts-tab-container {
+  width: 100%;
+  height: 100%;
+  padding: 1.75rem 0;
+}
+
+#contacts-tab #contacts-tab-container #contacts-head {
+  padding: 0 0.5rem;
+  color: var(--white);
+  text-align: right;
+}
+
+#contacts-tab #contacts-tab-container #contacts-body {
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem 0;
+}
+
+#contacts-body #contacts-list li {
+  list-style: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--lightblue);
+  padding: 0.75rem 0.5rem;
+  cursor: pointer;
+  transition: background-color 200ms ease-in;
+}
+
+#contacts-body #contacts-list li:hover {
+  background-color: #24333b;
+}
+
+/* Add Contact */
+#add-chat {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--white);
+  z-index: 50;
+  transform: translateY(100%);
+  transition: transform 250ms ease-out;
+}
+
+#add-chat.show {
+  transform: translateY(0);
+}
+
+#add-chat #add-chat-container #add-chat-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0.5rem;
+  background-color: var(--skyblue);
+}
+
+#add-chat-head #chat-type {
+  display: flex;
+  justify-items: flex-start;
+  align-items: center;
+}
+
+#chat-type h2#type {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--white);
+}
+
+#chat-type .caret {
+  color: var(--lightblue);
+  transform: rotate(180deg);
+  margin-left: 1rem;
+}
+
+#add-chat-head .cancel {
+  font-size: 22px;
+  color: var(--lightblue);
+  cursor: pointer;
+}
+
+#chat-body {
+  padding: 1.5rem 0.5rem 0 0.5rem;
+}
+
+#chat-body #input-fields {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+#input-fields label[for="username"] {
+  font-size: 18px;
+  color: var(--mediumgray);
+  /* transform: translateY(100%); */
+}
+
+#input-fields input {
+  display: inline-block;
+  height: 30px;
+  border: none;
+  border-bottom: 3px solid var(--lightgray);
+  font-size: 18px;
+  background-color: transparent;
+  outline: none;
+  z-index: 1;
+}
