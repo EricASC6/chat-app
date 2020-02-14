@@ -358,11 +358,16 @@
 #chat-room {
   position: absolute;
   top: 0;
-  left: 0;
+  left: 100%;
   width: 100%;
   height: 100%;
   background-color: var(--white);
   z-index: 100;
+  transition: transform 250ms ease-out;
+}
+
+#chat-room.show {
+  transform: translateX(-100%);
 }
 
 #chat-room #chat-room-container #chat-room-head {
