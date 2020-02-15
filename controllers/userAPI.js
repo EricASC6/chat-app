@@ -57,10 +57,12 @@ router.post("/", async (req, res) => {
       const newContactDoc = new Contact(newContact);
       srcUser.contacts.unshift(newContactDoc);
       await srcUser.save();
-      // Need to send back res
+      res.json({ ok: true });
     }
   } catch (err) {
-    console.error(err);
+    res.status(500).json({
+      ok: false
+    });
   }
 });
 

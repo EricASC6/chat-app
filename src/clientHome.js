@@ -21,7 +21,7 @@ addChatBtn.addEventListener("click", function() {
     this.innerHTML = goArrowSign;
 
     addChatTab.addEventListener("transitionend", () =>
-      this.setAttribute("data-type", "go")
+      this.setAttribute("data-type", "create-contact")
     );
   }
 });
@@ -29,5 +29,5 @@ addChatBtn.addEventListener("click", function() {
 cancelChatBtn.addEventListener("click", () => {
   addChatTab.classList.remove("show");
   addChatBtn.innerHTML = addSign;
-  addChatBtn.setAttribute("data-type", "add");
+  addChatBtn.setAttribute("data-type", "add-contact");
 });
