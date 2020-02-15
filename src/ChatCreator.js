@@ -1,3 +1,11 @@
 class ChatCreator {
-  constructor() {}
+  constructor(userId) {
+    this.userId = userId;
+  }
+
+  createChatRoom(username) {
+    const chatRoom;
+  }
+
+  saveChatRoomToDB(chatRoom) {}
 }
