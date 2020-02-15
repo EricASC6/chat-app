@@ -26,8 +26,11 @@ addChatBtn.addEventListener("click", function() {
   }
 });
 
-cancelChatBtn.addEventListener("click", () => {
+cancelChatBtn.addEventListener("click", function() {
   addChatTab.classList.remove("show");
   addChatBtn.innerHTML = addSign;
-  addChatBtn.setAttribute("data-type", "add-contact");
+
+  addChatTab.addEventListener("transitionend", () =>
+    addChatBtn.setAttribute("data-type", "add-contact")
+  );
 });
