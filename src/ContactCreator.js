@@ -5,12 +5,11 @@ class ContactCreator {
   static USERNAME_QUERY = `&username=`;
   static READY_STATE = "create-contact";
 
-  constructor(userId, createContactBtn, usernameField, contactsList, chatRoom) {
+  constructor(userId, createChatBtn, usernameField, contactsList) {
     this.userId = userId;
-    this.createContactBtn = createContactBtn;
+    this.createChatBtn = createChatBtn;
     this.usernameField = usernameField;
     this.contactsList = contactsList;
-    this.chatRoom = chatRoom;
   }
 
   /**
@@ -19,7 +18,7 @@ class ContactCreator {
    */
   isReady() {
     return (
-      this.createContactBtn.getAttribute("data-type") ===
+      this.createChatBtn.getAttribute("data-type") ===
       ContactCreator.READY_STATE
     );
   }
@@ -111,14 +110,6 @@ class ContactCreator {
     } catch (err) {
       throw err;
     }
-  }
-
-  /**
-   * Slides over the chatroom
-   */
-  slideOverChatRoom() {
-    const chatRoom = this.chatRoom;
-    chatRoom.classList.add("show");
   }
 }
 

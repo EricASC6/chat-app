@@ -46,6 +46,9 @@ class ContactViewer {
     contactBio.textContent = bio;
   }
 
+  /**
+   * Slides the contacts tab away
+   */
   slideContactsTabAway() {
     this.contactsTab.classList.remove("show");
   }

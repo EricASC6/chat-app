@@ -3,7 +3,7 @@ const MessageSchema = require("./Message").schema;
 const Schema = mongoose.Schema;
 
 const chatSchema = new Schema({
-  type: String,
+  isGroup: Boolean,
   users: [String],
   messages: [MessageSchema]
 });

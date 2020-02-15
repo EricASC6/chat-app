@@ -1,24 +1,26 @@
 import ContactCreator from "./ContactCreator.js";
 import ContactViewier from "./ContactViewer.js";
+import ChatCreator from "./ChatCreator.js";
 
-// 1. Create a new contact
-const CREATE_CONTACT_BTN_ID = "add-new-chat";
+// Constants - DOM + User Id
+const CREATE_CHAT_BTN_ID = "add-new-chat";
 const USERNAME_FIELD_ID = "username";
 const CONTACTS_LIST_ID = "contacts-list";
 const CHAT_ROOM_ID = "chat-room";
-
+const CONTACTS_TAB_ID = "contacts-tab";
 const userId = new URLSearchParams(window.location.search).get("id");
-const createContactBtn = document.getElementById(CREATE_CONTACT_BTN_ID);
+
+// 1. Create a new contact
+const createChatBtn = document.getElementById(CREATE_CHAT_BTN_ID);
+console.log(createChatBtn);
 const usernameField = document.getElementById(USERNAME_FIELD_ID);
 const contactsList = document.getElementById(CONTACTS_LIST_ID);
-const chatRoom = document.getElementById(CHAT_ROOM_ID);
 
 const contactCreator = new ContactCreator(
   userId,
-  createContactBtn,
+  createChatBtn,
   usernameField,
-  contactsList,
-  chatRoom
+  contactsList
 );
 
 const createContact = async () => {
@@ -30,19 +32,29 @@ const createContact = async () => {
     contactCreator.addNewContactToContactsList(userData);
     contactCreator.emitNewContactEvent();
     await contactCreator.saveNewContactDataToDB(userData);
-    contactCreator.slideOverChatRoom();
+    return username;
   } catch (err) {
     console.error(err);
   }
 };
 
-createContactBtn.addEventListener("click", async () => {
-  createContact();
+// 2. Creating a new chat room and saving it to db
+const chatRoom = document.getElementById(CHAT_ROOM_ID);
+const chatCreator = new ChatCreator(userId, chatRoom);
+
+const createChatRoom = async username => {
+  const newChat = chatCreator.createChatRoom(username);
+  const chatData = await chatCreator.saveChatRoomToDB(newChat);
+  chatCreator.slideOverChatRoom();
+  chatCreator.formatChatRoom(chatData);
+};
+
+createChatBtn.addEventListener("click", async () => {
+  const contact = await createContact();
+  if (contact) await createChatRoom(contact);
 });
 
 // Viewing the contacts
-const CONTACTS_TAB_ID = "contacts-tab";
-
 const contactsTab = document.getElementById(CONTACTS_TAB_ID);
 const contactViewier = new ContactViewier(userId, contactsTab, contactsList);
 

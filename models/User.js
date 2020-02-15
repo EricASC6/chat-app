@@ -10,7 +10,7 @@ const userSchema = new Schema({
   lastname: String,
   bio: String,
   contacts: [Contact],
-  messages: Array
+  chats: [String]
 });
 
 const User = mongoose.model("User", userSchema);

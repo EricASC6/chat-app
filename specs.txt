@@ -1,10 +1,10 @@
 chat-app specifications:
 
 1. User can sign up for an account or login into their account 
-   via their username and password -> short bio + profile img
+   via their username and password -> short bio >>
 
 2. Once logged in, the user should see a dashboard containing
-   their contacts, favorites, and messages
+   their contacts, favorites, and messages >>
 
 3. Chat Specs
    a) User can create a new contact and message them 
@@ -15,4 +15,4 @@ chat-app specifications:
       i) After viewing the messages, the notification should
          go away
    f) User can view contacts and search for them
-   g) User can view their profile
+   g) User can view their profile >>
