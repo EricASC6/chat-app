@@ -16,6 +16,14 @@ class ContactViewer {
   }
 
   /**
+   * Retrieves user messages from db
+   * @returns {Object} - Messages
+   */
+  async retrieveHomeUserMessages() {
+    const homeUserResponse = fetch();
+  }
+
+  /**
    * Retrieves contact data from db
    * @param {string} username
    * @returns {Promise<Object>} - contact data retreived from database

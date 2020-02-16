@@ -8,12 +8,14 @@
       src="https://kit.fontawesome.com/bc308bbd0b.js"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script src="/chat.js" type="module" defer></script>
+    <script src="/chatManager.js"></script>
+    <script src="/clientHome.js" defer></script>
     <link
       href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap"
       rel="stylesheet"
     />
-    <script src="/chat.js" type="module" defer></script>
-    <script src="/clientHome.js" defer></script>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/home.css" />
     <title>Home</title>
@@ -104,6 +106,7 @@
         </div>
         <div id="contacts-body">
           <ul id="contacts-list">
+            <li class="contact" id="home-view">Home</li>
             <% contacts.forEach(contact => { %>
               <li class="contact" username= <%= contact.username %> ><%= contact.firstname + " " + contact.lastname %></li>
             <% }) %>
@@ -147,7 +150,9 @@
             <h2 id="contact-name">Eric Chen</h2>
           </div>
         </div>
-        <div id="chat-room-body"></div>
+        <div id="chat-room-body">
+          <div class="chat-init">Start a conservation</div>
+        </div>
         <div id="chat-room-send">
           <div id="send-box">
             <input type="text" id="message-content" placeholder="Aa">

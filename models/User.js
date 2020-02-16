@@ -5,9 +5,9 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   username: String,
   password: String,
-  isLogined: Boolean,
   firstname: String,
   lastname: String,
+  fullname: String,
   bio: String,
   contacts: [Contact],
   chats: [String]

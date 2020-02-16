@@ -8,6 +8,7 @@ const USERNAME_FIELD_ID = "username";
 const CONTACTS_LIST_ID = "contacts-list";
 const CHAT_ROOM_ID = "chat-room";
 const CONTACTS_TAB_ID = "contacts-tab";
+const HOME_VIEW_ID = "home-view";
 const userId = new URLSearchParams(window.location.search).get("id");
 
 // 1. Create a new contact
@@ -54,9 +55,12 @@ createChatBtn.addEventListener("click", async () => {
   if (contact) await createChatRoom(contact);
 });
 
-// Viewing the contacts
+// Viewing the contacts | home
+const homeViewLink = document.getElementById(HOME_VIEW_ID);
 const contactsTab = document.getElementById(CONTACTS_TAB_ID);
 const contactViewier = new ContactViewier(userId, contactsTab, contactsList);
+
+const viewHome = async () => {};
 
 const viewContact = async username => {
   const contactData = await contactViewier.retrieveContactInfo(username);
@@ -65,7 +69,7 @@ const viewContact = async username => {
 };
 
 const enableViewingOnContactsList = () => {
-  const contacts = Array.from(contactsList.children);
+  const contacts = Array.from(contactsList.children).filter(child => !child.id);
   contacts.forEach(contact =>
     contact.addEventListener("click", async () => {
       const username = contact.getAttribute("username");
@@ -78,5 +82,6 @@ const enableViewingOnContactsList = () => {
   );
 };
 
+homeViewLink.addEventListener("click", viewHome);
+window.addEventListener("new-contact", enableViewingOnContactsList);
 enableViewingOnContactsList();
-window.addEventListener("new-contaact", enableViewingOnContactsList);

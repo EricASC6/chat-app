@@ -412,6 +412,11 @@
   color: var(--light-darkblue);
 }
 
+#chat-room-body {
+  padding: 0 0.5rem;
+  color: var(--black);
+}
+
 #chat-room-send {
   position: absolute;
   bottom: 0;
