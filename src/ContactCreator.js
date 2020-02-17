@@ -51,7 +51,7 @@ class ContactCreator {
     const { fullname, _id } = userData;
     const newUser = document.createElement("li");
     newUser.className = "contact";
-    newUser.setAttribute("username", _id);
+    newUser.setAttribute("data-id", _id);
     newUser.textContent = fullname;
     contactsList.prepend(newUser);
     return user;
@@ -71,9 +71,7 @@ class ContactCreator {
    * @returns {Promise<boolean>} true if request was sucessful else false
    */
   async saveNewContactDataToDB(userData) {
-    console.log(userData);
     const { _id } = userData;
-
     const saveContactToDBAPI = `/user/newContact?key=${this.KEY}`;
 
     try {
@@ -83,13 +81,15 @@ class ContactCreator {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          id: _id
+          _id: _id
         })
       });
 
       const responseBody = await saveToDBResponse.json();
-      if (responseBody.ok) return true;
-      else return false;
+      if (responseBody.ok) {
+        console.log(responseBody.message);
+        return true;
+      } else return false;
     } catch (err) {
       throw err;
     }

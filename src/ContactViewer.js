@@ -25,7 +25,7 @@ class ContactViewer {
    * @param {Object} contactData - data returned from the retrieveContactInfo method
    */
   displayContactInfo(contactData) {
-    const { fullname, bio } = contactData;
+    const { fullname, bio } = contactData.userData;
     const user = document.querySelector("#main-contact-head #user");
     const contactBio = document.querySelector("#main-contact-description p");
     user.textContent = fullname;

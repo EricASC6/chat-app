@@ -5,9 +5,8 @@ class ChatCreator {
    * @param {string} userId - id of the home user
    * @param {HTMLElement} chatRoom - chat room of the app
    */
-  constructor(userId, chatRoom) {
-    this.userId = userId;
-    this.chatRoom = chatRoom;
+  constructor(key) {
+    this.KEY = key;
   }
 
   /**

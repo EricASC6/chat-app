@@ -42,7 +42,7 @@ const getUserData = async (req, res, next) => {
       lastname: lastname,
       fullname: fullname,
       bio: bio,
-      id: _id
+      _id: _id
     };
     req.userData = userData;
     next();
@@ -60,8 +60,11 @@ router.get("/", authenticateKey, getUserData, sendBackUserData);
 
 //POST Requests Middleware
 const saveNewContactToDB = async (req, res) => {
-  const { srcUserID } = this.query.key;
-  const newContactID = req.body.id;
+  const srcUserID = req.query.key;
+  const newContactID = req.body._id;
+
+  console.log(srcUserID);
+  console.log(newContactID);
 
   try {
     // Save the new contact of src user to its contacts and vice versa
