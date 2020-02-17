@@ -108,7 +108,7 @@
           <ul id="contacts-list">
             <li class="contact" id="home-view">Home</li>
             <% contacts.forEach(contact => { %>
-              <li class="contact" username= <%= contact.username %> ><%= contact.firstname + " " + contact.lastname %></li>
+            <li data-id="<%= contact.id %>"><%=contact.fullname%></li>
             <% }) %>
           </ul>
         </div>
@@ -155,8 +155,10 @@
         </div>
         <div id="chat-room-send">
           <div id="send-box">
-            <input type="text" id="message-content" placeholder="Aa">
-            <button id="send-btn"><i class="fas fa-arrow-right" id="send-arrow"></i></button>
+            <input type="text" id="message-content" placeholder="Aa" />
+            <button id="send-btn">
+              <i class="fas fa-arrow-right" id="send-arrow"></i>
+            </button>
           </div>
         </div>
       </div>

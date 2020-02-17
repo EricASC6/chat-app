@@ -14,7 +14,7 @@ const loginRouter = require("./controllers/router/login");
 const homeRouter = require("./controllers/router/home");
 
 // API
-const userAPI = require("./controllers/userAPI");
+const userAPI = require("./controllers/apis/userAPI");
 app.use("/user", userAPI);
 
 // Body parser
@@ -22,10 +22,13 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(urlencodedParser);
 
 // Connecting to mongodb
-mongoose.connect("mongodb+srv://eric:eric@chat-app-srfip.mongodb.net/users", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+mongoose.connect(
+  "mongodb+srv://eric:eric@chat-app-srfip.mongodb.net/chat-app",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
+);
 
 const db = mongoose.connection;
 db.once("open", () => console.log("Made connection to mongodb"));

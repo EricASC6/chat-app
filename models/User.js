@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Contact = require("./Contact").schema;
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -9,8 +8,8 @@ const userSchema = new Schema({
   lastname: String,
   fullname: String,
   bio: String,
-  contacts: [Contact],
-  chats: [String]
+  contacts: [mongoose.Types.ObjectId],
+  chats: [mongoose.Types.ObjectId]
 });
 
 const User = mongoose.model("User", userSchema);

@@ -1,26 +1,13 @@
-const API_KEY = "eric";
-
 class ContactViewer {
-  static CONTACT_INFO_API = `/user?key=${API_KEY}`;
-  static USERNAME_QUERY = `&username=`;
-  static ID_QUERY = `&id=`;
-
   /**
-   * @param {string} userId - ID of the home user
+   * @param {string} key - ID of the home user
+   * @param {HTMLElement} contactsTab - Contacts Tab containing the contacts list
    * @param {HTMLElement} contactsList - Contact list
    */
-  constructor(userId, contactsTab, contactsList) {
-    this.userId = userId;
+  constructor(key, contactsTab, contactsList) {
+    this.KEY = key;
     this.contactsTab = contactsTab;
     this.contactsList = contactsList;
-  }
-
-  /**
-   * Retrieves user messages from db
-   * @returns {Object} - Messages
-   */
-  async retrieveHomeUserMessages() {
-    const homeUserResponse = fetch();
   }
 
   /**
@@ -28,15 +15,10 @@ class ContactViewer {
    * @param {string} username
    * @returns {Promise<Object>} - contact data retreived from database
    */
-  async retrieveContactInfo(username) {
-    const contactUserAPI =
-      ContactViewer.CONTACT_INFO_API +
-      ContactViewer.USERNAME_QUERY +
-      username +
-      ContactViewer.ID_QUERY +
-      this.userId;
+  async retrieveContactInfo(id) {
+    const USER_API = `/user?key=${this.KEY}&user_id=${id}`;
 
-    const contactDataRes = await fetch(contactUserAPI);
+    const contactDataRes = await fetch(USER_API);
     const contactData = await contactDataRes.json();
     return contactData;
   }
