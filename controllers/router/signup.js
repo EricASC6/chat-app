@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../../models/User");
+const DBManager = require("../DBManager");
 
 // GET Requests Middleware
 const handleGETSignupRoute = (req, res, next) => {
@@ -14,7 +15,7 @@ router.get("/:isInvalid?", handleGETSignupRoute);
 const checkUsernameAvailability = async (req, res, next) => {
   try {
     const { username } = req.body;
-    const user = await User.findOne({ username: username });
+    const user = await DBManager.getUser({ username: username });
     if (user) res.redirect("/signup/invalid");
     else next();
   } catch (err) {
@@ -35,7 +36,8 @@ const registerNewUser = async (req, res, next) => {
       contacts: [],
       chats: []
     });
-    await user.save();
+
+    await DBManager.saveUser(user);
 
     req.userID = user._id;
     next();
@@ -46,7 +48,7 @@ const registerNewUser = async (req, res, next) => {
 
 const redirectToHome = (req, res) => {
   const userID = req.userID;
-  res.redirect(`/home/id=${userID}`);
+  res.redirect(`/home?id=${userID}`);
 };
 
 router.post("/", checkUsernameAvailability, registerNewUser, redirectToHome);

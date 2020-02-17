@@ -16,7 +16,7 @@ const loginUser = async (req, res, next) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username: username, password: password });
-    if (user) res.redirect(`/home/id=${user._id}`);
+    if (user) res.redirect(`/home?id=${user._id}`);
     else res.redirect("/login/invalid");
     next();
   } catch (err) {
