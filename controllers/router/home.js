@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const DBManager = require("../DBManager");
+const User = require("../../models/User");
 
 // GET Requests Middleware
 const authenticateID = async (req, res, next) => {
   const ID = req.query.id;
   try {
-    const user = await DBManager.getUser({ _id: ID });
+    const user = await User.findById(ID);
     if (user) {
       req.user = user;
       next();
@@ -22,7 +22,7 @@ const authenticateID = async (req, res, next) => {
  */
 const getContactsData = async contactsIDs => {
   const contactsDocuments = await Promise.all(
-    contactsIDs.map(async id => await DBManager.getUser({ _id: id }))
+    contactsIDs.map(async id => await User.findById(id))
   );
 
   const contactsData = contactsDocuments.map(contact => {

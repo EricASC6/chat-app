@@ -1,92 +1,84 @@
 const express = require("express");
 const router = express.Router();
 const bodyParser = require("body-parser");
-const DBManager = require("../DBManager");
+const User = require("../../models/User");
 
 // Setting up parser
 router.use(bodyParser.json());
 
-// // GET Requests
-// router.get("/", async (req, res) => {
-//   const queries = req.query;
-//   if (queries.id && queries.username) {
-//     res.redirect(`user/${queries.id}/${queries.username}`);
-//     return;
-//   }
-
-//   const username = queries.username;
-
-//   try {
-//     const user = await User.findOne({ username: username });
-//     if (user) {
-//       res.json({ ok: true, user: user });
-//     } else {
-//       res.json({ ok: false, user: null });
-//     }
-//   } catch (err) {
-//     res.status(500).json({ ok: false, error: "Something went wrong" });
-//   }
-// });
-
-// router.get("/:id/:username", async (req, res) => {
-//   const { id, username } = req.params;
-//   try {
-//     const srcUser = await User.findById(id);
-//     console.log(srcUser);
-//     const contact = await srcUser.contacts.filter(
-//       contact => contact.username === username
-//     )[0];
-//     if (contact) {
-//       res.json({ ok: true, contact: contact });
-//     } else {
-//       res.json({ ok: false, contact: null });
-//     }
-//   } catch (err) {
-//     res.status(500).json({ ok: false, error: "Something went wrong" });
-//   }
-// });
-
-// // POST Request
-// router.post("/", async (req, res) => {
-//   const { id, newContact } = req.body;
-
-//   try {
-//     const srcUser = await User.findById(id);
-//     if (srcUser) {
-//       const newContactDoc = new Contact(newContact);
-//       srcUser.contacts.unshift(newContactDoc);
-//       await srcUser.save();
-//       res.json({ ok: true });
-//     }
-//   } catch (err) {
-//     res.status(500).json({
-//       ok: false
-//     });
-//   }
-// });
-
-// GET Requests Middleware
+// Validating user KEY
 const authenticateKey = async (req, res, next) => {
   const KEY = req.query.key;
-  const isValidKey = await DBManager.getUser({ _id: KEY });
+  const isValidKey = await User.findById(KEY);
   if (isValidKey) next();
+  else sendResponse(res, 400, { ok: false, error: "Invalid Key" });
 };
 
-const getUserDataByID = async (req, res, next) => {
-  const userID = req.query.user_id;
-  const user = await DBManager.getUser({ _id: userID });
-  const { fullname, bio } = user;
-  const userData = {
-    fullname: fullname,
-    bio: bio
-  };
-
-  req.userData = userData;
-  next();
+// GET Requests Middleware
+const VALID_QUERY_PARAMS = {
+  user_id: "_id",
+  username: "username"
 };
 
-const sendResponse = (statusCode, data) => {};
+const getSearchParam = query => {
+  const searchParam = Object.keys(query).find(key => key !== "key");
+  if (searchParam in VALID_QUERY_PARAMS)
+    return { [VALID_QUERY_PARAMS[searchParam]]: query[searchParam] };
+  else return null;
+};
 
-router.get("/", authenticateKey, getUserDataByID);
+const getUserData = async (req, res, next) => {
+  const searchParam = getSearchParam(req.query);
+  if (!searchParam)
+    res.status(400).json({ ok: false, error: "Invalid Request" });
+
+  try {
+    const user = await User.findOne(searchParam);
+    if (!user) res.status(404).json({ ok: false, error: "User not found" });
+    const { username, firstname, lastname, fullname, bio, _id } = user;
+    const userData = {
+      username: username,
+      firstname: firstname,
+      lastname: lastname,
+      fullname: fullname,
+      bio: bio,
+      id: _id
+    };
+    req.userData = userData;
+    next();
+  } catch (err) {
+    res.status(500).json({ ok: false, error: "Server Error" });
+  }
+};
+
+const sendBackUserData = (req, res) => {
+  const userData = req.userData;
+  res.status(200).json({ ok: true, userData: userData });
+};
+
+router.get("/", authenticateKey, getUserData, sendBackUserData);
+
+//POST Requests Middleware
+const saveNewContactToDB = async (req, res) => {
+  const { srcUserID } = this.query.key;
+  const newContactID = req.body.id;
+
+  try {
+    // Save the new contact of src user to its contacts and vice versa
+    const srcUser = await User.findById(srcUserID);
+    const newContact = await User.findById(newContactID);
+
+    srcUser.contacts.unshift(newContactID);
+    newContact.contacts.unshift(srcUserID);
+    await srcUser.save();
+    await newContact.save();
+
+    res.status(200).json({ ok: true, message: "Succesfully added contact" });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: "Server Error" });
+  }
+};
+
+router.post("/newContact", authenticateKey, saveNewContactToDB);
 
 module.exports = router;

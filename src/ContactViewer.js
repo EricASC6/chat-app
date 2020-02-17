@@ -1,13 +1,9 @@
 class ContactViewer {
   /**
    * @param {string} key - ID of the home user
-   * @param {HTMLElement} contactsTab - Contacts Tab containing the contacts list
-   * @param {HTMLElement} contactsList - Contact list
    */
-  constructor(key, contactsTab, contactsList) {
+  constructor(key) {
     this.KEY = key;
-    this.contactsTab = contactsTab;
-    this.contactsList = contactsList;
   }
 
   /**
@@ -20,6 +16,7 @@ class ContactViewer {
 
     const contactDataRes = await fetch(USER_API);
     const contactData = await contactDataRes.json();
+    console.log("Contact Data: ", contactData);
     return contactData;
   }
 
@@ -28,19 +25,11 @@ class ContactViewer {
    * @param {Object} contactData - data returned from the retrieveContactInfo method
    */
   displayContactInfo(contactData) {
-    const { firstname, lastname, bio } = contactData.contact;
-
+    const { fullname, bio } = contactData;
     const user = document.querySelector("#main-contact-head #user");
     const contactBio = document.querySelector("#main-contact-description p");
-    user.textContent = firstname + " " + lastname;
+    user.textContent = fullname;
     contactBio.textContent = bio;
-  }
-
-  /**
-   * Slides the contacts tab away
-   */
-  slideContactsTabAway() {
-    this.contactsTab.classList.remove("show");
   }
 }
 

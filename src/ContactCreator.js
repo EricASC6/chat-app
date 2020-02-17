@@ -1,35 +1,29 @@
-const API_KEY = "eric";
-
 class ContactCreator {
-  static API_URL = `/user?key=${API_KEY}`;
-  static USERNAME_QUERY = `&username=`;
   static READY_STATE = "create-contact";
 
-  constructor(userId, createChatBtn, usernameField, contactsList) {
-    this.userId = userId;
-    this.createChatBtn = createChatBtn;
-    this.usernameField = usernameField;
-    this.contactsList = contactsList;
+  constructor(key) {
+    this.KEY = key;
   }
 
   /**
    * Checks if the adding chat button is in the create-contact state
+   * @param { HTMLElement } createChatBtn - button used to create a new chat
    * @returns {boolean}
    */
-  isReady() {
+  isReady(createChatBtn) {
     return (
-      this.createChatBtn.getAttribute("data-type") ===
-      ContactCreator.READY_STATE
+      createChatBtn.getAttribute("data-type") === ContactCreator.READY_STATE
     );
   }
 
   /**
    * Gets the username of the new contact that the user wants to add
+   * @param { HTMLElement } usernameField - Username input field
    * @returns {string}
    */
-  getUsername() {
-    const usernameVal = this.usernameField.value;
-    console.log(usernameVal);
+  getUsername(usernameInput) {
+    const usernameVal = usernameInput.value;
+    console.log("Username: ", usernameVal);
     if (usernameVal.length === 0) throw new Error("Missing Username");
     else return usernameVal;
   }
@@ -40,12 +34,12 @@ class ContactCreator {
    * @returns {Promise} - JSON from fetching user data from api
    */
   async getUserDataFromUsername(username) {
-    const userDataAPI =
-      ContactCreator.API_URL + ContactCreator.USERNAME_QUERY + username;
+    const userDataAPI = `/user?key=${this.KEY}&username=${username}`;
     const userDataRes = await fetch(userDataAPI);
     const data = await userDataRes.json();
-    console.log(data);
-    return data;
+
+    if (data.ok) return data.userData;
+    else throw new Error("Something went wrong");
   }
 
   /**
@@ -53,20 +47,14 @@ class ContactCreator {
    * @param {Object} userData - user data returned by getUserDataFromUsername method
    * @returns {Object|null} - returns userData if successful else null
    */
-  addNewContactToContactsList(userData) {
-    if (userData.ok) {
-      const { user } = userData;
-      const contactsList = this.contactsList;
-      const newUser = document.createElement("li");
-      newUser.className = "contact";
-      newUser.setAttribute("username", user.username);
-      newUser.textContent = `${user.firstname} ${user.lastname}`;
-      contactsList.prepend(newUser);
-      console.log(user);
-      return user;
-    }
-
-    return null;
+  addNewContactToContactsList(userData, contactsList) {
+    const { fullname, _id } = userData;
+    const newUser = document.createElement("li");
+    newUser.className = "contact";
+    newUser.setAttribute("username", _id);
+    newUser.textContent = fullname;
+    contactsList.prepend(newUser);
+    return user;
   }
 
   /**
@@ -84,23 +72,18 @@ class ContactCreator {
    */
   async saveNewContactDataToDB(userData) {
     console.log(userData);
-    const { username, firstname, lastname, bio, _id } = userData.user;
+    const { _id } = userData;
+
+    const saveContactToDBAPI = `/user/newContact?key=${this.KEY}`;
 
     try {
-      const saveToDBResponse = await fetch(ContactCreator.API_URL, {
+      const saveToDBResponse = await fetch(saveContactToDBAPI, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          id: this.userId,
-          newContact: {
-            username: username,
-            firstname: firstname,
-            lastname: lastname,
-            bio: bio,
-            id: _id
-          }
+          id: _id
         })
       });
 
