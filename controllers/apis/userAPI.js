@@ -11,7 +11,7 @@ const authenticateKey = async (req, res, next) => {
   const KEY = req.query.key;
   const isValidKey = await User.findById(KEY);
   if (isValidKey) next();
-  else sendResponse(res, 400, { ok: false, error: "Invalid Key" });
+  else res.status(400).json({ ok: false, error: "Invalid Key" });
 };
 
 // GET Requests Middleware
