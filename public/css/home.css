@@ -178,7 +178,7 @@
   cursor: pointer;
 }
 
-.chat .chat-container .user {
+.chat .chat-container .chat-name {
   font-size: 1rem;
   font-weight: 550;
   color: var(--darkblue);

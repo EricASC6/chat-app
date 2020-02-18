@@ -75,15 +75,19 @@
                 <h3>Chats</h3>
               </div>
               <div id="chats-body">
-                <div class="chat">
+                <% chats.forEach(chat => { %>
+                <div class="chat" data-id="<%= chat._id %> ">
                   <div class="chat-container">
-                    <h3 class="user">Eric Chen</h3>
-                    <p class="most-recent-message">I’’ll be there at 11pm</p>
+                    <h3 class="chat-name"><%= chat.chatName %></h3>
+                    <p class="most-recent-message">
+                      <%= chat.mostRecentMessage %>
+                    </p>
                   </div>
                   <div class="caret">
                     <i class="fas fa-chevron-up chat-caret"></i>
                   </div>
                 </div>
+                <% }) %>
               </div>
             </div>
           </div>

@@ -67,9 +67,11 @@ createChatBtn.addEventListener("click", async () => {
     console.log(contact);
     const chatData = await createChatRoom(contact._id);
     console.log(chatData);
+
     const chatID = chatData._id;
+    const chatName = contact.fullname;
     chatCreator.setChatRoomID(chatID, chatRoom);
-    chatCreator.addChatRoomToChatsBody(chatID, contact.fullname, chatsBody);
+    chatCreator.addChatRoomToChatsBody(chatID, chatName, chatsBody);
     slideOverChatRoom(chatRoom);
     formatChatRoom(contact);
   } catch (err) {

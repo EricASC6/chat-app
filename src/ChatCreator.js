@@ -48,11 +48,11 @@ class ChatCreator {
     chatRoom.setAttribute("data-id", id);
   }
 
-  addChatRoomToChatsBody(_id, chatUser, chatsBody) {
+  addChatRoomToChatsBody(_id, chatName, chatsBody) {
     const chat = document.createElement("div");
     const chatsContainer = document.createElement("div");
-    const user = document.createElement("h3");
-    const recentchats = document.createElement("p");
+    const chatNameHeader = document.createElement("h3");
+    const recentMessages = document.createElement("p");
     const caret = document.createElement("div");
 
     chat.className = "chat";
@@ -60,16 +60,17 @@ class ChatCreator {
 
     chatsContainer.className = "chat-container";
 
-    user.className = "user";
-    user.textContent = chatUser;
+    chatNameHeader.className = "chat-name";
+    chatNameHeader.textContent = chatName;
 
-    recentchats.className = "most-recent-chat";
+    recentMessages.className = "most-recent-message";
+    recentMessages.textContent = "Start a conservation";
 
     caret.className = "caret";
     caret.innerHTML = "<i class='fas fa-chevron-up' aria-hidden='true'></i>";
 
-    chatsContainer.appendChild(user);
-    chatsContainer.appendChild(recentchats);
+    chatsContainer.appendChild(chatNameHeader);
+    chatsContainer.appendChild(recentMessages);
     chat.appendChild(chatsContainer);
     chat.appendChild(caret);
     chatsBody.prepend(chat);
