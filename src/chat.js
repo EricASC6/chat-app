@@ -1,6 +1,8 @@
-import ContactCreator from "./ContactCreator.js";
 import ContactViewier from "./ContactViewer.js";
+import ChatViewier from "./ChatViewer.js";
+import ContactCreator from "./ContactCreator.js";
 import ChatCreator from "./ChatCreator.js";
+import ChatManager from "./ChatManager.js";
 
 // Constants - DOM + User Id
 const CREATE_CHAT_BTN_ID = "add-new-chat";
@@ -58,6 +60,10 @@ const slideOverChatRoom = chatRoom => {
   chatRoom.classList.add("show");
 };
 
+const slideAwayChatRoom = chatRoom => {
+  chatRoom.classList.remove("show");
+};
+
 createChatBtn.addEventListener("click", async () => {
   if (!contactCreator.isReady(createChatBtn)) return;
   try {
@@ -112,10 +118,86 @@ const enableViewingOnContactsList = () => {
 window.addEventListener("new-contact", enableViewingOnContactsList);
 enableViewingOnContactsList();
 
-// Viewing chats + messages
+// Viewing chats + messages + sending messages
+const MESSAGES_ID = "messages";
+const messages = document.getElementById(MESSAGES_ID);
+
+const chatViewer = new ChatViewier(KEY);
+const chatManager = new ChatManager(KEY);
+
+const setChatName = (chat, chatName) => {
+  const _chatName = chat.querySelector(".chat-name").innerHTML;
+  chatName.innerHTML = _chatName;
+};
+
+const getChatID = chat => {
+  const _id = chat.getAttribute("data-id");
+  return _id;
+};
+
+const setChatRoomID = (chatRoom, _id) => {
+  chatManager.setChatRoomID(chatRoom, _id);
+};
+
+const removeChatRoomID = chatRoom => {
+  chatManager.removeChatRoomID(chatRoom);
+};
+
+const getChatMessages = async _id => {
+  try {
+    const chatData = await chatViewer.getChatData(_id);
+    const messages = chatData.chat.messages;
+    return messages;
+  } catch (err) {
+    return null;
+  }
+};
+
+const viewChat = async (chat, chatRoom, chatName) => {
+  const chatID = getChatID(chat);
+  setChatRoomID(chatRoom, chatID);
+  setChatName(chat, chatName);
+  slideOverChatRoom(chatRoom);
+
+  const _messages = await getChatMessages(chatID);
+  console.log("messages ", _messages);
+  chatViewer.displayMessages(_messages, messages);
+};
+
 const chats = Array.from(document.getElementsByClassName(CHAT_CLASS));
 chats.forEach(chat =>
-  chat.addEventListener("click", () => {
-    slideOverChatRoom(chatRoom);
+  chat.addEventListener("click", async evnt => {
+    await viewChat(chat, chatRoom, chatName);
   })
 );
+
+// Sending messages
+const MESSAGE_CONTENT_ID = "message-content";
+const SEND_BTN_ID = "send-btn";
+
+const messageContent = document.getElementById(MESSAGE_CONTENT_ID);
+const sendBtn = document.getElementById(SEND_BTN_ID);
+
+const createMessage = messageContent => {
+  const messageValue = messageContent.value;
+  const message = chatManager.createMessage(messageValue);
+  return message;
+};
+
+const addMessageToChat = (messages, message) => {
+  messages.appendChild(message);
+};
+
+sendBtn.addEventListener("click", () => {
+  const message = createMessage(messageContent);
+  addMessageToChat(messages, message);
+  chatManager.saveMessageToChat(messageContent.value);
+  console.log(message);
+});
+
+// Back Button on Chat Room
+const backBtn = document.getElementById("back");
+backBtn.addEventListener("click", () => {
+  removeChatRoomID(chatRoom);
+  slideAwayChatRoom(chatRoom);
+});

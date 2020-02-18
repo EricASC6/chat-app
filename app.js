@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const Server = require("socket.io");
+const chatManager = require("./controllers/chatManager");
 
 // Routers
 const signupRouter = require("./controllers/router/signup");
@@ -55,5 +56,10 @@ app.use("/home", homeRouter);
 // Chat Functionality
 const io = Server(server);
 io.on("connection", socket => {
-  console.log("Hi");
+  console.log("User connected");
+  console.log(socket.id);
+
+  socket.on("disconnect", reason => {
+    console.log("User disconnected");
+  });
 });

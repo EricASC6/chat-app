@@ -52,12 +52,12 @@ const getChatsData = async (chatIDs, userID) => {
   const chats = await Promise.all(
     chatIDs.map(async _id => {
       const chat = await Chat.findById(_id);
-      console.log("chat: ", chat);
+      // console.log("chat: ", chat);
 
       const chatName = getChatName(chat, userID);
-      console.log("chat-name: ", chatName);
+      // console.log("chat-name: ", chatName);
       const mostRecentMessage = getMostRecentMessage(chat);
-      console.log("most-recent-messages: ", mostRecentMessage);
+      // console.log("most-recent-messages: ", mostRecentMessage);
 
       const chatData = {
         chatName: chatName,
@@ -74,12 +74,12 @@ const getChatsData = async (chatIDs, userID) => {
 
 const retrieveUserDataFromRequest = async (req, res, next) => {
   const userID = req.query.id;
-  console.log("user-id: ", userID);
+  // console.log("user-id: ", userID);
   const { username, fullname, contacts, chats } = req.user;
-  console.log("Chat ids: ", chats);
+  // console.log("Chat ids: ", chats);
   const contactsData = await getContactsData(contacts);
   const chatsData = await getChatsData(chats, userID);
-  console.log("chat-data: ", chatsData);
+  // console.log("chat-data: ", chatsData);
   const userData = {
     username: username,
     fullname: fullname,

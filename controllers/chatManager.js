@@ -1,5 +1,7 @@
 class ChatManager {
-  saveMessageToDB(message, to) {}
+  constructor() {
+    this.users = [];
+  }
 }
 
-module.exports = ChatManager;
+module.exports = new ChatManager();

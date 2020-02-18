@@ -10,7 +10,6 @@
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="/chat.js" type="module" defer></script>
-    <script src="/chatManager.js" defer></script>
     <script src="/clientHome.js" defer></script>
     <link
       href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap"
@@ -76,7 +75,7 @@
               </div>
               <div id="chats-body">
                 <% chats.forEach(chat => { %>
-                <div class="chat" data-id="<%= chat._id %> ">
+                <div class="chat" data-id="<%= chat._id %>">
                   <div class="chat-container">
                     <h3 class="chat-name"><%= chat.chatName %></h3>
                     <p class="most-recent-message">
@@ -142,7 +141,7 @@
       </div>
     </div>
 
-    <div id="chat-room">
+    <div id="chat-room" data-id="null">
       <div id="chat-room-container">
         <div id="chat-room-head">
           <div id="back">
@@ -157,6 +156,7 @@
         </div>
         <div id="chat-room-body">
           <div id="chat-init">Start a conservation</div>
+          <div id="messages"></div>
         </div>
         <div id="chat-room-send">
           <div id="send-box">

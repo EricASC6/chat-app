@@ -422,14 +422,42 @@
 #chat-room-body {
   padding: 0 0.5rem;
   color: var(--black);
+  height: 100vh;
+  overflow-x: scroll;
 }
 
 #chat-room-body #chat-init {
-  padding-top: 1.5rem;
+  margin: 1.5rem 0 1.5rem 0;
   font-size: 1rem;
   font-weight: 400;
   color: var(--mediumgray);
   text-align: center;
+}
+
+#chat-room-body #messages {
+  background-color: var(--white);
+  display: flex;
+  flex-direction: column;
+}
+
+#messages .message {
+  padding: 10px;
+  width: auto;
+  max-width: 275px;
+  height: auto;
+  border-radius: 20px;
+}
+
+.message.home {
+  align-self: flex-end;
+  background-color: var(--skyblue);
+  color: var(--white);
+}
+
+.message.away {
+  align-self: flex-start;
+  background-color: var(--lightgray);
+  color: var(--black);
 }
 
 #chat-room-send {
