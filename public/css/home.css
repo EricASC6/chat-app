@@ -127,18 +127,18 @@
   line-height: 150%;
 }
 
-#main-body #messages #messages-head {
+#main-body #chats #chats-head {
   text-align: center;
 }
 
-#messages-head h3 {
+#chats-head h3 {
   position: relative;
   color: var(--skyblue);
   font-size: 18px;
   font-weight: 600;
 }
 
-#messages-head h3::before {
+#chats-head h3::before {
   position: absolute;
   content: "";
   left: 0;
@@ -150,7 +150,7 @@
   border-radius: 10px;
 }
 
-#messages-head h3::after {
+#chats-head h3::after {
   position: absolute;
   content: "";
   right: 0;
@@ -162,34 +162,36 @@
   border-radius: 10px;
 }
 
-#messages #messages-body {
+#chats #chats-body {
   margin-top: 15px;
 }
 
-#messages-body .message {
+#chats-body .chat {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: var(--lightblue);
   border-radius: 10px;
   padding: 1rem 0.75rem;
+  margin-bottom: 0.75rem;
   box-shadow: 0 5px 5px 0 #75757549;
+  cursor: pointer;
 }
 
-.message .message-container .user {
+.chat .chat-container .user {
   font-size: 1rem;
   font-weight: 550;
   color: var(--darkblue);
 }
 
-.message-container .most-recent-message {
+.chat-container .most-recent-message {
   position: relative;
   font-size: calc(1rem - 2px);
   color: var(--darkblue);
   padding: 10px 0 0 15px;
 }
 
-.message-container .most-recent-message::before {
+.chat-container .most-recent-message::before {
   position: absolute;
   content: "";
   top: 5px;
@@ -200,7 +202,7 @@
   border-radius: 5px;
 }
 
-.message .caret {
+.chat .caret {
   transform: rotate(90deg);
 }
 
@@ -390,12 +392,12 @@
   cursor: pointer;
 }
 
-#chat-room-head #chat-name {
+#chat-room-head #chat-header {
   display: flex;
   align-items: center;
 }
 
-#chat-name #chat-contact-icon {
+#chat-header #chat-contact-icon {
   background-color: var(--white);
   color: var(--black);
   text-align: center;
@@ -411,7 +413,7 @@
   font-size: 16px;
 }
 
-#chat-name #contact-name {
+#chat-header #chat-name {
   font-size: 22px;
   font-weight: 600;
   color: var(--light-darkblue);
@@ -423,7 +425,7 @@
 }
 
 #chat-room-body #chat-init {
-  padding-top: 0.5rem;
+  padding-top: 1.5rem;
   font-size: 1rem;
   font-weight: 400;
   color: var(--mediumgray);

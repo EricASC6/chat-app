@@ -9,8 +9,10 @@ const CONTACTS_LIST_ID = "contacts-list";
 const CHAT_ROOM_ID = "chat-room";
 const CONTACTS_TAB_ID = "contacts-tab";
 const HOME_VIEW_ID = "home-view";
-const CHAT_ICON_QUERY = "chat-contact-icon p";
-// const CONTACT_NAME;
+const CHAT_ICON_QUERY = "#chat-contact-icon p";
+const CHAT_NAME_ID = "chat-name";
+const CHAT_CLASS = "chat";
+const CHATS_BODY_ID = "chats-body";
 const KEY = new URLSearchParams(window.location.search).get("id");
 
 // 1. Create a new contact
@@ -36,6 +38,9 @@ const createContact = async username => {
 // 2. Creating a new chat room and saving it to db
 const chatRoom = document.getElementById(CHAT_ROOM_ID);
 const chatIcon = document.querySelector(CHAT_ICON_QUERY);
+const chatName = document.getElementById(CHAT_NAME_ID);
+const chatsBody = document.getElementById(CHATS_BODY_ID);
+
 const chatCreator = new ChatCreator(KEY, chatRoom);
 
 const createChatRoom = async id => {
@@ -44,7 +49,10 @@ const createChatRoom = async id => {
   return chatData;
 };
 
-const formatChatRoom = () => {};
+const formatChatRoom = ({ firstname, lastname, fullname }) => {
+  chatIcon.textContent = firstname[0] + lastname[0];
+  chatName.textContent = fullname;
+};
 
 const slideOverChatRoom = chatRoom => {
   chatRoom.classList.add("show");
@@ -59,8 +67,11 @@ createChatBtn.addEventListener("click", async () => {
     console.log(contact);
     const chatData = await createChatRoom(contact._id);
     console.log(chatData);
-    chatCreator.setChatRoomID(chatData._id, chatRoom);
+    const chatID = chatData._id;
+    chatCreator.setChatRoomID(chatID, chatRoom);
+    chatCreator.addChatRoomToChatsBody(chatID, contact.fullname, chatsBody);
     slideOverChatRoom(chatRoom);
+    formatChatRoom(contact);
   } catch (err) {
     console.error(err);
   }
@@ -98,3 +109,11 @@ const enableViewingOnContactsList = () => {
 // homeViewLink.addEventListener("click", viewHome);
 window.addEventListener("new-contact", enableViewingOnContactsList);
 enableViewingOnContactsList();
+
+// Viewing chats + messages
+const chats = Array.from(document.getElementsByClassName(CHAT_CLASS));
+chats.forEach(chat =>
+  chat.addEventListener("click", () => {
+    slideOverChatRoom(chatRoom);
+  })
+);

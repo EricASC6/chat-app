@@ -10,7 +10,7 @@
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="/chat.js" type="module" defer></script>
-    <script src="/chatManager.js"></script>
+    <script src="/chatManager.js" defer></script>
     <script src="/clientHome.js" defer></script>
     <link
       href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap"
@@ -70,18 +70,18 @@
                 </p>
               </div>
             </div>
-            <div id="messages">
-              <div id="messages-head">
-                <h3>Messages</h3>
+            <div id="chats">
+              <div id="chats-head">
+                <h3>Chats</h3>
               </div>
-              <div id="messages-body">
-                <div class="message">
-                  <div class="message-container">
+              <div id="chats-body">
+                <div class="chat">
+                  <div class="chat-container">
                     <h3 class="user">Eric Chen</h3>
                     <p class="most-recent-message">I’’ll be there at 11pm</p>
                   </div>
                   <div class="caret">
-                    <i class="fas fa-chevron-up" id="message-caret"></i>
+                    <i class="fas fa-chevron-up chat-caret"></i>
                   </div>
                 </div>
               </div>
@@ -107,7 +107,9 @@
         <div id="contacts-body">
           <ul id="contacts-list">
             <% contacts.forEach(contact => { %>
-            <li data-id="<%= contact.id %>"><%=contact.fullname%></li>
+            <li data-id="<%= contact.id %>" class="contact">
+              <%=contact.fullname%>
+            </li>
             <% }) %>
           </ul>
         </div>
@@ -142,11 +144,11 @@
           <div id="back">
             <i class="fas fa-chevron-left"></i>
           </div>
-          <div id="chat-name">
+          <div id="chat-header">
             <div id="chat-contact-icon">
               <p>EC</p>
             </div>
-            <h2 id="contact-name">Eric Chen</h2>
+            <h2 id="chat-name">Eric Chen</h2>
           </div>
         </div>
         <div id="chat-room-body">

@@ -34,3 +34,10 @@ cancelChatBtn.addEventListener("click", function() {
     addChatBtn.setAttribute("data-type", "add-contact")
   );
 });
+
+// Back Button on Chat Room
+const chatRoom = document.getElementById("chat-room");
+const backBtn = document.getElementById("back");
+backBtn.addEventListener("click", () => {
+  chatRoom.classList.remove("show");
+});

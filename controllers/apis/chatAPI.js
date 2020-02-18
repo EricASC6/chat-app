@@ -35,7 +35,11 @@ const createChat = async (req, res) => {
     console.log(req.users);
     await req.users.forEach(async user => {
       user.chats.unshift(chatID);
-      chat.users.push(user._id);
+      chat.users.push({
+        fullname: user.fullname,
+        username: user.username,
+        _id: user._id
+      });
       await user.save();
     });
 

@@ -47,6 +47,33 @@ class ChatCreator {
   setChatRoomID(id, chatRoom) {
     chatRoom.setAttribute("data-id", id);
   }
+
+  addChatRoomToChatsBody(_id, chatUser, chatsBody) {
+    const chat = document.createElement("div");
+    const chatsContainer = document.createElement("div");
+    const user = document.createElement("h3");
+    const recentchats = document.createElement("p");
+    const caret = document.createElement("div");
+
+    chat.className = "chat";
+    chat.setAttribute("data-id", _id);
+
+    chatsContainer.className = "chat-container";
+
+    user.className = "user";
+    user.textContent = chatUser;
+
+    recentchats.className = "most-recent-chat";
+
+    caret.className = "caret";
+    caret.innerHTML = "<i class='fas fa-chevron-up' aria-hidden='true'></i>";
+
+    chatsContainer.appendChild(user);
+    chatsContainer.appendChild(recentchats);
+    chat.appendChild(chatsContainer);
+    chat.appendChild(caret);
+    chatsBody.prepend(chat);
+  }
 }
 
 export default ChatCreator;
