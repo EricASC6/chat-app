@@ -2,17 +2,10 @@ const express = require("express");
 const router = express.Router();
 const bodyParser = require("body-parser");
 const User = require("../../models/User");
+const authenticateKey = require("./authenticateKey");
 
 // Setting up parser
 router.use(bodyParser.json());
-
-// Validating user KEY
-const authenticateKey = async (req, res, next) => {
-  const KEY = req.query.key;
-  const isValidKey = await User.findById(KEY);
-  if (isValidKey) next();
-  else res.status(400).json({ ok: false, error: "Invalid Key" });
-};
 
 // GET Requests Middleware
 const VALID_QUERY_PARAMS = {

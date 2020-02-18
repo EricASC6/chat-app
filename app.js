@@ -4,18 +4,21 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const Server = require("socket.io");
 
-// Express app
-const app = express();
-const server = app.listen(3000, () => console.log("Listening to port 3000"));
-
 // Routers
 const signupRouter = require("./controllers/router/signup");
 const loginRouter = require("./controllers/router/login");
 const homeRouter = require("./controllers/router/home");
 
+// Express app
+const app = express();
+const server = app.listen(3000, () => console.log("Listening to port 3000"));
+
 // API
 const userAPI = require("./controllers/apis/userAPI");
 app.use("/user", userAPI);
+
+const chatAPI = require("./controllers/apis/chatAPI");
+app.use("/chat", chatAPI);
 
 // Body parser
 const urlencodedParser = bodyParser.urlencoded({ extended: false });

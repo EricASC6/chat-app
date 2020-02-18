@@ -17,18 +17,6 @@ class ContactCreator {
   }
 
   /**
-   * Gets the username of the new contact that the user wants to add
-   * @param { HTMLElement } usernameField - Username input field
-   * @returns {string}
-   */
-  getUsername(usernameInput) {
-    const usernameVal = usernameInput.value;
-    console.log("Username: ", usernameVal);
-    if (usernameVal.length === 0) throw new Error("Missing Username");
-    else return usernameVal;
-  }
-
-  /**
    * Using API to get user data from mongodb
    * @param {string} username
    * @returns {Promise} - JSON from fetching user data from api

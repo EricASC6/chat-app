@@ -1,30 +1,51 @@
+const express = require("express");
+const router = express.Router();
+const bodyParser = require("body-parser");
+const User = require("../../models/User");
 const Chat = require("../../models/Chat").model;
+const authenticateKey = require("./authenticateKey");
 
-router.post("/newChat", async (req, res) => {
-  const { id, newContactUsername, isGroup } = req.body;
-  console.log(id, newContactUsername, isGroup);
+// Setting up parser
+router.use(bodyParser.json());
+
+// POST Requests Middleware
+const getUsersFromChatRequest = async (req, res, next) => {
+  const { users: usersData } = req.body;
   try {
-    const srcUser = await User.findById(id);
-    console.log(srcUser);
-    const newContact = await User.findOne({ username: newContactUsername });
-    console.log(newContact);
+    const users = await Promise.all(
+      usersData.map(async user => User.findOne(user))
+    );
+    req.users = users;
+    next();
+  } catch (err) {
+    res.status(500).json({ ok: false, error: "Server Error" });
+  }
+};
 
-    const newChat = new Chat({
-      isGroup: isGroup,
-      users: [srcUser.username, newContact.username],
-      messages: []
+const createChat = async (req, res) => {
+  const chat = new Chat({
+    isGroup: false,
+    users: [],
+    messages: []
+  });
+
+  const chatID = chat._id;
+
+  try {
+    console.log(req.users);
+    await req.users.forEach(async user => {
+      user.chats.unshift(chatID);
+      chat.users.push(user._id);
+      await user.save();
     });
 
-    await newChat.save();
-
-    const chatId = newChat._id;
-    srcUser.chats.unshift(chatId);
-    newContact.chats.unshift(chatId);
-    await srcUser.save();
-    await srcUser.save();
-    res.json({ ok: true, chat: newChat, contact: newContact });
+    await chat.save();
+    res.status(200).json({ ok: true, _id: chatID });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ ok: false });
+    res.status(500).json({ ok: false, error: "Server Error" });
   }
-});
+};
+
+router.post("/newChat", authenticateKey, getUsersFromChatRequest, createChat);
+
+module.exports = router;

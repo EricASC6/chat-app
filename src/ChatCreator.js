@@ -1,6 +1,4 @@
 class ChatCreator {
-  static NEW_CHAT_API = `/user/newChat`;
-
   /**
    * @param {string} userId - id of the home user
    * @param {HTMLElement} chatRoom - chat room of the app
@@ -10,17 +8,15 @@ class ChatCreator {
   }
 
   /**
-   * Creates the body of a POST request to create chat room from username
-   * @param {string} username - username of the other chat user
+   * Creates the body of a POST request to create chat room with user id
+   * @param {string} id - ObjectId of an user
    */
-  createChatRoom(username) {
-    const chatRequestBody = {
-      id: this.userId,
-      newContactUsername: username,
-      isGroup: false
+  createChatRoom(id) {
+    const chatRoomRequest = {
+      users: [{ _id: this.KEY }, { _id: id }]
     };
 
-    return chatRequestBody;
+    return chatRoomRequest;
   }
 
   /**
@@ -29,7 +25,8 @@ class ChatCreator {
    * @returns {Promise<Object> | null} - returns the chat data is sucessfully saved, else null
    */
   async saveChatRoomToDB(chatRoom) {
-    const newChatResponse = await fetch(ChatCreator.NEW_CHAT_API, {
+    const newChatAPI = `/chat/newChat?key=${this.KEY}`;
+    const newChatResponse = await fetch(newChatAPI, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -42,24 +39,13 @@ class ChatCreator {
     else return null;
   }
 
-  slideOverChatRoom() {
-    this.chatRoom.classList.add("show");
-  }
-
   /**
-   * Formats the chat room based on the chat data
-   * @param {Object} chatData
+   * Sets the id of the chat room
+   * @param {string} id - id of chat room
+   * @param {HTMLElement} chatRoom - chat room html element
    */
-  formatChatRoom(chatData) {
-    const { chat, contact } = chatData;
-    const { firstname, lastname } = contact;
-
-    const chatIcon = this.chatRoom.querySelector("#chat-contact-icon p");
-    const contactName = this.chatRoom.querySelector("#contact-name");
-
-    this.chatRoom.setAttribute("data-id", chat._id);
-    chatIcon.innerHTML = firstname[0] + lastname[0];
-    contactName.innerHTML = firstname + " " + lastname;
+  setChatRoomID(id, chatRoom) {
+    chatRoom.setAttribute("data-id", id);
   }
 }
 

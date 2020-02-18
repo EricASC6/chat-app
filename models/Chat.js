@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
 const MessageSchema = require("./Message").schema;
 const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 
 const chatSchema = new Schema({
   isGroup: Boolean,
-  users: [String],
+  users: [ObjectId],
   messages: [MessageSchema]
 });
 

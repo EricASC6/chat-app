@@ -9,6 +9,8 @@ const CONTACTS_LIST_ID = "contacts-list";
 const CHAT_ROOM_ID = "chat-room";
 const CONTACTS_TAB_ID = "contacts-tab";
 const HOME_VIEW_ID = "home-view";
+const CHAT_ICON_QUERY = "chat-contact-icon p";
+// const CONTACT_NAME;
 const KEY = new URLSearchParams(window.location.search).get("id");
 
 // 1. Create a new contact
@@ -18,16 +20,14 @@ const contactsList = document.getElementById(CONTACTS_LIST_ID);
 
 const contactCreator = new ContactCreator(KEY);
 
-const createContact = async () => {
-  if (!contactCreator.isReady(createChatBtn)) return;
-
+const createContact = async username => {
   try {
-    const username = contactCreator.getUsername(usernameField);
+    console.log("Username: ", username);
     const userData = await contactCreator.getUserDataFromUsername(username);
     contactCreator.addNewContactToContactsList(userData, contactsList);
     contactCreator.emitNewContactEvent();
     await contactCreator.saveNewContactDataToDB(userData);
-    return username;
+    return userData;
   } catch (err) {
     console.error(err);
   }
@@ -35,18 +35,35 @@ const createContact = async () => {
 
 // 2. Creating a new chat room and saving it to db
 const chatRoom = document.getElementById(CHAT_ROOM_ID);
+const chatIcon = document.querySelector(CHAT_ICON_QUERY);
 const chatCreator = new ChatCreator(KEY, chatRoom);
 
-const createChatRoom = async username => {
-  const newChat = chatCreator.createChatRoom(username);
+const createChatRoom = async id => {
+  const newChat = chatCreator.createChatRoom(id);
   const chatData = await chatCreator.saveChatRoomToDB(newChat);
-  chatCreator.slideOverChatRoom();
-  chatCreator.formatChatRoom(chatData);
+  return chatData;
+};
+
+const formatChatRoom = () => {};
+
+const slideOverChatRoom = chatRoom => {
+  chatRoom.classList.add("show");
 };
 
 createChatBtn.addEventListener("click", async () => {
-  const contact = await createContact();
-  if (contact) await createChatRoom(contact);
+  if (!contactCreator.isReady(createChatBtn)) return;
+  try {
+    const username = usernameField.value;
+    console.log(username);
+    const contact = await createContact(username);
+    console.log(contact);
+    const chatData = await createChatRoom(contact._id);
+    console.log(chatData);
+    chatCreator.setChatRoomID(chatData._id, chatRoom);
+    slideOverChatRoom(chatRoom);
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 // Viewing the contacts | home
