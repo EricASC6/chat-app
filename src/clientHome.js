@@ -35,9 +35,13 @@ cancelChatBtn.addEventListener("click", function() {
   );
 });
 
-// Back Button on Chat Room
-const chatRoom = document.getElementById("chat-room");
-const backBtn = document.getElementById("back");
-backBtn.addEventListener("click", () => {
-  chatRoom.classList.remove("show");
-});
+const chatRoomHead = document.getElementById("chat-room-head");
+const chatRoomBody = document.getElementById("chat-room-body");
+const chatRoomSend = document.getElementById("chat-room-send");
+
+const chatRoomSendStyles = window.getComputedStyle(chatRoomSend);
+const chatRoomSendHeight = chatRoomSendStyles.height;
+const chatRoomSendMarginBottom = chatRoomSendStyles.marginBottom;
+
+const chatRoomHeadHeight = window.getComputedStyle(chatRoomHead).height;
+chatRoomBody.style.height = `calc(100vh - ${chatRoomHeadHeight} - ${chatRoomSendHeight} - ${chatRoomSendMarginBottom})`;

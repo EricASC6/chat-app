@@ -423,7 +423,7 @@
   padding: 0 0.5rem;
   color: var(--black);
   height: 100vh;
-  overflow-x: scroll;
+  overflow-y: scroll;
 }
 
 #chat-room-body #chat-init {
@@ -446,7 +446,7 @@
   max-width: 275px;
   height: auto;
   border-radius: 20px;
-  margin-bottom: 5px;
+  margin-bottom: 7px;
 }
 
 .message.home {

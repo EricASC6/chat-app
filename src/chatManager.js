@@ -4,12 +4,12 @@ class ChatManager {
   constructor(key) {
     this.KEY = key;
     this.socket = null;
-    this._id = null;
+    this._id = null; // data-id of the chatroom
   }
 
-  connectToServer() {
-    this.socket = io("/home");
-    return this.socket;
+  connectToServer(socket, user) {
+    this.socket = socket;
+    socket.emit("online", user);
   }
 
   setChatRoomID(chatRoom, _id) {
@@ -24,6 +24,16 @@ class ChatManager {
 
   addMessageToChat(chatRoomMessages, message) {
     chatRoomMessages.appendChild(message);
+  }
+
+  sendMessage(message) {
+    const messageData = {
+      chatID: this._id,
+      from: this.KEY,
+      message: message
+    };
+
+    this.socket.emit("message", messageData);
   }
 
   async saveMessage(message) {

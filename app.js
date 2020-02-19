@@ -3,7 +3,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const Server = require("socket.io");
-const chatManager = require("./controllers/chatManager");
 
 // Routers
 const signupRouter = require("./controllers/router/signup");
@@ -54,12 +53,16 @@ app.use("/login", loginRouter);
 app.use("/home", homeRouter);
 
 // Chat Functionality
+const chatManager = require("./controllers/ChatManager");
+
 const io = Server(server);
 io.on("connection", socket => {
-  console.log("User connected");
-  console.log(socket.id);
+  socket.on("online", user => chatManager.addUserOnline(user, socket.id));
+  socket.on("disconnect", () => chatManager.removeUserFromOnline(socket.id));
 
-  socket.on("disconnect", reason => {
-    console.log("User disconnected");
+  socket.on("message", messageData => {
+    const clients = chatManager.getOnlineUsersFromSameChat(messageData);
+    const socketIDs = chatManager.getSocketIDsFromUsers(clients);
+    socketIDs.forEach(id => io.sockets.to(id).emit("message", messageData));
   });
 });

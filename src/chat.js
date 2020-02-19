@@ -6,6 +6,7 @@ import ChatManager from "./ChatManager.js";
 import Chat from "./components/Chat.js";
 import Contact from "./components/Contact.js";
 import Message from "./components/Message.js";
+import UserAPI from "./api/UserAPI.js";
 
 // Constants - DOM + User Id
 const CREATE_CHAT_BTN_ID = "add-new-chat";
@@ -18,7 +19,17 @@ const CHAT_ICON_QUERY = "#chat-contact-icon p";
 const CHAT_NAME_ID = "chat-name";
 const CHAT_CLASS = "chat";
 const CHATS_BODY_ID = "chats-body";
+const HOME_ORIGIN = window.location.origin;
 const KEY = new URLSearchParams(window.location.search).get("id");
+
+// Establishing Socket Connection
+const socket = io(HOME_ORIGIN);
+
+socket.on("connect", async () => {
+  const homeUserData = await UserAPI.getUserData(KEY, KEY);
+  const user = homeUserData.userData;
+  chatManager.connectToServer(socket, user);
+});
 
 // 1. Create a new contact
 const createChatBtn = document.getElementById(CREATE_CHAT_BTN_ID);
@@ -183,10 +194,20 @@ const sendBtn = document.getElementById(SEND_BTN_ID);
 
 sendBtn.addEventListener("click", () => {
   const messageContentVal = messageContent.value;
-  const message = Message.createMessage(messageContentVal);
-  chatManager.addMessageToChat(messages, message);
+  messageContent.value = "";
+  chatManager.sendMessage(messageContentVal);
   chatManager.saveMessage(messageContentVal);
-  console.log(message);
+  console.log(messageContentVal);
+});
+
+socket.on("message", messageData => {
+  const { message: messageVal, from, chatID } = messageData;
+  if (chatID === chatManager._id) {
+    // Sent or recieved
+    const flag = from === chatManager.KEY;
+    const message = Message.createMessage(messageVal, flag);
+    chatManager.addMessageToChat(messages, message);
+  }
 });
 
 // Back Button on Chat Room

@@ -28,13 +28,14 @@ const getUserData = async (req, res, next) => {
   try {
     const user = await User.findOne(searchParam);
     if (!user) res.status(404).json({ ok: false, error: "User not found" });
-    const { username, firstname, lastname, fullname, bio, _id } = user;
+    const { username, firstname, lastname, fullname, bio, chats, _id } = user;
     const userData = {
       username: username,
       firstname: firstname,
       lastname: lastname,
       fullname: fullname,
       bio: bio,
+      chats: chats,
       _id: _id
     };
     req.userData = userData;
