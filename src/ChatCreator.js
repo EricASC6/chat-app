@@ -1,7 +1,6 @@
 class ChatCreator {
   /**
    * @param {string} userId - id of the home user
-   * @param {HTMLElement} chatRoom - chat room of the app
    */
   constructor(key) {
     this.KEY = key;

@@ -47,7 +47,7 @@ const chatIcon = document.querySelector(CHAT_ICON_QUERY);
 const chatName = document.getElementById(CHAT_NAME_ID);
 const chatsBody = document.getElementById(CHATS_BODY_ID);
 
-const chatCreator = new ChatCreator(KEY, chatRoom);
+const chatCreator = new ChatCreator(KEY);
 
 const createChatRoom = async id => {
   const newChat = chatCreator.createChatRoom(id);
