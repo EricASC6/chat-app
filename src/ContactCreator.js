@@ -30,19 +30,8 @@ class ContactCreator {
     else throw new Error("Something went wrong");
   }
 
-  /**
-   * Adds new contact to the contacts lists
-   * @param {Object} userData - user data returned by getUserDataFromUsername method
-   * @returns {Object|null} - returns userData if successful else null
-   */
-  addNewContactToContactsList(userData, contactsList) {
-    const { fullname, _id } = userData;
-    const newUser = document.createElement("li");
-    newUser.className = "contact";
-    newUser.setAttribute("data-id", _id);
-    newUser.textContent = fullname;
-    contactsList.prepend(newUser);
-    return user;
+  addNewContactToContactsList(contactsList, contact) {
+    contactsList.prepend(contact);
   }
 
   /**

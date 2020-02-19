@@ -15,18 +15,12 @@ class ChatViewer {
     }
   }
 
-  displayMessages(messages, messagesElement) {
-    messages.forEach(message => {
-      console.log(message.from, this.KEY);
-      const messageElem = document.createElement("div");
-      const messageValue = document.createElement("div");
-      messageElem.className =
-        "message " + (message.from === this.KEY ? "home" : "away");
-      messageValue.className = "message-value";
-      messageValue.textContent = message.message;
-      messageElem.appendChild(messageValue);
-      messagesElement.prepend(messageElem);
-    });
+  setChatName(chatNameVal, chatName) {
+    chatName.textContent = chatNameVal;
+  }
+
+  displayMessage(messages, messagesElement) {
+    messagesElement.prepend(messages);
   }
 }
 

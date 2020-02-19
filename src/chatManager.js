@@ -22,19 +22,11 @@ class ChatManager {
     chatRoom.setAttribute("data-id", null);
   }
 
-  createMessage(_messageValue, sentFromHomeUser = true) {
-    const message = document.createElement("div");
-    const messageValue = document.createElement("div");
-
-    message.className = "message home";
-    messageValue.className = "message-value";
-    messageValue.textContent = _messageValue;
-    message.appendChild(messageValue);
-
-    return message;
+  addMessageToChat(chatRoomMessages, message) {
+    chatRoomMessages.appendChild(message);
   }
 
-  async saveMessageToChat(message) {
+  async saveMessage(message) {
     const saveMessageAPI = `chat/newMessage?key=${this.KEY}`;
     const body = {
       _id: this._id,

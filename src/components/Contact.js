@@ -1,5 +1,5 @@
 class Contact {
-  static createContact(fullname, _id) {
+  static createContact({ fullname, _id }) {
     const contact = document.createElement("li");
     contact.className = "contact";
     contact.textContent = fullname;
@@ -7,3 +7,5 @@ class Contact {
     return contact;
   }
 }
+
+export default Contact;

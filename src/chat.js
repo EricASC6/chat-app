@@ -3,6 +3,9 @@ import ChatViewier from "./ChatViewer.js";
 import ContactCreator from "./ContactCreator.js";
 import ChatCreator from "./ChatCreator.js";
 import ChatManager from "./ChatManager.js";
+import Chat from "./components/Chat.js";
+import Contact from "./components/Contact.js";
+import Message from "./components/Message.js";
 
 // Constants - DOM + User Id
 const CREATE_CHAT_BTN_ID = "add-new-chat";
@@ -28,7 +31,8 @@ const createContact = async username => {
   try {
     console.log("Username: ", username);
     const userData = await contactCreator.getUserDataFromUsername(username);
-    contactCreator.addNewContactToContactsList(userData, contactsList);
+    const contact = Contact.createContact(userData);
+    contactCreator.addNewContactToContactsList(contactsList, contact);
     contactCreator.emitNewContactEvent();
     await contactCreator.saveNewContactDataToDB(userData);
     return userData;
@@ -64,6 +68,10 @@ const slideAwayChatRoom = chatRoom => {
   chatRoom.classList.remove("show");
 };
 
+const clearChatRoomMessages = chatRoomMessages => {
+  chatRoomMessages.innerHTML = "";
+};
+
 createChatBtn.addEventListener("click", async () => {
   if (!contactCreator.isReady(createChatBtn)) return;
   try {
@@ -76,8 +84,10 @@ createChatBtn.addEventListener("click", async () => {
 
     const chatID = chatData._id;
     const chatName = contact.fullname;
+    const chat = Chat.createChat(chatName, chatID);
+
     chatCreator.setChatRoomID(chatID, chatRoom);
-    chatCreator.addChatRoomToChatsBody(chatID, chatName, chatsBody);
+    chatCreator.addChatToChatsBody(chatsBody, chat);
     slideOverChatRoom(chatRoom);
     formatChatRoom(contact);
   } catch (err) {
@@ -119,29 +129,12 @@ window.addEventListener("new-contact", enableViewingOnContactsList);
 enableViewingOnContactsList();
 
 // Viewing chats + messages + sending messages
+const CHAT_NAME_CLASS_QUERY = ".chat-name";
 const MESSAGES_ID = "messages";
 const messages = document.getElementById(MESSAGES_ID);
 
 const chatViewer = new ChatViewier(KEY);
 const chatManager = new ChatManager(KEY);
-
-const setChatName = (chat, chatName) => {
-  const _chatName = chat.querySelector(".chat-name").innerHTML;
-  chatName.innerHTML = _chatName;
-};
-
-const getChatID = chat => {
-  const _id = chat.getAttribute("data-id");
-  return _id;
-};
-
-const setChatRoomID = (chatRoom, _id) => {
-  chatManager.setChatRoomID(chatRoom, _id);
-};
-
-const removeChatRoomID = chatRoom => {
-  chatManager.removeChatRoomID(chatRoom);
-};
 
 const getChatMessages = async _id => {
   try {
@@ -154,14 +147,24 @@ const getChatMessages = async _id => {
 };
 
 const viewChat = async (chat, chatRoom, chatName) => {
-  const chatID = getChatID(chat);
-  setChatRoomID(chatRoom, chatID);
-  setChatName(chat, chatName);
+  const chatID = chat.getAttribute("data-id");
+  chatManager.setChatRoomID(chatRoom, chatID);
+
+  const chatNameVal = chat.querySelector(CHAT_NAME_CLASS_QUERY).innerHTML;
+  chatViewer.setChatName(chatNameVal, chatName);
   slideOverChatRoom(chatRoom);
 
   const _messages = await getChatMessages(chatID);
   console.log("messages ", _messages);
-  chatViewer.displayMessages(_messages, messages);
+
+  _messages.forEach(message => {
+    const messageVal = message.message;
+
+    // Tells us if the message is sent from the home user or not
+    const flag = message.from === chatViewer.KEY;
+    const messageElement = Message.createMessage(messageVal, flag);
+    chatViewer.displayMessage(messageElement, messages);
+  });
 };
 
 const chats = Array.from(document.getElementsByClassName(CHAT_CLASS));
@@ -178,26 +181,18 @@ const SEND_BTN_ID = "send-btn";
 const messageContent = document.getElementById(MESSAGE_CONTENT_ID);
 const sendBtn = document.getElementById(SEND_BTN_ID);
 
-const createMessage = messageContent => {
-  const messageValue = messageContent.value;
-  const message = chatManager.createMessage(messageValue);
-  return message;
-};
-
-const addMessageToChat = (messages, message) => {
-  messages.appendChild(message);
-};
-
 sendBtn.addEventListener("click", () => {
-  const message = createMessage(messageContent);
-  addMessageToChat(messages, message);
-  chatManager.saveMessageToChat(messageContent.value);
+  const messageContentVal = messageContent.value;
+  const message = Message.createMessage(messageContentVal);
+  chatManager.addMessageToChat(messages, message);
+  chatManager.saveMessage(messageContentVal);
   console.log(message);
 });
 
 // Back Button on Chat Room
 const backBtn = document.getElementById("back");
 backBtn.addEventListener("click", () => {
-  removeChatRoomID(chatRoom);
+  chatManager.removeChatRoomID(chatRoom);
   slideAwayChatRoom(chatRoom);
+  clearChatRoomMessages(messages);
 });
