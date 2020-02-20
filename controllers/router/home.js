@@ -27,8 +27,8 @@ const getContactsData = async contactsIDs => {
   );
 
   const contactsData = contactsDocuments.map(contact => {
-    const { fullname, _id } = contact;
-    return { fullname: fullname, id: _id };
+    const { username, fullname, _id } = contact;
+    return { username: username, fullname: fullname, id: _id };
   });
 
   return contactsData;
@@ -36,10 +36,10 @@ const getContactsData = async contactsIDs => {
 
 const getChatName = (chat, userID) => {
   const users = chat.users;
-  const chatName = users.filter(
-    user => user._id.toString() !== userID.toString()
-  )[0].fullname;
-  return chatName;
+  if (chat.isGroup) return chat.chatName;
+  else
+    return users.filter(user => user._id.toString() !== userID.toString())[0]
+      .fullname;
 };
 
 const getMostRecentMessage = chat => {

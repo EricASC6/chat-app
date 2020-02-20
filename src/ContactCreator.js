@@ -1,5 +1,5 @@
 class ContactCreator {
-  static READY_STATE = "create-contact";
+  static READY_STATE = "create-chat";
 
   constructor(key) {
     this.KEY = key;
@@ -14,20 +14,6 @@ class ContactCreator {
     return (
       createChatBtn.getAttribute("data-type") === ContactCreator.READY_STATE
     );
-  }
-
-  /**
-   * Using API to get user data from mongodb
-   * @param {string} username
-   * @returns {Promise} - JSON from fetching user data from api
-   */
-  async getUserDataFromUsername(username) {
-    const userDataAPI = `/user?key=${this.KEY}&username=${username}`;
-    const userDataRes = await fetch(userDataAPI);
-    const data = await userDataRes.json();
-
-    if (data.ok) return data.userData;
-    else throw new Error("Something went wrong");
   }
 
   addNewContactToContactsList(contactsList, contact) {

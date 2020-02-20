@@ -110,7 +110,11 @@
         <div id="contacts-body">
           <ul id="contacts-list">
             <% contacts.forEach(contact => { %>
-            <li data-id="<%= contact.id %>" class="contact">
+            <li
+              data-id="<%= contact.id %>"
+              username="<%= contact.username %>"
+              class="contact"
+            >
               <%=contact.fullname%>
             </li>
             <% }) %>
@@ -119,7 +123,7 @@
       </div>
     </div>
 
-    <div id="add-chat" class="show" data-type="conversation">
+    <div id="add-chat" data-type="conversation">
       <div id="add-chat-container">
         <div id="add-chat-head">
           <div id="chat-type">

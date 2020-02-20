@@ -21,7 +21,7 @@ addChatBtn.addEventListener("click", function() {
     this.innerHTML = goArrowSign;
 
     addChatTab.addEventListener("transitionend", () =>
-      this.setAttribute("data-type", "create-contact")
+      this.setAttribute("data-type", "create-chat")
     );
   }
 });

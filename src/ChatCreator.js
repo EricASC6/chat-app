@@ -19,15 +19,35 @@ class ChatCreator {
     return chatRoomRequest;
   }
 
-  createGroupChat() {}
+  createGroupChat(chatName, usernames) {
+    const usersData = usernames.map(username => {
+      return { username: username };
+    });
+    const groupChatRequest = {
+      isGroup: true,
+      chatName: chatName,
+      users: [{ _id: this.KEY }, ...usersData]
+    };
+
+    return groupChatRequest;
+  }
+
+  getUsernamesFromUsernameField(usernameField) {
+    const _usernames = usernameField.value.split(" ");
+    const usernames = [...new Set(_usernames)];
+    console.log(usernames);
+    return usernames;
+  }
 
   /**
    * Saves the chat room to the db
    * @param {Object} chatRoom - Chat room data returned from createChatRoom method
    * @returns {Promise<Object> | null} - returns the chat data is sucessfully saved, else null
    */
-  async saveChatRoomToDB(chatRoom) {
-    const newChatAPI = `/chat/newChat?key=${this.KEY}`;
+  async saveChatRoomToDB(chatRoom, isGroup = false) {
+    const newChatAPI = `/chat/${isGroup ? "newGroupChat" : "newChat"}?key=${
+      this.KEY
+    }`;
     const newChatResponse = await fetch(newChatAPI, {
       method: "POST",
       headers: {
@@ -40,8 +60,6 @@ class ChatCreator {
     if (chatData.ok) return chatData;
     else return null;
   }
-
-  async saveGroupChatToDB() {}
 
   /**
    * Sets the id of the chat room

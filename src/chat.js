@@ -10,7 +10,9 @@ import UserAPI from "./api/UserAPI.js";
 
 // Constants - DOM + User Id
 const CREATE_CHAT_BTN_ID = "add-new-chat";
+const ADD_CHAT_ID = "add-chat";
 const USERNAME_FIELD_ID = "username";
+const GROUP_NAME_FIELD_ID = "group-name";
 const CONTACTS_LIST_ID = "contacts-list";
 const CHAT_ROOM_ID = "chat-room";
 const CONTACTS_TAB_ID = "contacts-tab";
@@ -26,7 +28,7 @@ const KEY = new URLSearchParams(window.location.search).get("id");
 const socket = io(HOME_ORIGIN);
 
 socket.on("connect", async () => {
-  const homeUserData = await UserAPI.getUserData(KEY, KEY);
+  const homeUserData = await UserAPI.getUserDataFromID(KEY, KEY);
   const user = homeUserData.userData;
   chatManager.connectToServer(socket, user);
 });
@@ -41,7 +43,7 @@ const contactCreator = new ContactCreator(KEY);
 const createContact = async username => {
   try {
     console.log("Username: ", username);
-    const userData = await contactCreator.getUserDataFromUsername(username);
+    const userData = await UserAPI.getUserDataFromUsername(username, KEY);
     const contact = Contact.createContact(userData);
     contactCreator.addNewContactToContactsList(contactsList, contact);
     contactCreator.emitNewContactEvent();
@@ -57,6 +59,8 @@ const chatRoom = document.getElementById(CHAT_ROOM_ID);
 const chatIcon = document.querySelector(CHAT_ICON_QUERY);
 const chatName = document.getElementById(CHAT_NAME_ID);
 const chatsBody = document.getElementById(CHATS_BODY_ID);
+const addChat = document.getElementById(ADD_CHAT_ID);
+const groupName = document.getElementById(GROUP_NAME_FIELD_ID);
 
 const chatCreator = new ChatCreator(KEY);
 
@@ -85,22 +89,55 @@ const clearChatRoomMessages = chatRoomMessages => {
 
 createChatBtn.addEventListener("click", async () => {
   if (!contactCreator.isReady(createChatBtn)) return;
+
   try {
-    const username = usernameField.value;
-    console.log(username);
-    const contact = await createContact(username);
-    console.log(contact);
-    const chatData = await createChatRoom(contact._id);
-    console.log(chatData);
+    const chatType = addChat.getAttribute("data-type");
+    if (chatType === "conversation") {
+      const username = usernameField.value;
+      const contact = await createContact(username);
+      console.log(contact);
+      const chatData = await createChatRoom(contact._id);
+      console.log(chatData);
 
-    const chatID = chatData._id;
-    const chatName = contact.fullname;
-    const chat = Chat.createChat(chatName, chatID);
+      const chatID = chatData._id;
+      const chatName = contact.fullname;
+      const chat = Chat.createChat(chatName, chatID);
 
-    chatCreator.setChatRoomID(chatID, chatRoom);
-    chatCreator.addChatToChatsBody(chatsBody, chat);
+      chatCreator.setChatRoomID(chatID, chatRoom);
+      chatCreator.addChatToChatsBody(chatsBody, chat);
+      formatChatRoom(contact);
+    } else if (chatType === "group-chat") {
+      const groupChatNameVal = groupName.value;
+      const usernames = chatCreator.getUsernamesFromUsernameField(
+        usernameField
+      );
+
+      const userContacts = [...contactsList.children].map(contact =>
+        contact.getAttribute("username")
+      );
+
+      usernames.forEach(username => {
+        if (!userContacts.includes(username)) createContact(username);
+      });
+
+      const groupChat = chatCreator.createGroupChat(
+        groupChatNameVal,
+        usernames
+      );
+
+      const groupChatData = await chatCreator.saveChatRoomToDB(groupChat, true);
+      const chatID = groupChatData._id;
+      const chatNameVal = groupChatData.chatName;
+      const chat = Chat.createChat(chatNameVal, chatID);
+      chatCreator.setChatRoomID(chatID, chatRoom);
+      chatCreator.addChatToChatsBody(chatsBody, chat);
+
+      chatName.innerHTML = chatNameVal;
+
+      console.log("Success");
+    }
+
     slideOverChatRoom(chatRoom);
-    formatChatRoom(contact);
   } catch (err) {
     console.error(err);
   }

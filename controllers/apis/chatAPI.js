@@ -52,7 +52,7 @@ const createChat = async (req, res) => {
   const chatName = req.body.chatName || "";
   const chat = new Chat({
     isGroup: isGroup,
-    name: chatName,
+    chatName: chatName,
     users: [],
     messages: []
   });
@@ -72,7 +72,7 @@ const createChat = async (req, res) => {
     });
 
     await chat.save();
-    res.status(200).json({ ok: true, _id: chatID });
+    res.status(200).json({ ok: true, _id: chatID, chatName: chat.chatName });
   } catch (err) {
     res.status(500).json({ ok: false, error: "Server Error" });
   }
