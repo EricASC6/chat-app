@@ -1,12 +1,12 @@
 import ContactViewier from "./ContactViewer.js";
 import ChatViewier from "./ChatViewer.js";
-import ContactCreator from "./ContactCreator.js";
+import ContactManager from "./ContactManager.js";
 import ChatCreator from "./ChatCreator.js";
 import ChatManager from "./ChatManager.js";
 import Chat from "./components/Chat.js";
 import Contact from "./components/Contact.js";
 import Message from "./components/Message.js";
-import UserAPI from "./api/UserAPI.js";
+import ContactAPI from "./api/ContactAPI.js";
 import ChatAPI from "./api/ChatAPI.js";
 import MessageAPI from "./api/MessageAPI.js";
 
@@ -31,7 +31,7 @@ const homeUserID = KEY;
 const socket = io(HOME_ORIGIN);
 
 socket.on("connect", async () => {
-  const homeUserData = await UserAPI.getUserDataFromID(homeUserID, KEY);
+  const homeUserData = await ContactAPI.getUserDataFromID(homeUserID, KEY);
   const user = homeUserData.userData;
   chatManager.connectToServer(socket, user);
 });
@@ -41,19 +41,19 @@ const createChatBtn = document.getElementById(CREATE_CHAT_BTN_ID);
 const usernameField = document.getElementById(USERNAME_FIELD_ID);
 const contactsList = document.getElementById(CONTACTS_LIST_ID);
 
-const contactCreator = new ContactCreator(KEY);
+const contactManager = new ContactManager();
 
 const createContact = async username => {
   try {
     console.log("Username: ", username);
-    const userData = await UserAPI.getUserDataFromUsername(username, KEY);
+    const userData = await ContactAPI.getUserDataFromUsername(username, KEY);
     const contact = Contact.createContact(userData);
-    contactCreator.addNewContactToContactsList(contactsList, contact);
-    contactCreator.emitNewContactEvent();
-    await contactCreator.saveNewContactDataToDB(userData);
+    contactManager.addNewContactToContactsList(contactsList, contact);
+    contactManager.emitNewContactEvent();
+    await contactManager.saveNewContactDataToDB(userData);
     return userData;
   } catch (err) {
-    console.error(err);
+    throw err;
   }
 };
 
@@ -91,7 +91,7 @@ const clearChatRoomMessages = chatRoomMessages => {
 };
 
 createChatBtn.addEventListener("click", async () => {
-  if (!contactCreator.isReady(createChatBtn)) return;
+  if (!contactManager.isReady(createChatBtn)) return;
 
   try {
     const chatType = addChat.getAttribute("data-type");

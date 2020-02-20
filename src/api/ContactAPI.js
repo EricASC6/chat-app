@@ -1,4 +1,4 @@
-class UserAPI {
+class ContactAPI {
   static async getUserDataFromID(_id, key) {
     try {
       const userAPI = `/user?key=${key}&user_id=${_id}`;
@@ -23,6 +23,28 @@ class UserAPI {
       throw err;
     }
   }
+
+  static async saveContactToContacts(userData, key) {
+    const contactAPI = `/user?key=${key}`;
+    const requestBody = JSON.stringify(userData);
+
+    try {
+      const saveContactRes = await fetch(contactAPI, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: requestBody
+      });
+
+      if (saveContactRes.status !== 200) throw new Error("Not 200 response");
+
+      const saveContactData = await saveContactRes.json();
+      return saveContactData;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
-export default UserAPI;
+export default ContactAPI;
