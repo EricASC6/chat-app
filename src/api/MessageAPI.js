@@ -1,7 +1,7 @@
-class Message {
-  static createMessageDataWith(message, homeUserID) {
+class MessageAPI {
+  static createMessageDataWith(message, chatID, homeUserID) {
     const messageData = {
-      _id: homeUserID,
+      chatID: chatID,
       message: {
         from: homeUserID,
         message: message
@@ -33,3 +33,5 @@ class Message {
     }
   }
 }
+
+export default MessageAPI;

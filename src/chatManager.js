@@ -1,6 +1,4 @@
 class ChatManager {
-  static url = window.location.pathname + window.location.search;
-
   constructor(key) {
     this.KEY = key;
     this.socket = null;
@@ -26,13 +24,7 @@ class ChatManager {
     chatRoomMessages.appendChild(message);
   }
 
-  sendMessage(message) {
-    const messageData = {
-      chatID: this._id,
-      from: this.KEY,
-      message: message
-    };
-
+  sendMessageData(messageData) {
     this.socket.emit("message", messageData);
   }
 

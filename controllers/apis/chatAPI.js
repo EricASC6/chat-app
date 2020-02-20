@@ -88,7 +88,7 @@ router.post(
 
 // PUT Requests Middleware
 const getChatFromBody = async (req, res, next) => {
-  const chatID = req.body._id;
+  const chatID = req.body.chatID;
   console.log(req.body);
   console.log("chat-id: ", chatID);
   try {
@@ -107,13 +107,14 @@ const saveMessageToChat = async (req, res) => {
   const chat = req.chat;
 
   try {
-    chat.messages.unshift(new Message(message));
+    const { from, message: messageVal } = message;
+    chat.messages.unshift(new Message({ from: from, message: messageVal }));
     await chat.save();
     res
       .status(200)
       .json({ ok: true, message: "Successfully saved message to chat" });
   } catch (err) {
-    res.status.json({ ok: false, error: "Server Erro" });
+    res.status(500).json({ ok: false, error: "Server Erro" });
   }
 };
 

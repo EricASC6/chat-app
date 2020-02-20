@@ -8,6 +8,7 @@ import Contact from "./components/Contact.js";
 import Message from "./components/Message.js";
 import UserAPI from "./api/UserAPI.js";
 import ChatAPI from "./api/ChatAPI.js";
+import MessageAPI from "./api/MessageAPI.js";
 
 // Constants - DOM + User Id
 const CREATE_CHAT_BTN_ID = "add-new-chat";
@@ -24,12 +25,13 @@ const CHAT_CLASS = "chat";
 const CHATS_BODY_ID = "chats-body";
 const HOME_ORIGIN = window.location.origin;
 const KEY = new URLSearchParams(window.location.search).get("id");
+const homeUserID = KEY;
 
 // Establishing Socket Connection
 const socket = io(HOME_ORIGIN);
 
 socket.on("connect", async () => {
-  const homeUserData = await UserAPI.getUserDataFromID(KEY, KEY);
+  const homeUserData = await UserAPI.getUserDataFromID(homeUserID, KEY);
   const user = homeUserData.userData;
   chatManager.connectToServer(socket, user);
 });
@@ -188,7 +190,8 @@ const chatManager = new ChatManager(KEY);
 const getChatMessages = async _id => {
   try {
     const chatData = await ChatAPI.getChatDataFromID(_id, KEY);
-    const messages = chatData.chat.messages;
+    const messages = chatData.messages;
+    console.log(messages);
     return messages;
   } catch (err) {
     throw new Error("Error retrieving messages");
@@ -231,17 +234,24 @@ const sendBtn = document.getElementById(SEND_BTN_ID);
 sendBtn.addEventListener("click", () => {
   const messageContentVal = messageContent.value;
   messageContent.value = "";
-  chatManager.sendMessage(messageContentVal);
-  chatManager.saveMessage(messageContentVal);
+  const chatID = chatManager._id;
+  const messageData = MessageAPI.createMessageDataWith(
+    messageContentVal,
+    chatID,
+    KEY
+  );
+  chatManager.sendMessageData(messageData);
+  MessageAPI.saveMessageToDB(messageData, KEY);
   console.log(messageContentVal);
 });
 
 socket.on("message", messageData => {
-  const { message: messageVal, from, chatID } = messageData;
+  console.log(messageData);
+  const { message: messageObject, chatID } = messageData;
   if (chatID === chatManager._id) {
     // Sent or recieved
-    const flag = from === chatManager.KEY;
-    const message = Message.createMessage(messageVal, flag);
+    const flag = messageObject.from === chatManager.KEY;
+    const message = Message.createMessage(messageObject.message, flag);
     chatManager.addMessageToChat(messages, message);
   }
 });
