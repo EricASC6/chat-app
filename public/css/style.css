@@ -29,6 +29,7 @@ body {
 
 .caret {
   cursor: pointer;
+  transition: transform 333ms ease-in-out;
 }
 
 .dark-accent {

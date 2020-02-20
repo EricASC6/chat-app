@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 
 const chatSchema = new Schema({
   isGroup: Boolean,
-  users: [String],
+  chatName: String,
+  users: [Object],
   messages: [MessageSchema]
 });
 

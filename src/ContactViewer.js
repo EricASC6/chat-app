@@ -1,18 +1,9 @@
-const API_KEY = "eric";
-
 class ContactViewer {
-  static CONTACT_INFO_API = `/user?key=${API_KEY}`;
-  static USERNAME_QUERY = `&username=`;
-  static ID_QUERY = `&id=`;
-
   /**
-   * @param {string} userId - ID of the home user
-   * @param {HTMLElement} contactsList - Contact list
+   * @param {string} key - ID of the home user
    */
-  constructor(userId, contactsTab, contactsList) {
-    this.userId = userId;
-    this.contactsTab = contactsTab;
-    this.contactsList = contactsList;
+  constructor(key) {
+    this.KEY = key;
   }
 
   /**
@@ -20,16 +11,12 @@ class ContactViewer {
    * @param {string} username
    * @returns {Promise<Object>} - contact data retreived from database
    */
-  async retrieveContactInfo(username) {
-    const contactUserAPI =
-      ContactViewer.CONTACT_INFO_API +
-      ContactViewer.USERNAME_QUERY +
-      username +
-      ContactViewer.ID_QUERY +
-      this.userId;
+  async retrieveContactInfo(id) {
+    const USER_API = `/user?key=${this.KEY}&user_id=${id}`;
 
-    const contactDataRes = await fetch(contactUserAPI);
+    const contactDataRes = await fetch(USER_API);
     const contactData = await contactDataRes.json();
+    console.log("Contact Data: ", contactData);
     return contactData;
   }
 
@@ -38,19 +25,11 @@ class ContactViewer {
    * @param {Object} contactData - data returned from the retrieveContactInfo method
    */
   displayContactInfo(contactData) {
-    const { firstname, lastname, bio } = contactData.contact;
-
+    const { fullname, bio } = contactData.userData;
     const user = document.querySelector("#main-contact-head #user");
     const contactBio = document.querySelector("#main-contact-description p");
-    user.textContent = firstname + " " + lastname;
+    user.textContent = fullname;
     contactBio.textContent = bio;
-  }
-
-  /**
-   * Slides the contacts tab away
-   */
-  slideContactsTabAway() {
-    this.contactsTab.classList.remove("show");
   }
 }
 

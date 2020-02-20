@@ -1,16 +1,16 @@
 const mongoose = require("mongoose");
-const Contact = require("./Contact").schema;
 const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 
 const userSchema = new Schema({
   username: String,
   password: String,
-  isLogined: Boolean,
   firstname: String,
   lastname: String,
+  fullname: String,
   bio: String,
-  contacts: [Contact],
-  chats: [String]
+  contacts: [ObjectId],
+  chats: [ObjectId]
 });
 
 const User = mongoose.model("User", userSchema);

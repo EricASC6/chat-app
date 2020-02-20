@@ -2,27 +2,36 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const Server = require("socket.io");
+
+// Routers
+const signupRouter = require("./controllers/router/signup");
+const loginRouter = require("./controllers/router/login");
+const homeRouter = require("./controllers/router/home");
 
 // Express app
 const app = express();
-
-// Controllers
-const signup = require("./controllers/signup");
-const login = require("./controllers/login");
+const server = app.listen(3000, () => console.log("Listening to port 3000"));
 
 // API
-const userAPI = require("./controllers/userAPI");
+const userAPI = require("./controllers/apis/userAPI");
 app.use("/user", userAPI);
+
+const chatAPI = require("./controllers/apis/chatAPI");
+app.use("/chat", chatAPI);
 
 // Body parser
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(urlencodedParser);
 
 // Connecting to mongodb
-mongoose.connect("mongodb+srv://eric:eric@chat-app-srfip.mongodb.net/users", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+mongoose.connect(
+  "mongodb+srv://eric:eric@chat-app-srfip.mongodb.net/chat-app",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
+);
 
 const db = mongoose.connection;
 db.once("open", () => console.log("Made connection to mongodb"));
@@ -35,46 +44,25 @@ app.set("view engine", "ejs");
 app.use(express.static("src"));
 app.use(express.static("public"));
 
-// GET Requests
-
 // Welcome Page
-app.get("/", (req, res) => {
-  res.render("welcome");
+app.get("/", (req, res) => res.render("welcome"));
+
+// Routes
+app.use("/signup", signupRouter);
+app.use("/login", loginRouter);
+app.use("/home", homeRouter);
+
+// Chat Functionality
+const chatManager = require("./controllers/ChatManager");
+
+const io = Server(server);
+io.on("connection", socket => {
+  socket.on("online", user => chatManager.addUserOnline(user, socket.id));
+  socket.on("disconnect", () => chatManager.removeUserFromOnline(socket.id));
+
+  socket.on("message", messageData => {
+    const clients = chatManager.getOnlineUsersFromSameChat(messageData);
+    const socketIDs = chatManager.getSocketIDsFromUsers(clients);
+    socketIDs.forEach(id => io.sockets.to(id).emit("message", messageData));
+  });
 });
-
-// Signup Page
-app.get("/signup/:isInvalid?", (req, res) => {
-  let error = req.params.isInvalid === "invalid" ? "User already exists" : "";
-  res.render("signup", { error: error });
-});
-
-// Login Page
-app.get("/login/:isInvalid?", (req, res) => {
-  let error =
-    req.params.isInvalid === "invalid" ? "Incorrect username or password" : "";
-  res.render("login", { error: error });
-});
-
-// User page
-app.get("/home", login.authenicateId, login.retrieveUserData, (req, res) => {
-  res.render("home", req.userData);
-});
-
-// POST Requests
-app.post(
-  "/signup",
-  signup.isUsernameAvail,
-  signup.registerNewUser,
-  (req, res) => {
-    res.redirect(`/home?id=${req.id}`);
-  }
-);
-
-app.post("/login", login.loginUser, (req, res) => {
-  if (req.user) {
-    res.redirect(`/home?id=${req.user._id}`);
-  } else res.redirect("/login/invalid");
-});
-
-// Listening to a port
-app.listen(3000, () => console.log("Listening to port 3000"));

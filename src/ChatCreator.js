@@ -1,27 +1,42 @@
 class ChatCreator {
-  static NEW_CHAT_API = `/user/newChat`;
-
   /**
    * @param {string} userId - id of the home user
-   * @param {HTMLElement} chatRoom - chat room of the app
    */
-  constructor(userId, chatRoom) {
-    this.userId = userId;
-    this.chatRoom = chatRoom;
+  constructor(key) {
+    this.KEY = key;
   }
 
   /**
-   * Creates the body of a POST request to create chat room from username
-   * @param {string} username - username of the other chat user
+   * Creates the body of a POST request to create chat room with user id
+   * @param {string} id - ObjectId of an user
    */
-  createChatRoom(username) {
-    const chatRequestBody = {
-      id: this.userId,
-      newContactUsername: username,
-      isGroup: false
+  createChatRoom(id) {
+    const chatRoomRequest = {
+      isGroup: false,
+      users: [{ _id: this.KEY }, { _id: id }]
     };
 
-    return chatRequestBody;
+    return chatRoomRequest;
+  }
+
+  createGroupChat(chatName, usernames) {
+    const usersData = usernames.map(username => {
+      return { username: username };
+    });
+    const groupChatRequest = {
+      isGroup: true,
+      chatName: chatName,
+      users: [{ _id: this.KEY }, ...usersData]
+    };
+
+    return groupChatRequest;
+  }
+
+  getUsernamesFromUsernameField(usernameField) {
+    const _usernames = usernameField.value.split(" ");
+    const usernames = [...new Set(_usernames)];
+    console.log(usernames);
+    return usernames;
   }
 
   /**
@@ -29,8 +44,11 @@ class ChatCreator {
    * @param {Object} chatRoom - Chat room data returned from createChatRoom method
    * @returns {Promise<Object> | null} - returns the chat data is sucessfully saved, else null
    */
-  async saveChatRoomToDB(chatRoom) {
-    const newChatResponse = await fetch(ChatCreator.NEW_CHAT_API, {
+  async saveChatRoomToDB(chatRoom, isGroup = false) {
+    const newChatAPI = `/chat/${isGroup ? "newGroupChat" : "newChat"}?key=${
+      this.KEY
+    }`;
+    const newChatResponse = await fetch(newChatAPI, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -43,24 +61,17 @@ class ChatCreator {
     else return null;
   }
 
-  slideOverChatRoom() {
-    this.chatRoom.classList.add("show");
+  /**
+   * Sets the id of the chat room
+   * @param {string} id - id of chat room
+   * @param {HTMLElement} chatRoom - chat room html element
+   */
+  setChatRoomID(id, chatRoom) {
+    chatRoom.setAttribute("data-id", id);
   }
 
-  /**
-   * Formats the chat room based on the chat data
-   * @param {Object} chatData
-   */
-  formatChatRoom(chatData) {
-    const { chat, contact } = chatData;
-    const { firstname, lastname } = contact;
-
-    const chatIcon = this.chatRoom.querySelector("#chat-contact-icon p");
-    const contactName = this.chatRoom.querySelector("#contact-name");
-
-    this.chatRoom.setAttribute("data-id", chat._id);
-    chatIcon.innerHTML = firstname[0] + lastname[0];
-    contactName.innerHTML = firstname + " " + lastname;
+  addChatToChatsBody(chatsBody, chat) {
+    chatsBody.prepend(chat);
   }
 }
 
