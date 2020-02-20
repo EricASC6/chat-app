@@ -50,7 +50,7 @@ const createContact = async username => {
     const contact = Contact.createContact(userData);
     contactManager.addNewContactToContactsList(contactsList, contact);
     contactManager.emitNewContactEvent();
-    await contactManager.saveNewContactDataToDB(userData);
+    await ContactAPI.saveContactToContacts(userData, KEY);
     return userData;
   } catch (err) {
     throw err;
