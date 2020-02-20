@@ -7,6 +7,7 @@ import Chat from "./components/Chat.js";
 import Contact from "./components/Contact.js";
 import Message from "./components/Message.js";
 import UserAPI from "./api/UserAPI.js";
+import ChatAPI from "./api/ChatAPI.js";
 
 // Constants - DOM + User Id
 const CREATE_CHAT_BTN_ID = "add-new-chat";
@@ -186,11 +187,11 @@ const chatManager = new ChatManager(KEY);
 
 const getChatMessages = async _id => {
   try {
-    const chatData = await chatViewer.getChatData(_id);
+    const chatData = await ChatAPI.getChatDataFromID(_id, KEY);
     const messages = chatData.chat.messages;
     return messages;
   } catch (err) {
-    return null;
+    throw new Error("Error retrieving messages");
   }
 };
 
@@ -203,8 +204,6 @@ const viewChat = async (chat, chatRoom, chatName) => {
   slideOverChatRoom(chatRoom);
 
   const _messages = await getChatMessages(chatID);
-  console.log("messages ", _messages);
-
   _messages.forEach(message => {
     const messageVal = message.message;
 
@@ -217,7 +216,7 @@ const viewChat = async (chat, chatRoom, chatName) => {
 
 const chats = Array.from(document.getElementsByClassName(CHAT_CLASS));
 chats.forEach(chat =>
-  chat.addEventListener("click", async evnt => {
+  chat.addEventListener("click", async () => {
     await viewChat(chat, chatRoom, chatName);
   })
 );
