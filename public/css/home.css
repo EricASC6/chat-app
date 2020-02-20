@@ -311,13 +311,42 @@
 }
 
 #add-chat-head #chat-type {
+  position: relative;
   display: flex;
   justify-items: flex-start;
   align-items: center;
+  width: 220px;
 }
 
-#chat-type h2#type {
-  font-size: 22px;
+#chat-type #chat-type-options {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  background-color: var(--white);
+  padding: 0.25rem;
+  width: 100%;
+  text-align: center;
+  border-radius: 15px;
+  top: 33px;
+  box-shadow: 10px 10px 7px -5px rgba(0, 0, 0, 0.22);
+  transition: all ease-in 250ms;
+  pointer-events: none;
+}
+
+#chat-type #chat-type-options.show {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: all;
+}
+
+#chat-type #chat-type-options .type {
+  color: var(--skyblue);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+#chat-type h2.type {
+  font-size: 20px;
   font-weight: 500;
   color: var(--white);
 }
@@ -328,6 +357,10 @@
   margin-left: 1rem;
 }
 
+#chat-type .caret.rotate {
+  transform: rotate(360deg) !important;
+}
+
 #add-chat-head .cancel {
   font-size: 22px;
   color: var(--lightblue);
@@ -335,7 +368,7 @@
 }
 
 #chat-body {
-  padding: 1.5rem 0.5rem 0 0.5rem;
+  padding: 2rem 0.5rem 0 0.5rem;
 }
 
 #chat-body #input-fields {
@@ -344,10 +377,23 @@
   width: 100%;
 }
 
-#input-fields label[for="username"] {
+#input-fields .field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 33px;
+}
+
+#input-fields .field#group {
+  display: none;
+}
+
+#input-fields #group.show {
+  display: flex;
+}
+
+#input-fields .field label {
   font-size: 18px;
   color: var(--mediumgray);
-  /* transform: translateY(100%); */
 }
 
 #input-fields input {

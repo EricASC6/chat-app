@@ -12,11 +12,14 @@ class ChatCreator {
    */
   createChatRoom(id) {
     const chatRoomRequest = {
+      isGroup: false,
       users: [{ _id: this.KEY }, { _id: id }]
     };
 
     return chatRoomRequest;
   }
+
+  createGroupChat() {}
 
   /**
    * Saves the chat room to the db
@@ -37,6 +40,8 @@ class ChatCreator {
     if (chatData.ok) return chatData;
     else return null;
   }
+
+  async saveGroupChatToDB() {}
 
   /**
    * Sets the id of the chat room

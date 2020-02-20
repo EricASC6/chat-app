@@ -7,7 +7,7 @@ chat-app specifications:
    their contacts, favorites, and messages >>
 
 3. Chat Specs
-   a) User can create a new contact and message them 
+   a) User can create a new contact and message them >>
    b) User can add a contact to their favorites  
    c) User can create a group-chat
    d) User can see when someone is typing a message   

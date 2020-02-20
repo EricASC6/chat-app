@@ -119,11 +119,14 @@
       </div>
     </div>
 
-    <div id="add-chat">
+    <div id="add-chat" class="show" data-type="conversation">
       <div id="add-chat-container">
         <div id="add-chat-head">
           <div id="chat-type">
-            <h2 id="type">New Conversation</h2>
+            <h2 class="type" id="current-type">New Conversation</h2>
+            <div id="chat-type-options">
+              <h2 class="type">New Groupchat</h2>
+            </div>
             <div class="caret">
               <i class="fas fa-chevron-up" id="chat-caret"></i>
             </div>
@@ -134,8 +137,14 @@
         </div>
         <div id="chat-body">
           <div id="input-fields">
-            <label for="username">Username</label>
-            <input type="text" id="username" />
+            <div class="field" id="group">
+              <label for="group-name">Group Name</label>
+              <input type="text" id="group-name" />
+            </div>
+            <div class="field">
+              <label for="username">Username</label>
+              <input type="text" id="username" />
+            </div>
           </div>
         </div>
       </div>

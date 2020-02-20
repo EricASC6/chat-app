@@ -48,8 +48,11 @@ const getUsersFromChatRequest = async (req, res, next) => {
 };
 
 const createChat = async (req, res) => {
+  const isGroup = req.body.isGroup;
+  const chatName = req.body.chatName || "";
   const chat = new Chat({
-    isGroup: false,
+    isGroup: isGroup,
+    name: chatName,
     users: [],
     messages: []
   });
@@ -76,6 +79,12 @@ const createChat = async (req, res) => {
 };
 
 router.post("/newChat", authenticateKey, getUsersFromChatRequest, createChat);
+router.post(
+  "/newGroupChat",
+  authenticateKey,
+  getUsersFromChatRequest,
+  createChat
+);
 
 // PUT Requests Middleware
 const getChatFromBody = async (req, res, next) => {
