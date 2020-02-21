@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const User = require("../../models/User");
 const Chat = require("../../models/Chat").model;
 const Message = require("../../models/Message").model;
-const authenticateKey = require("./authenticateKey");
 
 // Setting up parser
 router.use(bodyParser.json());
@@ -31,7 +30,7 @@ const sendBackChatData = (req, res) => {
   res.status(200).json({ ok: true, chat: chat });
 };
 
-router.get("/", authenticateKey, getChatByID, sendBackChatData);
+router.get("/", getChatByID, sendBackChatData);
 
 // POST Requests Middleware
 const getUsersFromChatRequest = async (req, res, next) => {
@@ -78,13 +77,8 @@ const createChat = async (req, res) => {
   }
 };
 
-router.post("/newChat", authenticateKey, getUsersFromChatRequest, createChat);
-router.post(
-  "/newGroupChat",
-  authenticateKey,
-  getUsersFromChatRequest,
-  createChat
-);
+router.post("/newChat", getUsersFromChatRequest, createChat);
+router.post("/newGroupChat", getUsersFromChatRequest, createChat);
 
 // PUT Requests Middleware
 const getChatFromBody = async (req, res, next) => {
@@ -118,6 +112,6 @@ const saveMessageToChat = async (req, res) => {
   }
 };
 
-router.put("/newMessage", authenticateKey, getChatFromBody, saveMessageToChat);
+router.put("/newMessage", getChatFromBody, saveMessageToChat);
 
 module.exports = router;

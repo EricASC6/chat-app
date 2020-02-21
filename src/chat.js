@@ -25,15 +25,15 @@ const CHAT_CLASS = "chat";
 const CHATS_BODY_ID = "chats-body";
 const HOME_ORIGIN = window.location.origin;
 const KEY = new URLSearchParams(window.location.search).get("id");
-const homeUserID = KEY;
+const homeUserId = KEY;
 
 // Establishing Socket Connection
 const socket = io(HOME_ORIGIN);
 
 socket.on("connect", async () => {
-  const homeUserData = await ContactAPI.getUserDataFromID(homeUserID, KEY);
-  const user = homeUserData.userData;
-  chatManager.connectToServer(socket, user);
+  const homeUser = await ContactAPI.getUserDataFromID(homeUserID, KEY);
+  console.log(homeUser);
+  chatManager.connectToServer(socket, homeUser);
 });
 
 // 1. Create a new contact
@@ -46,11 +46,13 @@ const contactManager = new ContactManager();
 const createContact = async username => {
   try {
     console.log("Username: ", username);
-    const userData = await ContactAPI.getUserDataFromUsername(username, KEY);
-    const contact = Contact.createContact(userData);
+    const contactData = await ContactAPI.getUserDataFromUsername(username);
+    console.log(userData);
+    const contact = Contact.createContact(contactData);
     contactManager.addNewContactToContactsList(contactsList, contact);
     contactManager.emitNewContactEvent();
-    await ContactAPI.saveContactToContacts(userData, KEY);
+    const contactId = contactData._id;
+    await ContactAPI.saveContactToContacts(homeUserId, contactId);
     return userData;
   } catch (err) {
     throw err;

@@ -1,5 +1,11 @@
+import ContactAPI from "./api/ContactAPI.js";
+
 class ContactManager {
   static READY_STATE = "create-chat";
+
+  constructor() {
+    this.ContactAPI = ContactAPI;
+  }
 
   /**
    * Checks if the adding chat button is in the create-contact state
@@ -8,7 +14,7 @@ class ContactManager {
    */
   isReady(createChatBtn) {
     return (
-      createChatBtn.getAttribute("data-type") === ContactCreator.READY_STATE
+      createChatBtn.getAttribute("data-type") === ContactManager.READY_STATE
     );
   }
 

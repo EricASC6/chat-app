@@ -1,7 +1,7 @@
 class ContactAPI {
-  static async getUserDataFromID(_id, key) {
+  static async getUserDataFromID(id) {
     try {
-      const userAPI = `/user?key=${key}&user_id=${_id}`;
+      const userAPI = `/user/id/${id}`;
       const userDataRes = await fetch(userAPI);
       if (userDataRes.status !== 200) throw new Error("Not a 200 response");
       const userData = await userDataRes.json();
@@ -11,22 +11,25 @@ class ContactAPI {
     }
   }
 
-  static async getUserDataFromUsername(username, key) {
+  static async getUserDataFromUsername(username) {
     try {
-      const userAPI = `/user?key=${key}&username=${username}`;
+      const userAPI = `/user/username/${username}`;
       const userDataRes = await fetch(userAPI);
       if (userDataRes.status !== 200) throw new Error("Not a 200 response");
       const userData = await userDataRes.json();
-      if (userData.ok) return userData.userData;
-      else throw new Error("Something went wrong");
+      return userData;
     } catch (err) {
       throw err;
     }
   }
 
-  static async saveContactToContacts(userData, key) {
-    const contactAPI = `/user?key=${key}`;
-    const requestBody = JSON.stringify(userData);
+  // id - id of the home user
+  static async saveContactToContacts(homeUserId, contactId) {
+    const contactAPI = `/user/newContact`;
+    const requestBody = JSON.stringify({
+      homeUserId: homeUserId,
+      contactId: contactId
+    });
 
     try {
       const saveContactRes = await fetch(contactAPI, {
