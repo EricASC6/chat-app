@@ -1,13 +1,13 @@
 class ChatAPI {
-  static async getChatDataFromID(_id, key) {
-    const chatAPI = `/chat?key=${key}&id=${_id}`;
+  static async getChatDataFromID(id) {
+    const chatAPI = `/chat/${id}`;
 
     try {
       const chatDataRes = await fetch(chatAPI);
       if (chatDataRes.status !== 200) throw new Error("Not a 200 Response");
 
       const chatData = await chatDataRes.json();
-      return chatData.chat;
+      return chatData;
     } catch (err) {
       throw err;
     }
@@ -36,8 +36,8 @@ class ChatAPI {
     return groupChat;
   }
 
-  static async saveChatToDB(chatData, key, isGroup = false) {
-    const chatAPI = `/chat/${isGroup ? "newGroupChat" : "newChat"}?key=${key}`;
+  static async saveChatToDB(chatData, isGroup = false) {
+    const chatAPI = `/chat/${isGroup ? "newGroupChat" : "newChat"}`;
     const requestBody = JSON.stringify(chatData);
 
     try {

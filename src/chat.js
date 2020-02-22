@@ -31,7 +31,7 @@ const homeUserId = KEY;
 const socket = io(HOME_ORIGIN);
 
 socket.on("connect", async () => {
-  const homeUser = await ContactAPI.getUserDataFromID(homeUserID, KEY);
+  const homeUser = await ContactAPI.getUserDataFromID(homeUserId, KEY);
   console.log(homeUser);
   chatManager.connectToServer(socket, homeUser);
 });

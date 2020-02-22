@@ -11,12 +11,12 @@ const getUserFromID = async (req, res, next) => {
   const userId = req.params.id;
   try {
     const user = await User.findById(userId);
-    if (!user) res.status(404).json({ ok: false, error: "User not found" });
+    if (!user) res.status(404).json({ error: "User not found" });
 
     req.user = user;
     next();
   } catch (err) {
-    res.status(500).json({ ok: false, error: "Server Error" });
+    res.status(500).json({ error: "Server Error" });
   }
 };
 
@@ -24,12 +24,12 @@ const getUserFromUsername = async (req, res, next) => {
   const username = req.params.username;
   try {
     const user = await User.findOne({ username: username });
-    if (!user) res.status(404).json({ ok: false, error: "User not found" });
+    if (!user) res.status(404).json({ error: "User not found" });
 
     req.user = user;
     next();
   } catch (err) {
-    res.status(500).json({ ok: false, error: "Server Error" });
+    res.status(500).json({ error: "Server Error" });
   }
 };
 

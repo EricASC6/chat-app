@@ -1,9 +1,9 @@
 class MessageAPI {
-  static createMessageDataWith(message, chatID, homeUserID) {
+  static createMessageDataWith(message, chatId, homeUserId) {
     const messageData = {
-      chatID: chatID,
+      chatId: chatId,
       message: {
-        from: homeUserID,
+        from: homeUserId,
         message: message
       }
     };
@@ -11,8 +11,8 @@ class MessageAPI {
     return messageData;
   }
 
-  static async saveMessageToDB(messageData, key) {
-    const messageAPI = `chat/newMessage?key=${key}`;
+  static async saveMessageToDB(messageData, chatId) {
+    const messageAPI = `chat/newMessage/${chatId}`;
     const requestBody = JSON.stringify(messageData);
 
     try {
