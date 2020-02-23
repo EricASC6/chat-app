@@ -98,7 +98,7 @@
 
 /* Temporary, need to remove later */
 #main-body #main-contact-about {
-  display: none;
+  /* display: none; */
 }
 
 #main-body #main-contact-about #main-contact-head {

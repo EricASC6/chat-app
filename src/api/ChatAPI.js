@@ -1,6 +1,7 @@
 class ChatAPI {
-  static async getChatDataFromID(id) {
+  static async getChatDataFromId(id) {
     const chatAPI = `/chat/${id}`;
+    console.log(chatAPI);
 
     try {
       const chatDataRes = await fetch(chatAPI);
@@ -36,7 +37,7 @@ class ChatAPI {
     return groupChat;
   }
 
-  static async saveChatToDB(chatData, isGroup = false) {
+  static async saveChatToDb(chatData, isGroup = false) {
     const chatAPI = `/chat/${isGroup ? "newGroupChat" : "newChat"}`;
     const requestBody = JSON.stringify(chatData);
 

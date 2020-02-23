@@ -1,5 +1,5 @@
 class ContactAPI {
-  static async getUserDataFromID(id) {
+  static async getUserDataFromId(id) {
     try {
       const userAPI = `/user/id/${id}`;
       const userDataRes = await fetch(userAPI);
@@ -24,7 +24,7 @@ class ContactAPI {
   }
 
   // id - id of the home user
-  static async saveContactToContacts(homeUserId, contactId) {
+  static async saveContactToDb(homeUserId, contactId) {
     const contactAPI = `/user/newContact`;
     const requestBody = JSON.stringify({
       homeUserId: homeUserId,

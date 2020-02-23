@@ -1,16 +1,14 @@
+import ChatAPI from "./api/ChatAPI.js";
+import Chat from "./components/Chat.js";
+
 class ChatCreator {
-  /**
-   * @param {string} userId - id of the home user
-   */
-  constructor(key) {
-    this.KEY = key;
+  constructor() {
+    this.ChatAPI = ChatAPI;
+    this.Chat = Chat;
   }
 
-  /**
-   * Creates the body of a POST request to create chat room with user id
-   * @param {string} id - ObjectId of an user
-   */
   createChatRoom(id) {
+    // this.ChatAPI.cre
     const chatRoomRequest = {
       isGroup: false,
       users: [{ _id: this.KEY }, { _id: id }]

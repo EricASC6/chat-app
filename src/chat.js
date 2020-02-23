@@ -1,5 +1,5 @@
 import ContactViewier from "./ContactViewer.js";
-import ChatViewier from "./ChatViewer.js";
+import ChatViewer from "./ChatViewer.js";
 import ContactManager from "./ContactManager.js";
 import ChatCreator from "./ChatCreator.js";
 import ChatManager from "./ChatManager.js";
@@ -7,7 +7,6 @@ import Chat from "./components/Chat.js";
 import Contact from "./components/Contact.js";
 import Message from "./components/Message.js";
 import ContactAPI from "./api/ContactAPI.js";
-import ChatAPI from "./api/ChatAPI.js";
 import MessageAPI from "./api/MessageAPI.js";
 
 // Constants - DOM + User Id
@@ -31,7 +30,7 @@ const homeUserId = KEY;
 const socket = io(HOME_ORIGIN);
 
 socket.on("connect", async () => {
-  const homeUser = await ContactAPI.getUserDataFromID(homeUserId, KEY);
+  const homeUser = await ContactAPI.getUserDataFromId(homeUserId);
   console.log(homeUser);
   chatManager.connectToServer(socket, homeUser);
 });
@@ -46,13 +45,16 @@ const contactManager = new ContactManager();
 const createContact = async username => {
   try {
     console.log("Username: ", username);
-    const contactData = await ContactAPI.getUserDataFromUsername(username);
-    console.log(userData);
-    const contact = Contact.createContact(contactData);
-    contactManager.addNewContactToContactsList(contactsList, contact);
-    contactManager.emitNewContactEvent();
+    const contactData = await contactManager.getContactDataFromUsername(
+      username
+    );
+    console.log(contactData);
+    const contact = contactManager.createContact(contactData);
     const contactId = contactData._id;
-    await ContactAPI.saveContactToContacts(homeUserId, contactId);
+
+    contactManager.addNewContactToContactsList(contact, contactsList);
+    contactManager.emitNewContactEvent();
+    await contactManager.saveContact(homeUserId, contactId);
     return userData;
   } catch (err) {
     throw err;
@@ -157,8 +159,8 @@ const slideContactsTabAway = contactsTab => {
   contactsTab.classList.remove("show");
 };
 
-const viewContact = async userID => {
-  const contactData = await contactViewier.retrieveContactInfo(userID);
+const viewContact = async userId => {
+  const contactData = await contactViewier.retrieveContactDataFromId(userId);
   contactViewier.displayContactInfo(contactData);
   slideContactsTabAway(contactsTab);
 };
@@ -186,16 +188,19 @@ const CHAT_NAME_CLASS_QUERY = ".chat-name";
 const MESSAGES_ID = "messages";
 const messages = document.getElementById(MESSAGES_ID);
 
-const chatViewer = new ChatViewier(KEY);
+const chatViewer = new ChatViewer();
+console.log(chatViewer);
 const chatManager = new ChatManager(KEY);
 
-const getChatMessages = async _id => {
+const getChatMessages = async id => {
   try {
-    const chatData = await ChatAPI.getChatDataFromID(_id, KEY);
+    const chatData = await chatViewer.getChatDataFromId(id);
+    console.log(chatData);
     const messages = chatData.messages;
     console.log(messages);
     return messages;
   } catch (err) {
+    console.error(err);
     throw new Error("Error retrieving messages");
   }
 };
@@ -211,9 +216,10 @@ const viewChat = async (chat, chatRoom, chatName) => {
   const _messages = await getChatMessages(chatID);
   _messages.forEach(message => {
     const messageVal = message.message;
+    console.log(messageVal);
 
     // Tells us if the message is sent from the home user or not
-    const flag = message.from === chatViewer.KEY;
+    const flag = message.from === homeUserId;
     const messageElement = Message.createMessage(messageVal, flag);
     chatViewer.displayMessage(messageElement, messages);
   });

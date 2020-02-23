@@ -1,10 +1,12 @@
 import ContactAPI from "./api/ContactAPI.js";
+import Contact from "./components/Contact.js";
 
 class ContactManager {
   static READY_STATE = "create-chat";
 
   constructor() {
     this.ContactAPI = ContactAPI;
+    this.Contact = Contact;
   }
 
   /**
@@ -18,8 +20,27 @@ class ContactManager {
     );
   }
 
-  addNewContactToContactsList(contactsList, contact) {
+  async getContactDataFromUsername(username) {
+    const contactData = await this.ContactAPI.getUserDataFromUsername(username);
+    return contactData;
+  }
+
+  createContact(contactData) {
+    const contact = this.Contact.createContact(contactData);
+    return contact;
+  }
+
+  addNewContactToContactsList(contact, contactsList) {
     contactsList.prepend(contact);
+  }
+
+  async saveContact(homeUserId, contactId) {
+    const saveContactToDb = await this.ContactAPI.saveContactToDb(
+      homeUserId,
+      contactId
+    );
+
+    return saveContactToDb;
   }
 
   /**

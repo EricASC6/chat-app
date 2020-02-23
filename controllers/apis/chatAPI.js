@@ -11,6 +11,7 @@ router.use(bodyParser.json());
 // GET Requests Middleware
 const getChatById = async (req, res, next) => {
   const chatId = req.params.id;
+  console.log("chat-id", chatId);
 
   try {
     const chat = await Chat.findById(chatId);
@@ -25,6 +26,7 @@ const getChatById = async (req, res, next) => {
 
 const sendBackChatData = (req, res) => {
   const chat = req.chat;
+  console.log("chat: ", chat);
   res.status(200).json(chat);
 };
 
