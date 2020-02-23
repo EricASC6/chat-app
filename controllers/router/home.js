@@ -62,10 +62,12 @@ const getChatsData = async (chatIDs, userID) => {
       // console.log("chat-name: ", chatName);
       const mostRecentMessage = getMostRecentMessage(chat);
       // console.log("most-recent-messages: ", mostRecentMessage);
+      const userIds = chat.users.map(user => user._id);
 
       const chatData = {
         chatName: chatName,
         mostRecentMessage: mostRecentMessage,
+        users: userIds,
         _id: _id
       };
 

@@ -1,13 +1,9 @@
-import ContactViewier from "./ContactViewer.js";
+import ContactViewer from "./ContactViewer.js";
 import ChatViewer from "./ChatViewer.js";
 import ContactCreator from "./ContactCreator.js";
 import ChatCreator from "./ChatCreator.js";
 import ChatManager from "./ChatManager.js";
-import Chat from "./components/Chat.js";
-import Contact from "./components/Contact.js";
 import Message from "./components/Message.js";
-import ContactAPI from "./api/ContactAPI.js";
-import MessageAPI from "./api/MessageAPI.js";
 
 // Constants - DOM + User Id
 const CREATE_CHAT_BTN_ID = "add-new-chat";
@@ -17,7 +13,7 @@ const GROUP_NAME_FIELD_ID = "group-name";
 const CONTACTS_LIST_ID = "contacts-list";
 const CHAT_ROOM_ID = "chat-room";
 const CONTACTS_TAB_ID = "contacts-tab";
-const HOME_VIEW_ID = "home-view";
+const CONTACT_ABOUT_ID = "main-contact-about";
 const CHAT_ICON_QUERY = "#chat-contact-icon p";
 const CHAT_NAME_ID = "chat-name";
 const CHAT_CLASS = "chat";
@@ -29,7 +25,7 @@ const homeUserId = new URLSearchParams(window.location.search).get("id");
 const socket = io(HOME_ORIGIN);
 
 socket.on("connect", async () => {
-  const homeUser = await ContactAPI.getUserDataFromId(homeUserId);
+  const homeUser = await contactViewer.retrieveContactDataFromId(homeUserId);
   console.log(homeUser);
   chatManager.connectToServer(socket, homeUser);
 });
@@ -50,7 +46,6 @@ const createContact = async username => {
     console.log(contactData);
     const contact = contactCreator.createContact(contactData);
     const contactId = contactData._id;
-
     contactCreator.addNewContactToContactsList(contact, contactsList);
     contactCreator.emitNewContactEvent();
     await contactCreator.saveContact(homeUserId, contactId);
@@ -79,11 +74,6 @@ const createChatRoom = async username => {
   return chatElement;
 };
 
-const formatChatRoom = ({ firstname, lastname, fullname }) => {
-  chatIcon.textContent = firstname[0] + lastname[0];
-  chatName.textContent = fullname;
-};
-
 const slideOverChatRoom = chatRoom => {
   chatRoom.classList.add("show");
 };
@@ -96,81 +86,99 @@ const clearChatRoomMessages = chatRoomMessages => {
   chatRoomMessages.innerHTML = "";
 };
 
+const createChat = async () => {
+  const username = usernameField.value;
+  const contact = await createContact(username);
+  const chat = await createChatRoom(username);
+  const chatId = chat.getAttribute("data-id");
+  const chatNameVal = contact.fullname;
+  chatName.innerHTML = chatNameVal;
+  chat.querySelector(".chat-name").innerHTML = chatNameVal;
+  chatManager.setChatRoomID(chatRoom, chatId);
+  chatCreator.addChatToChatsBody(chatsBody, chat);
+};
+
+const createGroupChat = async () => {
+  const groupChatNameVal = groupName.value;
+  const usernames = chatCreator.getUsernamesFromUsernameField(usernameField);
+
+  const userContacts = [...contactsList.children].map(contact =>
+    contact.getAttribute("username")
+  );
+
+  usernames.forEach(async username => {
+    if (!userContacts.includes(username)) await createContact(username);
+  });
+
+  const groupChatData = chatCreator.createGroupChatData(
+    groupChatNameVal,
+    homeUserId,
+    usernames
+  );
+
+  const groupChat = await chatCreator.saveChatDataToDb(groupChatData, true);
+  console.log(groupChat);
+  const chatId = groupChat._id;
+  const chatNameVal = groupChat.chatName;
+  const chat = chatCreator.createChatRoom(chatNameVal, chatId);
+  chatManager.setChatRoomID(chatRoom, chatId);
+  chatCreator.addChatToChatsBody(chatsBody, chat);
+
+  chatName.innerHTML = chatNameVal;
+
+  console.log("Success");
+};
+
 createChatBtn.addEventListener("click", async () => {
   if (!contactCreator.isReady(createChatBtn)) return;
 
   try {
     const chatType = addChat.getAttribute("data-type");
     if (chatType === "conversation") {
-      const username = usernameField.value;
-      const contact = await createContact(username);
-      console.log(contact);
-      const chat = await createChatRoom(username);
-      console.log(chatRoom);
-      const chatId = chat.getAttribute("data-id");
-      chatManager.setChatRoomID(chatRoom, chatId);
-      chatCreator.addChatToChatsBody(chatsBody, chat);
+      await createChat();
     } else if (chatType === "group-chat") {
-      const groupChatNameVal = groupName.value;
-      const usernames = chatCreator.getUsernamesFromUsernameField(
-        usernameField
-      );
-
-      const userContacts = [...contactsList.children].map(contact =>
-        contact.getAttribute("username")
-      );
-
-      usernames.forEach(username => {
-        if (!userContacts.includes(username)) createContact(username);
-      });
-
-      const groupChatData = chatCreator.createGroupChatData(
-        groupChatNameVal,
-        homeUserId,
-        usernames
-      );
-
-      const groupChat = await chatCreator.saveChatDataToDb(groupChatData, true);
-      console.log(groupChat);
-      const chatId = groupChat._id;
-      const chatNameVal = groupChat.chatName;
-      const chat = Chat.createChat(chatNameVal, chatId);
-      chatManager.setChatRoomID(chatRoom, chatId);
-      chatCreator.addChatToChatsBody(chatsBody, chat);
-
-      chatName.innerHTML = chatNameVal;
-
-      console.log("Success");
+      await createGroupChat();
     }
 
+    addChat.classList.remove("show");
     slideOverChatRoom(chatRoom);
   } catch (err) {
     console.error(err);
   }
 });
 
-// Viewing the contacts | home
-const homeViewLink = document.getElementById(HOME_VIEW_ID);
+// Viewing the contacts
+const contactAbout = document.getElementById(CONTACT_ABOUT_ID);
 const contactsTab = document.getElementById(CONTACTS_TAB_ID);
-const contactViewier = new ContactViewier();
+const contactViewer = new ContactViewer();
 
 const slideContactsTabAway = contactsTab => {
   contactsTab.classList.remove("show");
 };
 
 const viewContact = async userId => {
-  const contactData = await contactViewier.retrieveContactDataFromId(userId);
-  contactViewier.displayContactInfo(contactData);
+  const contactData = await contactViewer.retrieveContactDataFromId(userId);
+  contactAbout.style.display = "block";
+  contactViewer.displayContactInfo(contactData);
   slideContactsTabAway(contactsTab);
+};
+
+const viewChatsWithContact = userId => {
+  chats.forEach(chat => {
+    const usersInChat = chat.getAttribute("data-users").split(",");
+    if (usersInChat.includes(userId)) chat.style.display = "flex";
+    else chat.style.display = "none";
+  });
 };
 
 const enableViewingOnContactsList = () => {
   const contacts = Array.from(contactsList.children).filter(child => !child.id);
   contacts.forEach(contact =>
     contact.addEventListener("click", async () => {
-      const userID = contact.getAttribute("data-id");
+      const userId = contact.getAttribute("data-id");
       try {
-        await viewContact(userID);
+        await viewContact(userId);
+        viewChatsWithContact(userId);
       } catch (err) {
         console.error(err);
       }
@@ -178,7 +186,6 @@ const enableViewingOnContactsList = () => {
   );
 };
 
-// homeViewLink.addEventListener("click", viewHome);
 window.addEventListener("new-contact", enableViewingOnContactsList);
 enableViewingOnContactsList();
 
@@ -188,7 +195,6 @@ const MESSAGES_ID = "messages";
 const messages = document.getElementById(MESSAGES_ID);
 
 const chatViewer = new ChatViewer();
-console.log(chatViewer);
 const chatManager = new ChatManager();
 
 const getChatMessages = async id => {
@@ -205,21 +211,21 @@ const getChatMessages = async id => {
 };
 
 const viewChat = async (chat, chatRoom, chatName) => {
-  const chatID = chat.getAttribute("data-id");
-  chatManager.setChatRoomID(chatRoom, chatID);
+  const chatId = chat.getAttribute("data-id");
+  chatManager.setChatRoomID(chatRoom, chatId);
 
   const chatNameVal = chat.querySelector(CHAT_NAME_CLASS_QUERY).innerHTML;
   chatViewer.setChatName(chatNameVal, chatName);
   slideOverChatRoom(chatRoom);
 
-  const _messages = await getChatMessages(chatID);
+  const _messages = await getChatMessages(chatId);
   _messages.forEach(message => {
     const messageVal = message.message;
     console.log(messageVal);
 
     // Tells us if the message is sent from the home user or not
     const flag = message.from === homeUserId;
-    const messageElement = Message.createMessage(messageVal, flag);
+    const messageElement = chatManager.createMessage(messageVal, flag);
     chatViewer.displayMessage(messageElement, messages);
   });
 };
@@ -241,14 +247,14 @@ const sendBtn = document.getElementById(SEND_BTN_ID);
 sendBtn.addEventListener("click", () => {
   const messageContentVal = messageContent.value;
   messageContent.value = "";
-  const chatID = chatManager._id;
-  const messageData = MessageAPI.createMessageDataWith(
+  const chatId = chatManager._id;
+  const messageData = chatManager.createMessageData(
     messageContentVal,
-    chatID,
+    chatId,
     homeUserId
   );
   chatManager.sendMessageData(messageData);
-  MessageAPI.saveMessageToDB(messageData, chatID);
+  chatManager.saveMessage(messageData, chatId);
   console.log(messageContentVal);
 });
 
@@ -270,4 +276,14 @@ backBtn.addEventListener("click", () => {
   chatManager.removeChatRoomID(chatRoom);
   slideAwayChatRoom(chatRoom);
   clearChatRoomMessages(messages);
+});
+
+// Viewing Home
+const HOME_VIEW_ID = "home-view";
+const homeView = document.getElementById(HOME_VIEW_ID);
+
+homeView.addEventListener("click", () => {
+  contactAbout.style.display = "none";
+  chats.forEach(chat => (chat.style.display = "flex"));
+  slideContactsTabAway(contactsTab);
 });

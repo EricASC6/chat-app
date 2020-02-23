@@ -56,6 +56,10 @@ class ChatCreator {
   addChatToChatsBody(chatsBody, chat) {
     chatsBody.prepend(chat);
   }
+
+  emitNewChatEvent() {
+    window.dispatchEvent(new Event("new-chat"));
+  }
 }
 
 export default ChatCreator;
