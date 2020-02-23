@@ -25,6 +25,7 @@ class ChatManager {
   }
 
   sendMessageData(messageData) {
+    console.log(messageData);
     this.socket.emit("message", messageData);
   }
 

@@ -254,11 +254,12 @@ sendBtn.addEventListener("click", () => {
 });
 
 socket.on("message", messageData => {
+  console.log("Message");
   console.log(messageData);
-  const { message: messageObject, chatID } = messageData;
-  if (chatID === chatManager._id) {
+  const { message: messageObject, chatId } = messageData;
+  if (chatId === chatManager._id) {
     // Sent or recieved
-    const flag = messageObject.from === chatManager.KEY;
+    const flag = messageObject.from === homeUserId;
     const message = Message.createMessage(messageObject.message, flag);
     chatManager.addMessageToChat(messages, message);
   }

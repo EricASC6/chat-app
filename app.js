@@ -61,8 +61,12 @@ io.on("connection", socket => {
   socket.on("disconnect", () => chatManager.removeUserFromOnline(socket.id));
 
   socket.on("message", messageData => {
+    console.log("Message!");
+    console.log(messageData);
     const clients = chatManager.getOnlineUsersFromSameChat(messageData);
+    console.log(clients);
     const socketIDs = chatManager.getSocketIDsFromUsers(clients);
+    console.log(socketIDs);
     socketIDs.forEach(id => io.sockets.to(id).emit("message", messageData));
   });
 });
