@@ -1,6 +1,6 @@
 import ContactViewier from "./ContactViewer.js";
 import ChatViewer from "./ChatViewer.js";
-import ContactManager from "./ContactManager.js";
+import ContactCreator from "./ContactCreator.js";
 import ChatCreator from "./ChatCreator.js";
 import ChatManager from "./ChatManager.js";
 import Chat from "./components/Chat.js";
@@ -23,8 +23,7 @@ const CHAT_NAME_ID = "chat-name";
 const CHAT_CLASS = "chat";
 const CHATS_BODY_ID = "chats-body";
 const HOME_ORIGIN = window.location.origin;
-const KEY = new URLSearchParams(window.location.search).get("id");
-const homeUserId = KEY;
+const homeUserId = new URLSearchParams(window.location.search).get("id");
 
 // Establishing Socket Connection
 const socket = io(HOME_ORIGIN);
@@ -40,22 +39,22 @@ const createChatBtn = document.getElementById(CREATE_CHAT_BTN_ID);
 const usernameField = document.getElementById(USERNAME_FIELD_ID);
 const contactsList = document.getElementById(CONTACTS_LIST_ID);
 
-const contactManager = new ContactManager();
+const contactCreator = new ContactCreator();
 
 const createContact = async username => {
   try {
     console.log("Username: ", username);
-    const contactData = await contactManager.getContactDataFromUsername(
+    const contactData = await contactCreator.getContactDataFromUsername(
       username
     );
     console.log(contactData);
-    const contact = contactManager.createContact(contactData);
+    const contact = contactCreator.createContact(contactData);
     const contactId = contactData._id;
 
-    contactManager.addNewContactToContactsList(contact, contactsList);
-    contactManager.emitNewContactEvent();
-    await contactManager.saveContact(homeUserId, contactId);
-    return userData;
+    contactCreator.addNewContactToContactsList(contact, contactsList);
+    contactCreator.emitNewContactEvent();
+    await contactCreator.saveContact(homeUserId, contactId);
+    return contactData;
   } catch (err) {
     throw err;
   }
@@ -69,12 +68,15 @@ const chatsBody = document.getElementById(CHATS_BODY_ID);
 const addChat = document.getElementById(ADD_CHAT_ID);
 const groupName = document.getElementById(GROUP_NAME_FIELD_ID);
 
-const chatCreator = new ChatCreator(KEY);
+const chatCreator = new ChatCreator();
 
-const createChatRoom = async id => {
-  const newChat = chatCreator.createChatRoom(id);
-  const chatData = await chatCreator.saveChatRoomToDB(newChat);
-  return chatData;
+const createChatRoom = async username => {
+  const chatData = chatCreator.createChatData(homeUserId, username);
+  const chat = await chatCreator.saveChatDataToDb(chatData, false);
+  const { chatName, fullname, _id } = chat;
+  const name = chatName || fullname;
+  const chatElement = chatCreator.createChatRoom(name, _id);
+  return chatElement;
 };
 
 const formatChatRoom = ({ firstname, lastname, fullname }) => {
@@ -95,7 +97,7 @@ const clearChatRoomMessages = chatRoomMessages => {
 };
 
 createChatBtn.addEventListener("click", async () => {
-  if (!contactManager.isReady(createChatBtn)) return;
+  if (!contactCreator.isReady(createChatBtn)) return;
 
   try {
     const chatType = addChat.getAttribute("data-type");
@@ -103,16 +105,11 @@ createChatBtn.addEventListener("click", async () => {
       const username = usernameField.value;
       const contact = await createContact(username);
       console.log(contact);
-      const chatData = await createChatRoom(contact._id);
-      console.log(chatData);
-
-      const chatID = chatData._id;
-      const chatName = contact.fullname;
-      const chat = Chat.createChat(chatName, chatID);
-
-      chatCreator.setChatRoomID(chatID, chatRoom);
+      const chat = await createChatRoom(username);
+      console.log(chatRoom);
+      const chatId = chat.getAttribute("data-id");
+      chatManager.setChatRoomID(chatRoom, chatId);
       chatCreator.addChatToChatsBody(chatsBody, chat);
-      formatChatRoom(contact);
     } else if (chatType === "group-chat") {
       const groupChatNameVal = groupName.value;
       const usernames = chatCreator.getUsernamesFromUsernameField(
@@ -127,16 +124,18 @@ createChatBtn.addEventListener("click", async () => {
         if (!userContacts.includes(username)) createContact(username);
       });
 
-      const groupChat = chatCreator.createGroupChat(
+      const groupChatData = chatCreator.createGroupChatData(
         groupChatNameVal,
+        homeUserId,
         usernames
       );
 
-      const groupChatData = await chatCreator.saveChatRoomToDB(groupChat, true);
-      const chatID = groupChatData._id;
-      const chatNameVal = groupChatData.chatName;
-      const chat = Chat.createChat(chatNameVal, chatID);
-      chatCreator.setChatRoomID(chatID, chatRoom);
+      const groupChat = await chatCreator.saveChatDataToDb(groupChatData, true);
+      console.log(groupChat);
+      const chatId = groupChat._id;
+      const chatNameVal = groupChat.chatName;
+      const chat = Chat.createChat(chatNameVal, chatId);
+      chatManager.setChatRoomID(chatRoom, chatId);
       chatCreator.addChatToChatsBody(chatsBody, chat);
 
       chatName.innerHTML = chatNameVal;
@@ -153,7 +152,7 @@ createChatBtn.addEventListener("click", async () => {
 // Viewing the contacts | home
 const homeViewLink = document.getElementById(HOME_VIEW_ID);
 const contactsTab = document.getElementById(CONTACTS_TAB_ID);
-const contactViewier = new ContactViewier(KEY);
+const contactViewier = new ContactViewier();
 
 const slideContactsTabAway = contactsTab => {
   contactsTab.classList.remove("show");
@@ -190,7 +189,7 @@ const messages = document.getElementById(MESSAGES_ID);
 
 const chatViewer = new ChatViewer();
 console.log(chatViewer);
-const chatManager = new ChatManager(KEY);
+const chatManager = new ChatManager();
 
 const getChatMessages = async id => {
   try {
@@ -246,10 +245,10 @@ sendBtn.addEventListener("click", () => {
   const messageData = MessageAPI.createMessageDataWith(
     messageContentVal,
     chatID,
-    KEY
+    homeUserId
   );
   chatManager.sendMessageData(messageData);
-  MessageAPI.saveMessageToDB(messageData, KEY);
+  MessageAPI.saveMessageToDB(messageData, chatID);
   console.log(messageContentVal);
 });
 

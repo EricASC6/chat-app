@@ -65,18 +65,18 @@ router.get(
 //POST Requests Middleware
 const saveNewContactToDB = async (req, res) => {
   const srcUserId = req.body.homeUserId;
-  const newContactID = req.body.contactId;
+  const newContactId = req.body.contactId;
 
-  console.log(srcUserID);
-  console.log(newContactID);
+  console.log(srcUserId);
+  console.log(newContactId);
 
   try {
     // Save the new contact of src user to its contacts and vice versa
     const srcUser = await User.findById(srcUserId);
     const newContact = await User.findById(newContactId);
 
-    srcUser.contacts.unshift(newContactID);
-    newContact.contacts.unshift(srcUserID);
+    srcUser.contacts.unshift(newContactId);
+    newContact.contacts.unshift(srcUserId);
     await srcUser.save();
     await newContact.save();
 
@@ -86,6 +86,6 @@ const saveNewContactToDB = async (req, res) => {
   }
 };
 
-router.post("/newContact", getUserFromID, saveNewContactToDB);
+router.post("/newContact", saveNewContactToDB);
 
 module.exports = router;

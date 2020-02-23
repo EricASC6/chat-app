@@ -9,10 +9,7 @@ chat-app specifications:
 3. Chat Specs
    a) User can create a new contact and message them >>
    b) User can add a contact to their favorites  
-   c) User can create a group-chat
+   c) User can create a group-chat >>
    d) User can see when someone is typing a message   
-   e) User should get a notification when someone sends them a message
-      i) After viewing the messages, the notification should
-         go away
-   f) User can view contacts and search for them
-   g) User can view their profile >>
+   e) User can view contacts and search for them >>
+   f) User can view their profile >>

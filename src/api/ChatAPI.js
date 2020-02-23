@@ -14,16 +14,16 @@ class ChatAPI {
     }
   }
 
-  static createChatDataWith(username, homeUserID) {
+  static createChatDataWith(homeUserId, username) {
     const chatRoom = {
       isGroup: false,
-      users: [{ _id: homeUserID }, { username: username }]
+      users: [{ _id: homeUserId }, { username: username }]
     };
 
     return chatRoom;
   }
 
-  static createGroupChatDataWith(chatName, usernames, homeUserID) {
+  static createGroupChatDataWith(chatName, homeUserId, usernames) {
     const usernameObjects = usernames.map(username => {
       return { username: username };
     });
@@ -31,7 +31,7 @@ class ChatAPI {
     const groupChat = {
       isGroup: true,
       chatName: chatName,
-      users: [{ _id: homeUserID }, ...usernameObjects]
+      users: [{ _id: homeUserId }, ...usernameObjects]
     };
 
     return groupChat;

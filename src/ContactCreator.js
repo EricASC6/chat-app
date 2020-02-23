@@ -1,7 +1,7 @@
 import ContactAPI from "./api/ContactAPI.js";
 import Contact from "./components/Contact.js";
 
-class ContactManager {
+class ContactCreator {
   static READY_STATE = "create-chat";
 
   constructor() {
@@ -16,7 +16,7 @@ class ContactManager {
    */
   isReady(createChatBtn) {
     return (
-      createChatBtn.getAttribute("data-type") === ContactManager.READY_STATE
+      createChatBtn.getAttribute("data-type") === ContactCreator.READY_STATE
     );
   }
 
@@ -52,4 +52,4 @@ class ContactManager {
   }
 }
 
-export default ContactManager;
+export default ContactCreator;
