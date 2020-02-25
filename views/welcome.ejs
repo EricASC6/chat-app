@@ -4,19 +4,81 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/welcome.css" />
+    <script
+      src="https://kit.fontawesome.com/bc308bbd0b.js"
+      crossorigin="anonymous"
+    ></script>
     <title>Welcome</title>
   </head>
   <body>
     <div class="welcome">
-      <div class="welcome-container">
+      <div class="container" id="welcome-header-container">
+        <div class="overlap-design">
+          <svg
+            width="336"
+            height="349"
+            viewBox="0 0 336 349"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              width="224.44"
+              height="216.619"
+              rx="10"
+              transform="matrix(0.832568 0.553922 -0.652159 0.758082 137.679 6.99921)"
+              fill="#458CFF"
+            />
+            <rect
+              opacity="0.5"
+              width="224.44"
+              height="216.619"
+              rx="10"
+              transform="matrix(0.832568 0.553922 -0.652159 0.758082 148.592 60.0963)"
+              fill="#BBE1FA"
+            />
+          </svg>
+        </div>
         <div class="welcome-header">
-          <h2>Welcome to EChat</h2>
+          <h2>
+            Welcome to E<span class="blue-accent"
+              >Chat<i class="far fa-comment"></i
+            ></span>
+          </h2>
           <p>Discover the exciting new way to communicate.</p>
+        </div>
+      </div>
+      <div class="container" id="welcome-body-container">
+        <div class="chat-design">
+          <svg
+            width="243"
+            height="176"
+            viewBox="0 0 243 176"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="254" cy="91" r="50" fill="#458CFF" />
+            <circle opacity="0.5" cx="254" cy="126" r="50" fill="#BBE1FA" />
+            <g opacity="0.75">
+              <path
+                d="M0 50C0 22.3858 22.3858 0 50 0H98.6255H143C170.614 0 193 22.3858 193 50V70C193 97.6142 170.614 120 143 120H50C22.3858 120 0 97.6142 0 70V50Z"
+                fill="#458CFF"
+              />
+              <path
+                d="M193.945 130.793L122.835 119.456L168.204 63.515L193.945 130.793Z"
+                fill="#458CFF"
+              />
+              <rect x="34" y="81" width="102" height="10" rx="5" fill="white" />
+              <rect x="34" y="50" width="126" height="10" rx="5" fill="white" />
+              <rect x="34" y="19" width="126" height="10" rx="5" fill="white" />
+            </g>
+          </svg>
         </div>
         <div class="welcome-body">
           <div class="action-btns">
-            <a href="/signup">Sign up</a>
-            <a href="/login">Login</a>
+            <a href="/signup" id="signup-btn">Sign up</a>
+            <a href="/login" id="login-btn">Login</a>
           </div>
         </div>
       </div>
