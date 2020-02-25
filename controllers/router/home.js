@@ -36,10 +36,13 @@ const getContactsData = async contactsIDs => {
 
 const getChatName = (chat, userID) => {
   const users = chat.users;
-  if (chat.isGroup) return chat.chatName;
-  else
-    return users.filter(user => user._id.toString() !== userID.toString())[0]
+  if (chat.isGroup) {
+    return chat.chatName;
+  } else {
+    const chatName = users.filter(user => user._id.toString() !== userID)[0]
       .fullname;
+    return chatName;
+  }
 };
 
 const getMostRecentMessage = chat => {
@@ -54,14 +57,17 @@ const getChatsData = async (chatIDs, userID) => {
       const chat = await Chat.findById(_id);
       // console.log("chat: ", chat);
 
+      // console.log(chat);
       const chatName = getChatName(chat, userID);
       // console.log("chat-name: ", chatName);
       const mostRecentMessage = getMostRecentMessage(chat);
       // console.log("most-recent-messages: ", mostRecentMessage);
+      const userIds = chat.users.map(user => user._id);
 
       const chatData = {
         chatName: chatName,
         mostRecentMessage: mostRecentMessage,
+        users: userIds,
         _id: _id
       };
 
@@ -69,6 +75,7 @@ const getChatsData = async (chatIDs, userID) => {
     })
   );
 
+  // console.log(chats);
   return chats;
 };
 

@@ -1,0 +1,101 @@
+body {
+  height: 100vh;
+  width: 100%;
+}
+
+.blue-accent {
+  color: var(--skyblue);
+}
+
+.welcome {
+  height: 100%;
+  background-color: var(--darkblue);
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome .container {
+  padding: 0 2rem;
+}
+
+#welcome-header-container {
+  position: relative;
+  z-index: 1;
+}
+
+#welcome-header-container .overlap-design {
+  position: absolute;
+  left: -50%;
+  bottom: 0;
+  transform: translateY(calc(50% + 15px));
+  z-index: -1;
+}
+
+#welcome-header-container .welcome-header {
+  padding-top: 4.5rem;
+  padding-bottom: 1rem;
+}
+
+.welcome-header h2 {
+  font-size: 36px;
+  color: var(--white);
+}
+
+.welcome-header p {
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--white);
+  margin: 25px 0;
+}
+
+#welcome-body-container {
+  position: relative;
+  padding-bottom: 4.5rem;
+  flex-grow: 1;
+  background-color: var(--mediumblue);
+  border-radius: 25px 25px 0 0;
+}
+
+#welcome-body-container .chat-design {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(calc(-50% - 25px));
+}
+
+#welcome-body-container .welcome-body {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.welcome-body .action-btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.action-btns a {
+  font-size: 20px;
+  font-weight: 500;
+  text-decoration: none;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 20px;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
+}
+
+.action-btns #signup-btn {
+  color: var(--skyblue);
+  background-color: var(--lightblue);
+}
+
+.action-btns #login-btn {
+  color: var(--white);
+  background-color: var(--skyblue);
+}

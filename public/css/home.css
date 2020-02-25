@@ -96,7 +96,6 @@
   margin: 1.75rem 0;
 }
 
-/* Temporary, need to remove later */
 #main-body #main-contact-about {
   display: none;
 }
@@ -164,6 +163,8 @@
 
 #chats #chats-body {
   margin-top: 15px;
+  height: 600px;
+  overflow-y: scroll;
 }
 
 #chats-body .chat {
@@ -271,7 +272,7 @@
   padding: 1.5rem 0;
 }
 
-#contacts-body #contacts-list li {
+#contacts-body li {
   list-style: none;
   font-size: 16px;
   font-weight: 500;
@@ -281,7 +282,7 @@
   transition: background-color 200ms ease-in;
 }
 
-#contacts-body #contacts-list li:hover {
+#contacts-body li:hover {
   background-color: #24333b;
 }
 

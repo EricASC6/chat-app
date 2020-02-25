@@ -1,9 +1,8 @@
+import ContactAPI from "./api/ContactAPI.js";
+
 class ContactViewer {
-  /**
-   * @param {string} key - ID of the home user
-   */
-  constructor(key) {
-    this.KEY = key;
+  constructor() {
+    this.ContactAPI = ContactAPI;
   }
 
   /**
@@ -11,12 +10,8 @@ class ContactViewer {
    * @param {string} username
    * @returns {Promise<Object>} - contact data retreived from database
    */
-  async retrieveContactInfo(id) {
-    const USER_API = `/user?key=${this.KEY}&user_id=${id}`;
-
-    const contactDataRes = await fetch(USER_API);
-    const contactData = await contactDataRes.json();
-    console.log("Contact Data: ", contactData);
+  async retrieveContactDataFromId(id) {
+    const contactData = await this.ContactAPI.getUserDataFromId(id);
     return contactData;
   }
 
@@ -25,7 +20,7 @@ class ContactViewer {
    * @param {Object} contactData - data returned from the retrieveContactInfo method
    */
   displayContactInfo(contactData) {
-    const { fullname, bio } = contactData.userData;
+    const { fullname, bio } = contactData;
     const user = document.querySelector("#main-contact-head #user");
     const contactBio = document.querySelector("#main-contact-description p");
     user.textContent = fullname;

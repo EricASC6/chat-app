@@ -21,9 +21,9 @@ class ChatManager {
   }
 
   getOnlineUsersFromSameChat(messageData) {
-    const { chatID } = messageData;
+    const { chatId } = messageData;
     const clients = this.online.filter(onlineUser =>
-      onlineUser.chats.includes(chatID)
+      onlineUser.chats.includes(chatId)
     );
     return clients;
   }

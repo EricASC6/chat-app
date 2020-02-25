@@ -57,15 +57,17 @@
           <div id="main-body">
             <div id="main-contact-about">
               <div id="main-contact-head">
-                <h3 id="user">Eric Chen</h3>
+                <h3 id="user">
+                  <!-- Eric Chen -->
+                </h3>
                 <div class="caret">
                   <i class="fas fa-chevron-up" id="user-bio-caret"></i>
                 </div>
               </div>
               <div id="main-contact-description">
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  <!-- Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua. -->
                 </p>
               </div>
             </div>
@@ -75,7 +77,11 @@
               </div>
               <div id="chats-body">
                 <% chats.forEach(chat => { %>
-                <div class="chat" data-id="<%= chat._id %>">
+                <div
+                  class="chat"
+                  data-id="<%= chat._id %>"
+                  data-users="<%= chat.users %>"
+                >
                   <div class="chat-container">
                     <h3 class="chat-name"><%= chat.chatName %></h3>
                     <p class="most-recent-message">
@@ -108,6 +114,9 @@
           <h2>Contacts</h2>
         </div>
         <div id="contacts-body">
+          <ul id="contacts-home">
+            <li id="home-view">Home</li>
+          </ul>
           <ul id="contacts-list">
             <% contacts.forEach(contact => { %>
             <li

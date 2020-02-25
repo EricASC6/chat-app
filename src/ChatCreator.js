@@ -1,35 +1,30 @@
+import ChatAPI from "./api/ChatAPI.js";
+import Chat from "./components/Chat.js";
+
 class ChatCreator {
-  /**
-   * @param {string} userId - id of the home user
-   */
-  constructor(key) {
-    this.KEY = key;
+  constructor() {
+    this.ChatAPI = ChatAPI;
+    this.Chat = Chat;
   }
 
-  /**
-   * Creates the body of a POST request to create chat room with user id
-   * @param {string} id - ObjectId of an user
-   */
-  createChatRoom(id) {
-    const chatRoomRequest = {
-      isGroup: false,
-      users: [{ _id: this.KEY }, { _id: id }]
-    };
-
-    return chatRoomRequest;
+  createChatData(homeUserId, username) {
+    const chatData = this.ChatAPI.createChatDataWith(homeUserId, username);
+    return chatData;
   }
 
-  createGroupChat(chatName, usernames) {
-    const usersData = usernames.map(username => {
-      return { username: username };
-    });
-    const groupChatRequest = {
-      isGroup: true,
-      chatName: chatName,
-      users: [{ _id: this.KEY }, ...usersData]
-    };
+  createGroupChatData(chatName, homeUserId, usernames) {
+    const groupChatData = this.ChatAPI.createGroupChatDataWith(
+      chatName,
+      homeUserId,
+      usernames
+    );
 
-    return groupChatRequest;
+    return groupChatData;
+  }
+
+  createChatRoom(chatName, id) {
+    const chat = this.Chat.createChat(chatName, id);
+    return chat;
   }
 
   getUsernamesFromUsernameField(usernameField) {
@@ -44,21 +39,9 @@ class ChatCreator {
    * @param {Object} chatRoom - Chat room data returned from createChatRoom method
    * @returns {Promise<Object> | null} - returns the chat data is sucessfully saved, else null
    */
-  async saveChatRoomToDB(chatRoom, isGroup = false) {
-    const newChatAPI = `/chat/${isGroup ? "newGroupChat" : "newChat"}?key=${
-      this.KEY
-    }`;
-    const newChatResponse = await fetch(newChatAPI, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(chatRoom)
-    });
-
-    const chatData = await newChatResponse.json();
-    if (chatData.ok) return chatData;
-    else return null;
+  async saveChatDataToDb(chatData, isGroup = false) {
+    const saveToDbRes = await this.ChatAPI.saveChatToDb(chatData, isGroup);
+    return saveToDbRes;
   }
 
   /**
@@ -72,6 +55,10 @@ class ChatCreator {
 
   addChatToChatsBody(chatsBody, chat) {
     chatsBody.prepend(chat);
+  }
+
+  emitNewChatEvent() {
+    window.dispatchEvent(new Event("new-chat"));
   }
 }
 

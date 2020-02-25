@@ -1,8 +1,12 @@
+import ContactAPI from "./api/ContactAPI.js";
+import Contact from "./components/Contact.js";
+
 class ContactCreator {
   static READY_STATE = "create-chat";
 
-  constructor(key) {
-    this.KEY = key;
+  constructor() {
+    this.ContactAPI = ContactAPI;
+    this.Contact = Contact;
   }
 
   /**
@@ -16,8 +20,27 @@ class ContactCreator {
     );
   }
 
-  addNewContactToContactsList(contactsList, contact) {
+  async getContactDataFromUsername(username) {
+    const contactData = await this.ContactAPI.getUserDataFromUsername(username);
+    return contactData;
+  }
+
+  createContact(contactData) {
+    const contact = this.Contact.createContact(contactData);
+    return contact;
+  }
+
+  addNewContactToContactsList(contact, contactsList) {
     contactsList.prepend(contact);
+  }
+
+  async saveContact(homeUserId, contactId) {
+    const saveContactToDb = await this.ContactAPI.saveContactToDb(
+      homeUserId,
+      contactId
+    );
+
+    return saveContactToDb;
   }
 
   /**
@@ -26,36 +49,6 @@ class ContactCreator {
    */
   emitNewContactEvent() {
     window.dispatchEvent(new Event("new-contact"));
-  }
-
-  /**
-   * Saves the new contact to the database
-   * @param {Object} userData
-   * @returns {Promise<boolean>} true if request was sucessful else false
-   */
-  async saveNewContactDataToDB(userData) {
-    const { _id } = userData;
-    const saveContactToDBAPI = `/user/newContact?key=${this.KEY}`;
-
-    try {
-      const saveToDBResponse = await fetch(saveContactToDBAPI, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          _id: _id
-        })
-      });
-
-      const responseBody = await saveToDBResponse.json();
-      if (responseBody.ok) {
-        console.log(responseBody.message);
-        return true;
-      } else return false;
-    } catch (err) {
-      throw err;
-    }
   }
 }
 

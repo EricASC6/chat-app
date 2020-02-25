@@ -2,80 +2,90 @@ const express = require("express");
 const router = express.Router();
 const bodyParser = require("body-parser");
 const User = require("../../models/User");
-const authenticateKey = require("./authenticateKey");
 
 // Setting up parser
 router.use(bodyParser.json());
 
 // GET Requests Middleware
-const VALID_QUERY_PARAMS = {
-  user_id: "_id",
-  username: "username"
-};
-
-const getSearchParam = query => {
-  const searchParam = Object.keys(query).find(key => key !== "key");
-  if (searchParam in VALID_QUERY_PARAMS)
-    return { [VALID_QUERY_PARAMS[searchParam]]: query[searchParam] };
-  else return null;
-};
-
-const getUserData = async (req, res, next) => {
-  const searchParam = getSearchParam(req.query);
-  if (!searchParam)
-    res.status(400).json({ ok: false, error: "Invalid Request" });
-
+const getUserFromID = async (req, res, next) => {
+  const userId = req.params.id;
   try {
-    const user = await User.findOne(searchParam);
-    if (!user) res.status(404).json({ ok: false, error: "User not found" });
-    const { username, firstname, lastname, fullname, bio, chats, _id } = user;
-    const userData = {
-      username: username,
-      firstname: firstname,
-      lastname: lastname,
-      fullname: fullname,
-      bio: bio,
-      chats: chats,
-      _id: _id
-    };
-    req.userData = userData;
+    const user = await User.findById(userId);
+    if (!user) res.status(404).json({ error: "User not found" });
+
+    req.user = user;
     next();
   } catch (err) {
-    res.status(500).json({ ok: false, error: "Server Error" });
+    res.status(500).json({ error: "Server Error" });
   }
+};
+
+const getUserFromUsername = async (req, res, next) => {
+  const username = req.params.username;
+  try {
+    const user = await User.findOne({ username: username });
+    if (!user) res.status(404).json({ error: "User not found" });
+
+    req.user = user;
+    next();
+  } catch (err) {
+    res.status(500).json({ error: "Server Error" });
+  }
+};
+
+const prepareUserData = (req, res, next) => {
+  const user = req.user;
+  const { username, firstname, lastname, fullname, bio, chats, _id } = user;
+  const userData = {
+    username: username,
+    firstname: firstname,
+    lastname: lastname,
+    fullname: fullname,
+    bio: bio,
+    chats: chats,
+    _id: _id
+  };
+  req.userData = userData;
+  next();
 };
 
 const sendBackUserData = (req, res) => {
   const userData = req.userData;
-  res.status(200).json({ ok: true, userData: userData });
+  res.status(200).json(userData);
 };
 
-router.get("/", authenticateKey, getUserData, sendBackUserData);
+router.get("/id/:id", getUserFromID, prepareUserData, sendBackUserData);
+router.get(
+  "/username/:username",
+  getUserFromUsername,
+  prepareUserData,
+  sendBackUserData
+);
 
 //POST Requests Middleware
 const saveNewContactToDB = async (req, res) => {
-  const srcUserID = req.query.key;
-  const newContactID = req.body._id;
+  const srcUserId = req.body.homeUserId;
+  const newContactId = req.body.contactId;
 
-  console.log(srcUserID);
-  console.log(newContactID);
+  console.log(srcUserId);
+  console.log(newContactId);
 
   try {
     // Save the new contact of src user to its contacts and vice versa
-    const srcUser = await User.findById(srcUserID);
-    const newContact = await User.findById(newContactID);
+    const srcUser = await User.findById(srcUserId);
+    const newContact = await User.findById(newContactId);
 
-    srcUser.contacts.unshift(newContactID);
-    newContact.contacts.unshift(srcUserID);
+    srcUser.contacts.unshift(newContactId);
+    newContact.contacts.unshift(srcUserId);
     await srcUser.save();
     await newContact.save();
 
-    res.status(200).json({ ok: true, message: "Succesfully added contact" });
+    res.status(200).json({ message: "Succesfully added contact" });
   } catch (err) {
-    res.status(500).json({ ok: false, error: "Server Error" });
+    res.status(500).json({ error: "Server Error" });
   }
 };
 
-router.post("/newContact", authenticateKey, saveNewContactToDB);
+router.post("/newContact", saveNewContactToDB);
 
 module.exports = router;
