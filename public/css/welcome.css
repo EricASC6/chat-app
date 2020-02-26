@@ -14,10 +14,6 @@ body {
   flex-direction: column;
 }
 
-.welcome .container {
-  padding: 0 2rem;
-}
-
 #welcome-header-container {
   position: relative;
   z-index: 1;
@@ -42,10 +38,11 @@ body {
 }
 
 .welcome-header p {
-  font-size: 22px;
-  font-weight: 300;
+  font-size: 20px;
+  font-weight: 400;
   color: var(--white);
   margin: 25px 0;
+  line-height: 150%;
 }
 
 #welcome-body-container {
@@ -76,18 +73,6 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-}
-
-.action-btns a {
-  font-size: 20px;
-  font-weight: 500;
-  text-decoration: none;
-  text-align: center;
-  padding: 1rem;
-  margin-top: 20px;
-  width: 100%;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
 }
 
 .action-btns #signup-btn {

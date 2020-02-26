@@ -1,0 +1,79 @@
+body {
+  height: 100vh;
+  width: 100%;
+}
+
+.login {
+  height: 100%;
+  width: 100%;
+  background-color: var(--mediumblue);
+}
+
+.login .login-head {
+  padding: 4rem 2rem 2rem 2rem;
+}
+
+.login .login-head h2 {
+  font-size: 42px;
+  color: var(--white);
+}
+
+.login #login-form .form-body {
+  margin-right: 2rem;
+  background-color: var(--darkblue);
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  border-radius: 0 10px 10px 0;
+}
+
+#login-form .form-body .login-form-head h2 {
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--skyblue);
+  margin-bottom: 20px;
+}
+
+#login-form .input-fields {
+  padding: 5px 0;
+  width: 100%;
+}
+
+#login-form .input-fields .field {
+  width: 100%;
+  margin: 12px 0 33px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#login-form .input-fields .field label {
+  font-size: 18px;
+  color: var(--white);
+  font-weight: 300;
+}
+
+#login-form .input-fields input {
+  width: 100%;
+  display: inline-block;
+  color: var(--lightgray);
+  height: 45px;
+  border: none;
+  border-bottom: 3px solid var(--lightblue);
+  font-size: 18px;
+  background-color: transparent;
+  outline: none;
+  z-index: 1;
+}
+
+#login-btn {
+  background-color: var(--skyblue);
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+#login-btn a {
+  text-decoration: none;
+  color: var(--white);
+}
