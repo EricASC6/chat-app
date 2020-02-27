@@ -10,6 +10,7 @@ body {
 }
 
 .login .login-head {
+  position: relative;
   padding: 4rem 2rem 2rem 2rem;
 }
 
@@ -18,17 +19,30 @@ body {
   color: var(--white);
 }
 
+.login .login-head .login-head-design {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  z-index: 2;
+}
+
+.login #login-form {
+  position: relative;
+}
+
 .login #login-form .form-body {
+  position: relative;
   margin-right: 2rem;
   background-color: var(--darkblue);
   padding-top: 3rem;
   padding-bottom: 3rem;
   border-radius: 0 10px 10px 0;
+  z-index: 1;
 }
 
 #login-form .form-body .login-form-head h2 {
-  font-size: 36px;
-  font-weight: 400;
+  font-size: 32px;
+  font-weight: 450;
   color: var(--skyblue);
   margin-bottom: 20px;
 }
@@ -56,14 +70,36 @@ body {
 #login-form .input-fields input {
   width: 100%;
   display: inline-block;
-  color: var(--lightgray);
+  color: var(--lightgray) !important;
   height: 45px;
   border: none;
   border-bottom: 3px solid var(--lightblue);
   font-size: 18px;
-  background-color: transparent;
+  background-color: transparent !important;
   outline: none;
   z-index: 1;
+}
+
+#login-form .to-signup {
+  position: absolute;
+  bottom: 7rem;
+  right: 0;
+  color: var(--mediumgray);
+  background-color: var(--lightblue);
+  padding-top: 10rem;
+  padding-bottom: 2rem;
+  margin-left: 2rem;
+  border-radius: 10px 0 0px 10px;
+  line-height: 150%;
+}
+
+.to-signup a {
+  color: var(--skyblue);
+  font-weight: 500;
+}
+
+#login-form .submit {
+  margin-top: 150px;
 }
 
 #login-btn {
