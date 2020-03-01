@@ -3,43 +3,101 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <script src="/clientSignup.js" defer></script>
     <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/form.css" />
+    <!-- <link rel="stylesheet" href="/css/signup.css" /> -->
+    <script src="/clientSignup.js" defer></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/bc308bbd0b.js"
+      crossorigin="anonymous"
+    ></script>
     <title>Signup</title>
   </head>
   <body>
-    <div class="signup">
-      <form action="/signup" method="POST" id="sigup-form">
-        <div class="entry" id="entry1">
-          <div class="field" id="username-field">
-            <label for="username">Username</label>
-            <input type="text" name="username" id="username" />
+    <div class="signup main">
+      <div class="login-head main-head container">
+        <h2>
+          E<span class="blue-accent">Chat <i class="far fa-comment"></i></span>
+        </h2>
+        <div class="signup-head-design main-head-design">
+          <svg
+            width="114"
+            height="267"
+            viewBox="0 0 114 267"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              width="177.121"
+              height="169.075"
+              rx="10"
+              transform="matrix(0.844093 0.536197 -0.665348 0.746534 108.667 5.10919)"
+              fill="#458CFF"
+            />
+            <rect
+              opacity="0.5"
+              width="177.121"
+              height="169.075"
+              rx="10"
+              transform="matrix(0.844093 0.536197 -0.665348 0.746534 117.493 45.8082)"
+              fill="#BBE1FA"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <form class="form" action="/signup" method="POST" id="sigup-form">
+        <div class="form-body container">
+          <div class="signup-form-head form-head">
+            <h2>Signup</h2>
           </div>
-          <div class="field" id="password-field">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" />
-          </div>
-          <div class="next">
-            <button>Next</button>
+
+          <div class="entries">
+            <div class="entry" id="entry1">
+              <div class="field" id="username-field">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" />
+              </div>
+              <div class="field" id="password-field">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" />
+              </div>
+              <div class="next">
+                <button>Next</button>
+              </div>
+            </div>
+            <div class="entry" id="entry2">
+              <div class="field" id="firstname-field">
+                <label for="firstname">First name</label>
+                <input type="text" name="firstname" id="firstname" />
+              </div>
+              <div class="field" id="lastname-field">
+                <label for="lastname">Last name</label>
+                <input type="text" name="lastname" id="lastname" />
+              </div>
+              <div class="field" id="bio-field">
+                <label for="bio">Short bio</label>
+                <input type="text" name="bio" id="bio" />
+              </div>
+            </div>
           </div>
         </div>
-        <div class="entry" id="entry2">
-          <div class="field" id="firstname-field">
-            <label for="firstname">First name</label>
-            <input type="text" name="firstname" id="firstname" />
-          </div>
-          <div class="field" id="lastname-field">
-            <label for="lastname">Last name</label>
-            <input type="text" name="lastname" id="lastname" />
-          </div>
-          <div class="field" id="bio-field">
-            <label for="bio">Short bio</label>
-            <input type="text" name="bio" id="bio" />
-          </div>
+
+        <div class="to-signup container">
+          <p>Don't have an account?</p>
+          <a href="/signup">Signup</a>
         </div>
-        <button type="submit">Submit</button>
         <div id="error-field">
           <p><%= error %></p>
+        </div>
+        <div class="submit container">
+          <button type="submit" id="login-btn" class="action-btn">
+            <a href="#">Log in</a>
+          </button>
         </div>
       </form>
     </div>
