@@ -4,12 +4,10 @@ chat-app specifications:
    via their username and password -> short bio >>
 
 2. Once logged in, the user should see a dashboard containing
-   their contacts, favorites, and messages >>
+   their contacts, and messages >>
 
 3. Chat Specs
    a) User can create a new contact and message them >>
-   b) User can add a contact to their favorites  
-   c) User can create a group-chat >>
-   d) User can see when someone is typing a message   
-   e) User can view contacts and search for them >>
-   f) User can view their profile >>
+   b) User can create a group-chat >>
+   c) User can view contacts and search for them >>
+   d) User can view their profile >>
