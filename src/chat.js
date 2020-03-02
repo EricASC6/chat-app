@@ -141,6 +141,8 @@ createChatBtn.addEventListener("click", async () => {
       await createGroupChat();
     }
 
+    createChatBtn.setAttribute("data-type", "add-contact");
+    createChatBtn.innerHTML = `<i class="fas fa-plus"></i>`;
     addChat.classList.remove("show");
     slideOverChatRoom(chatRoom);
   } catch (err) {
@@ -276,6 +278,7 @@ socket.on("message", messageData => {
 // Back Button on Chat Room
 const backBtn = document.getElementById("back");
 backBtn.addEventListener("click", () => {
+  createChatBtn.setAttribute("data-type", "create-contact")
   chatManager.removeChatRoomID(chatRoom);
   slideAwayChatRoom(chatRoom);
   clearChatRoomMessages(messages);
