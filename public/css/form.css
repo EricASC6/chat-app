@@ -13,7 +13,7 @@ body {
 
 .main .main-head {
   position: relative;
-  padding: 2rem;
+  padding: 4rem 2rem 2rem 2rem;
 }
 
 .main .main-head h2 {
@@ -25,13 +25,14 @@ body {
   position: absolute;
   top: 50%;
   right: 0;
-  z-index: 2;
+  z-index: 3;
 }
 
 .main .form {
   position: relative;
   flex-grow: 1;
   padding-bottom: 2rem;
+  z-index: 1;
 }
 
 .main .form .form-body {
@@ -41,7 +42,6 @@ body {
   padding-top: 3rem;
   padding-bottom: 3rem;
   border-radius: 0 10px 10px 0;
-  z-index: 1;
 }
 
 .form .form-body .form-head h2 {
@@ -86,8 +86,8 @@ body {
 
 .form .redirect {
   position: absolute;
-  bottom: 12rem;
-  right: 0;
+  right: -2rem;
+  bottom: -7rem;
   color: var(--mediumgray);
   background-color: var(--lightblue);
   padding-top: 10rem;
@@ -95,16 +95,12 @@ body {
   margin-left: 2rem;
   border-radius: 10px 0 0px 10px;
   line-height: 150%;
+  z-index: -1;
 }
 
 .redirect a {
   color: var(--skyblue);
   font-weight: 500;
-}
-
-.form .submit {
-  position: absolute;
-  /* margin-top: 150px; */
 }
 
 .action-btn {

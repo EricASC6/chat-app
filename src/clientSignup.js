@@ -24,6 +24,7 @@ nextBtn.addEventListener("click", e => {
   if (isValid) {
     entries[currentEntryIndx].style.display = "none";
     entries[++currentEntryIndx].style.display = "block";
+    error.style.display = "none";
   } else {
     errorVal.innerHTML = "Missing Username or Password";
     error.style.display = "block";

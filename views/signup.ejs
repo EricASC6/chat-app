@@ -84,21 +84,19 @@
                 <label for="bio">Short bio</label>
                 <input type="text" name="bio" id="bio" />
               </div>
+              <button type="submit" id="signup-btn" class="action-btn">
+                <a href="#">Sign Up</a>
+              </button>
             </div>
           </div>
-        </div>
 
-        <div class="to-signup container redirect">
-          <p>Have an account?</p>
-          <a href="/login">Login</a>
+          <div class="to-signup container redirect">
+            <p>Have an account?</p>
+            <a href="/login">Login</a>
+          </div>
         </div>
         <div id="error-field">
           <p><%= error %></p>
-        </div>
-        <div class="submit container">
-          <button type="submit" id="signup-btn" class="action-btn">
-            <a href="#">Sign Up</a>
-          </button>
         </div>
       </form>
     </div>
