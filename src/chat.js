@@ -20,12 +20,13 @@ const CHAT_CLASS = "chat";
 const CHATS_BODY_ID = "chats-body";
 const HOME_ORIGIN = window.location.origin;
 const homeUserId = new URLSearchParams(window.location.search).get("id");
+let homeUser = null;
 
 // Establishing Socket Connection
 const socket = io(HOME_ORIGIN);
 
 socket.on("connect", async () => {
-  const homeUser = await contactViewer.retrieveContactDataFromId(homeUserId);
+  homeUser = await contactViewer.retrieveContactDataFromId(homeUserId);
   console.log(homeUser);
   chatManager.connectToServer(socket, homeUser);
 });
@@ -251,7 +252,8 @@ sendBtn.addEventListener("click", () => {
   const messageData = chatManager.createMessageData(
     messageContentVal,
     chatId,
-    homeUserId
+    homeUserId,
+    homeUser.fullname
   );
   chatManager.sendMessageData(messageData);
   chatManager.saveMessage(messageData, chatId);
@@ -262,6 +264,7 @@ socket.on("message", messageData => {
   console.log("Message");
   console.log(messageData);
   const { message: messageObject, chatId } = messageData;
+  console.log(messageObject);
   if (chatId === chatManager._id) {
     // Sent or recieved
     const flag = messageObject.from === homeUserId;

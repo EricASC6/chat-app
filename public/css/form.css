@@ -7,11 +7,13 @@ body {
   height: 100%;
   width: 100%;
   background-color: var(--mediumblue);
+  display: flex;
+  flex-direction: column;
 }
 
 .main .main-head {
   position: relative;
-  padding: 4rem 2rem 2rem 2rem;
+  padding: 2rem;
 }
 
 .main .main-head h2 {
@@ -28,6 +30,8 @@ body {
 
 .main .form {
   position: relative;
+  flex-grow: 1;
+  padding-bottom: 2rem;
 }
 
 .main .form .form-body {
@@ -82,7 +86,7 @@ body {
 
 .form .redirect {
   position: absolute;
-  bottom: 7rem;
+  bottom: 12rem;
   right: 0;
   color: var(--mediumgray);
   background-color: var(--lightblue);
@@ -99,7 +103,8 @@ body {
 }
 
 .form .submit {
-  margin-top: 150px;
+  position: absolute;
+  /* margin-top: 150px; */
 }
 
 .action-btn {
@@ -112,4 +117,19 @@ body {
 .action-btn a {
   text-decoration: none;
   color: var(--white);
+}
+
+#error-field {
+  display: none;
+  position: absolute;
+  left: 0;
+  padding: 0.5rem;
+  background-color: #ffbaba;
+  color: #d8000c;
+  text-align: center;
+  border-radius: 10px;
+  width: auto;
+  transform: translateY(-50%);
+  margin: 0 2rem;
+  z-index: 3;
 }

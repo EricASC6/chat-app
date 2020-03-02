@@ -1,9 +1,10 @@
 class MessageAPI {
-  static createMessageDataWith(message, chatId, homeUserId) {
+  static createMessageDataWith(message, chatId, homeUserId, fullname) {
     const messageData = {
       chatId: chatId,
       message: {
         from: homeUserId,
+        fullname: fullname,
         message: message
       }
     };

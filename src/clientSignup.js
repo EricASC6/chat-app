@@ -1,6 +1,7 @@
 const nextBtn = document.getElementById("entry1-next");
 const entries = Array.from(document.querySelectorAll(".entry"));
-const error = document.querySelector("#error-field p");
+const error = document.getElementById("error-field");
+const errorVal = document.querySelector("#error-field p");
 let currentEntryIndx = 0;
 
 // Form
@@ -20,6 +21,11 @@ nextBtn.addEventListener("click", e => {
   e.preventDefault();
 
   const isValid = validateForm(username, password);
-  if (isValid) console.log("Valid Form");
-  else error.innerHTML = "Missing Username or Password";
+  if (isValid) {
+    entries[currentEntryIndx].style.display = "none";
+    entries[++currentEntryIndx].style.display = "block";
+  } else {
+    errorVal.innerHTML = "Missing Username or Password";
+    error.style.display = "block";
+  }
 });
