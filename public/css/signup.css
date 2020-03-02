@@ -1,0 +1,14 @@
+#entry2 {
+  display: none;
+}
+
+.next {
+  padding: 0.5rem;
+  background-color: var(--skyblue);
+  color: var(--darkblue);
+  font-size: 16px;
+  outline: none;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+}

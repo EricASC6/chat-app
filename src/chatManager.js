@@ -32,11 +32,12 @@ class ChatManager {
     return messageElement;
   }
 
-  createMessageData(message, chatId, homeUserId) {
+  createMessageData(message, chatId, homeUserId, fullname) {
     const messageData = this.MessageAPI.createMessageDataWith(
       message,
       chatId,
-      homeUserId
+      homeUserId,
+      fullname
     );
     return messageData;
   }

@@ -7,6 +7,8 @@ body {
   height: 100%;
   width: 100%;
   background-color: var(--mediumblue);
+  display: flex;
+  flex-direction: column;
 }
 
 .main .main-head {
@@ -23,11 +25,14 @@ body {
   position: absolute;
   top: 50%;
   right: 0;
-  z-index: 2;
+  z-index: 3;
 }
 
 .main .form {
   position: relative;
+  flex-grow: 1;
+  padding-bottom: 2rem;
+  z-index: 1;
 }
 
 .main .form .form-body {
@@ -37,7 +42,6 @@ body {
   padding-top: 3rem;
   padding-bottom: 3rem;
   border-radius: 0 10px 10px 0;
-  z-index: 1;
 }
 
 .form .form-body .form-head h2 {
@@ -52,7 +56,7 @@ body {
   width: 100%;
 }
 
-#login-form .input-fields .field {
+.field {
   width: 100%;
   margin: 12px 0 33px 0px;
   display: flex;
@@ -61,13 +65,13 @@ body {
   align-items: flex-start;
 }
 
-#login-form .input-fields .field label {
+.field label {
   font-size: 18px;
   color: var(--white);
   font-weight: 300;
 }
 
-#login-form .input-fields input {
+.form-body input {
   width: 100%;
   display: inline-block;
   color: var(--lightgray) !important;
@@ -80,10 +84,10 @@ body {
   z-index: 1;
 }
 
-#login-form .to-signup {
+.form .redirect {
   position: absolute;
-  bottom: 7rem;
-  right: 0;
+  right: -2rem;
+  bottom: -7rem;
   color: var(--mediumgray);
   background-color: var(--lightblue);
   padding-top: 10rem;
@@ -91,25 +95,37 @@ body {
   margin-left: 2rem;
   border-radius: 10px 0 0px 10px;
   line-height: 150%;
+  z-index: -1;
 }
 
-.to-signup a {
+.redirect a {
   color: var(--skyblue);
   font-weight: 500;
 }
 
-#login-form .submit {
-  margin-top: 150px;
-}
-
-#login-btn {
+.action-btn {
   background-color: var(--skyblue);
   border: none;
   outline: none;
   cursor: pointer;
 }
 
-#login-btn a {
+.action-btn a {
   text-decoration: none;
   color: var(--white);
+}
+
+#error-field {
+  display: none;
+  position: absolute;
+  left: 0;
+  padding: 0.5rem;
+  background-color: #ffbaba;
+  color: #d8000c;
+  text-align: center;
+  border-radius: 10px;
+  width: auto;
+  transform: translateY(-50%);
+  margin: 0 2rem;
+  z-index: 3;
 }

@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="/css/style.css" />
-    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="stylesheet" href="/css/form.css" />
     <link
       href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap"
       rel="stylesheet"
@@ -17,12 +17,12 @@
     <title>Login</title>
   </head>
   <body>
-    <div class="login">
-      <div class="login-head container">
+    <div class="login main">
+      <div class="login-head main-head container">
         <h2>
           E<span class="blue-accent">Chat <i class="far fa-comment"></i></span>
         </h2>
-        <div class="login-head-design">
+        <div class="login-head-design main-head-design">
           <svg
             width="114"
             height="267"
@@ -50,7 +50,7 @@
       </div>
       <form class="form" id="login-form" action="/login" method="POST">
         <div class="form-body container">
-          <div class="login-form-head">
+          <div class="login-form-head form-head">
             <h2>Login</h2>
           </div>
           <div class="input-fields">
@@ -63,18 +63,18 @@
               <input type="text" name="password" id="password" />
             </div>
           </div>
-        </div>
-        <div class="to-signup container">
-          <p>Don't have an account?</p>
-          <a href="/signup">Signup</a>
-        </div>
-        <div id="error-field">
-          <p><%= error %></p>
-        </div>
-        <div class="submit container">
+
+          <div class="to-signup container redirect">
+            <p>Don't have an account?</p>
+            <a href="/signup">Signup</a>
+          </div>
+
           <button type="submit" id="login-btn" class="action-btn">
             <a href="#">Log in</a>
           </button>
+        </div>
+        <div id="error-field">
+          <p><%= error %></p>
         </div>
       </form>
     </div>
